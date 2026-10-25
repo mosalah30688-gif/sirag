@@ -11,6 +11,8 @@
 :root{--green:#143d2a;--gold:#c2a15a;--gold2:#8c6f1f;--cream:#fffef7;--paper:#fefcf3}
 *{box-sizing:border-box}html,body{margin:0;background:#f3efe3}
 body{font-family:'Tajawal',system-ui,sans-serif;color:#1a1a1a}
+#tajweedTip{position:fixed;z-index:30;background:#143d2a;color:#fff;padding:8px 10px;border-radius:10px;font-size:12px;line-height:1.6;max-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.25);display:none;pointer-events:none}
+#tajweedTip b{color:#ffef99;display:block;font-size:13px}
 
 /* Top bar - سراج */
 .top{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#143d2a 0%,#0f2e1f 100%);color:#fff;padding:8px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.25);flex-direction:row;direction:ltr}
@@ -45,7 +47,8 @@ body{font-family:'Tajawal',system-ui,sans-serif;color:#1a1a1a}
 .basmala{text-align:center;color:#2b6b4a;font-family:'Amiri Quran','AmiriQuranLocal','Scheherazade New',serif;font-size:20px;margin:6px 0 8px}
 .mushaf{padding:16px 18px 6px;font-family:'Amiri Quran','AmiriQuranLocal','Scheherazade New',serif;font-size:clamp(20px,5vw,27px);line-height:2.1;text-align:justify;text-justify:inter-word;word-spacing:.06em;color:#0f1f16;overflow-wrap:break-word;word-break:break-word;hyphens:auto}
 .mushaf .end{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:24px;padding:0 6px;margin:0 5px 0 2px;border:1px solid #e0d3a8;background:#fffef7;border-radius:999px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:700;color:var(--gold2);vertical-align:middle;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-tajweed{font-family:inherit}
+tajweed{font-family:inherit;cursor:pointer;border-radius:4px;padding:0 1px}
+tajweed:hover{background:rgba(194,161,90,.15)}
 tajweed.ham_wasl, tajweed.laam_shamsiyah, tajweed.slnt{color:#a0a0a0}
 tajweed.ghunnah{color:#d35400}
 tajweed.qalaqah{color:#c0392b}
@@ -76,6 +79,7 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 </head>
 <body>
 <div class="progress"><i id="progressBar"></i></div>
+<div id="tajweedTip"></div>
 <!-- Header -->
 <div class="top">
   <div class="top-actions" style="order:1">
@@ -439,6 +443,42 @@ function pauseAudio(){
   document.getElementById('pauseBtn').style.display='none';
   document.getElementById('audioInfo').textContent='';
 }
+const tajweedInfo={
+  ham_wasl:['همزة الوصل','تثبت ابتداءً وتسقط وصلاً'],
+  laam_shamsiyah:['اللام الشمسية','تُدغم في الحرف الشمسي بعدها'],
+  slnt:['حرف صامت','لا يُلفظ وصلاً'],
+  ghunnah:['الغُنّة','غنة النون والميم المشددتين حركتين'],
+  qalaqah:['القلقلة','اضطراب صوت الحرف الساكن (قطب جد)'],
+  ikhafa:['الإخفاء','صفة بين الإظهار والإدغام مع غنة'],
+  ikhafa_shafawi:['الإخفاء الشفوي','إخفاء الميم الساكنة مع غنة'],
+  idgham_ghunnah:['إدغام بغنة','إدغام النون الساكنة بغنة'],
+  idgham_wo_ghunnah:['إدغام بغير غنة','إدغام بلا غنة (ل/ر)'],
+  idgham_shafawi:['إدغام شفوي','إدغام الميم الساكنة'],
+  iqlab:['الإقلاب','قلب النون ميماً مع غنة'],
+  madda_normal:['مد طبيعي','يمد حركتين'],
+  madda_permissible:['مد جائز','يمد 2-6 حركات'],
+  madda_necessary:['مد لازم','يمد 6 حركات لزوماً'],
+  madda_obligatory:['مد واجب','يمد 4-5 حركات']
+};
+function initTajweedTip(){
+  const tip=document.getElementById('tajweedTip');
+  document.addEventListener('click',e=>{
+    const t=e.target.closest('tajweed');
+    if(!t){ tip.style.display='none'; return; }
+    const cls=[...t.classList][0];
+    const info=tajweedInfo[cls]||[cls,'حكم تجويدي'];
+    tip.innerHTML=`<b>${info[0]}</b>${info[1]}`;
+    tip.style.display='block';
+    const r=t.getBoundingClientRect();
+    let top=r.bottom+8, left=r.left;
+    // keep inside viewport
+    if(top+60>window.innerHeight) top=r.top-50;
+    if(left+220>window.innerWidth) left=window.innerWidth-230;
+    tip.style.top=top+'px'; tip.style.left=left+'px';
+    setTimeout(()=>{ tip.style.display='none'; },3000);
+  });
+  document.addEventListener('scroll',()=> tip.style.display='none', {passive:true});
+}
 function initSearch(){
   const input=document.getElementById('searchInput');
   const results=document.getElementById('searchResults');
@@ -493,7 +533,7 @@ async function load(){
     pages=await r.json();
     const saved=parseInt(localStorage.getItem('sirag_page')||'1');
     if(saved>=1 && saved<=604) current=saved;
-    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio();
+    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip();
   }catch(e){ pageBody.innerHTML='<div class=loader>تعذّر تحميل الصفحات: '+e.message+'</div>'; console.error(e); }
 }
 document.getElementById('prev').addEventListener('click',()=>{ if(current>1){ current--; render(); }});
