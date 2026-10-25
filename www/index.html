@@ -114,9 +114,6 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <button class="icon-btn" id="openHifz" title="الحفظ الذكي" style="border-color:#7a5a12;background:rgba(122,90,18,.15)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3z"/><path d="M19 14l1 2.2L22 17l-2 0.8L19 20l-1-2.2L16 17l2-0.8L19 14z"/><path d="M5 14l1 1.5L7.5 16l-1.5 1L5 18.5l-1-1.5L2.5 16l1.5-.5L5 14z"/></svg>
     </button>
-    <button class="icon-btn" id="openMawqif" title="آية لموقفك" style="border-color:#8c6f1f;background:rgba(140,111,31,.14)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z"/><path d="M9 14h6"/></svg>
-    </button>
     <button class="icon-btn" id="openFav" title="المفضلة" style="border-color:#c2a15a;background:rgba(194,161,90,.18)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12a1 1 0 0 1 1 1v16l-7-4-7 4V5a1 1 0 0 1 1-1Z" fill="rgba(255,255,255,.12)"/><path d="M6 4h12a1 1 0 0 1 1 1v16l-7-4-7 4V5a1 1 0 0 1 1-1Z"/></svg>
     </button>
@@ -148,7 +145,6 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
       <button id="pauseBtn" title="إيقاف" style="padding:6px 9px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;cursor:pointer;font-size:11px;white-space:nowrap">⏹️ إيقاف</button>
       <button id="dlSuraBtn" title="تحميل السورة" style="padding:6px 8px;border:1px solid #8c6f1f;background:#fff;color:#8c6f1f;border-radius:10px;cursor:pointer;font-size:11px;white-space:nowrap">⬇️ سورة</button>
       <button id="dlMushafBtn" title="تحميل المصحف كامل" style="padding:6px 8px;border:1px solid #143d2a;background:#fff;color:#143d2a;border-radius:10px;cursor:pointer;font-size:11px;white-space:nowrap">⬇️ مصحف</button>
-      <button id="micBtn" title="صحح تلاوتك" style="padding:6px 8px;border:1px solid #c0392b;background:#fff;color:#c0392b;border-radius:10px;cursor:pointer;font-size:11px;white-space:nowrap">🎤 صحح</button>
       <span id="audioInfo" style="font-size:11px;color:#7a6a3a;flex:1;min-width:100px"></span>
       <audio id="audioPlayer" preload="none" style="display:none"></audio>
     </div>
@@ -227,10 +223,8 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
             5- تتبع الختمة الذكي (بدون انترنت)<br>
             6- أحكام التجويد<br>
             7- الحفظ الذكي بالتكرار المتباعد<br>
-            8- آية لموقفك — القرآن يجيبك<br>
-            9- صحح تلاوتك بالذكاء<br>
-            10- بدون إعلانات - بدون تتبع<br>
-            11- نسأل الله الإخلاص ونسألكم الدعاء
+            8- بدون إعلانات - بدون تتبع<br>
+            9- نسأل الله الإخلاص ونسألكم الدعاء
           </div>
         </div>
         <div style="text-align:center;margin-top:10px;font-size:11px;color:#7a6a3a">© 2026 سراج — صُنع بإتقان كما قال الكتاب</div>
@@ -298,10 +292,8 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
         5- تتبع الختمة الذكي (بدون انترنت)<br>
         6- أحكام التجويد<br>
         7- الحفظ الذكي بالتكرار المتباعد<br>
-        8- آية لموقفك — القرآن يجيبك<br>
-        9- صحح تلاوتك بالذكاء<br>
-        10- بدون إعلانات - بدون تتبع<br>
-        11- نسأل الله الإخلاص ونسألكم الدعاء
+        8- بدون إعلانات - بدون تتبع<br>
+        9- نسأل الله الإخلاص ونسألكم الدعاء
       </div>
     </div>
     <button id="updateBtn2" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;background:#143d2a;color:#ffef99;border-radius:11px;font-size:13px;font-weight:600;border:1px solid #0f2e1f;cursor:pointer">🔄 تحقّق من التحديثات</button>
@@ -325,30 +317,11 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <div id="hifzEmpty" style="text-align:center;color:#7a6a3a;font-size:12px;padding:14px">لا صفحات للحفظ — افتح أي صفحة واضغط ⭐</div>
   </div>
 </div>
-<!-- Drawer آية لموقفك -->
-<div class="drawer" id="mawqifDrawer" aria-hidden="true">
-  <div class="drawer-bg" id="mawqifBg"></div>
-  <div class="drawer-panel" style="width:420px;max-width:94vw">
-    <div class="drawer-head"><h3>💡 آية لموقفك</h3><button class="close" id="closeMawqif">إغلاق ✕</button></div>
-    <div style="font-size:11px;color:#7a6a3a;line-height:1.6;margin-bottom:8px">اكتب موقفك أو شعورك — مثلاً <i>متضايق، خايف، محتاج رزق، مظلوم</i> — والقرآن يجيبك.</div>
-    <input id="mawqifInput" placeholder="اكتب موقفك هنا... (مثال: أنا حزين)" style="width:100%;padding:10px;border:1.5px solid #c2a15a;background:#fff;color:#143d2a;border-radius:11px;font-size:13px">
-    <div id="mawqifChips" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">
-      <button data-q="متضايق" style="padding:5px 10px;border:1px solid #efe6c8;background:#fff;border-radius:999px;cursor:pointer;font-size:11px">😔 متضايق</button>
-      <button data-q="خايف" style="padding:5px 10px;border:1px solid #efe6c8;background:#fff;border-radius:999px;cursor:pointer;font-size:11px">😰 خايف</button>
-      <button data-q="محتاج رزق" style="padding:5px 10px;border:1px solid #efe6c8;background:#fff;border-radius:999px;cursor:pointer;font-size:11px">💰 محتاج رزق</button>
-      <button data-q="مظلوم" style="padding:5px 10px;border:1px solid #efe6c8;background:#fff;border-radius:999px;cursor:pointer;font-size:11px">⚖️ مظلوم</button>
-      <button data-q="مريض" style="padding:5px 10px;border:1px solid #efe6c8;background:#fff;border-radius:999px;cursor:pointer;font-size:11px">🤒 مريض</button>
-      <button data-q="تائه" style="padding:5px 10px;border:1px solid #efe6c8;background:#fff;border-radius:999px;cursor:pointer;font-size:11px">🧭 تائه</button>
-    </div>
-    <div id="mawqifInfo" style="font-size:11px;color:#7a6a3a;margin-top:4px"></div>
-    <div id="mawqifResults" style="display:flex;flex-direction:column;gap:8px;margin-top:10px;max-height:60vh;overflow:auto"></div>
-  </div>
-</div>
 <script>
 const suraNames=["","الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
 // ===== التحديث التلقائي — سراج =====
-const SIRAG_VERSION = "1.6";
+const SIRAG_VERSION = "1.6.1";
 async function checkForUpdate(manual=false, statusEl){
   const el = statusEl || document.getElementById('updateStatus') || document.getElementById('updateStatus2');
   function setStatus(t,c){ if(!el) return; el.style.display='block'; el.style.color=c||'#7a6a3a'; el.textContent=t; }
@@ -1180,7 +1153,7 @@ async function load(){
     pages=await r.json();
     const saved=parseInt(localStorage.getItem('sirag_page')||'1');
     if(saved>=1 && saved<=604) current=saved;
-    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initTimeline(); initHifz(); renderHifz(); initMawqif(); initSpeechCorrect(); renderKhatm(); khatmNotifyCheck();
+    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initTimeline(); initHifz(); renderHifz(); renderKhatm(); khatmNotifyCheck();
   }catch(e){ pageBody.innerHTML='<div class=loader>تعذّر تحميل الصفحات: '+e.message+'</div>'; console.error(e); }
 }
 document.getElementById('prev').addEventListener('click',()=>{ if(current>1){ current--; render(); }});
@@ -1231,131 +1204,6 @@ pageBody.addEventListener('click',e=>{
   // نبضة تأكيد
   ay.animate([{transform:'scale(1)'},{transform:'scale(1.03)'},{transform:'scale(1)'}],{duration:180});
 });
-// 💡 آية لموقفك — بحث دلالي بالمرادفات
-const mawqifSynonyms={
-  "متضايق":["حزن","ضيق","هم","غم","كرب","يأس","ضائق","حزين","مهموم","كآبة"],
-  "حزين":["حزن","بكى","دمع","هم","غم","يأس","ضيق"],
-  "خايف":["خوف","خشية","رهبة","فزع","وجل","أمن","طمأنينة","توكل"],
-  "قلق":["قلق","خوف","اضطراب","طمأنينة","سكينة"],
-  "محتاج رزق":["رزق","مال","غنى","فقر","زكاة","إنفاق","بركة","فضل"],
-  "رزق":["رزق","مال","غنى","عطاء"],
-  "مظلوم":["ظلم","عدل","مظلوم","نصر","حق","قصاص"],
-  "ظلم":["ظلم","عدل","جور"],
-  "مريض":["مرض","شفاء","سقم","داء","عافية","اشف"],
-  "تائه":["هدى","ضلال","طريق","سبيل","رشاد","نور"],
-  "وحيد":["أنس","وحشة","صحبة","ولي","نصير"],
-  "تائب":["توبة","غفران","ذنب","خطيئة","استغفار","رحمة"]
-};
-function normalizeMawqif(t){
-  return t.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[^\u0621-\u064A\s]/g,' ').replace(/\s+/g,' ').trim();
-}
-function expandMawqif(q){
-  const nq=normalizeMawqif(q);
-  let ex=[nq];
-  for(const [k,syns] of Object.entries(mawqifSynonyms)){
-    if(nq.includes(normalizeMawqif(k)) || normalizeMawqif(k).includes(nq)){
-      ex=ex.concat(syns.map(normalizeMawqif));
-    } else {
-      syns.forEach(sy=>{ if(nq.includes(normalizeMawqif(sy))) ex.push(normalizeMawqif(k)); });
-    }
-  }
-  return [...new Set(ex)];
-}
-function searchMawqif(q){
-  const ex=expandMawqif(q);
-  const verses=[];
-  for(let p=1;p<=604;p++) for(const v of pages[String(p)]||[]) verses.push(v);
-  const hits=[];
-  verses.forEach(v=>{
-    const nt=normalizeMawqif(v.text_uthmani||'');
-    let score=0;
-    ex.forEach(term=>{ if(nt.includes(term)) score++; });
-    if(score>0) hits.push({v,score});
-  });
-  hits.sort((a,b)=>b.score-a.score);
-  return hits.slice(0,12).map(h=>h.v);
-}
-function initMawqif(){
-  const drawer=document.getElementById('mawqifDrawer'), btn=document.getElementById('openMawqif'), close=document.getElementById('closeMawqif'), bg=document.getElementById('mawqifBg'), input=document.getElementById('mawqifInput'), info=document.getElementById('mawqifInfo'), res=document.getElementById('mawqifResults');
-  if(!btn||!drawer) return;
-  btn.addEventListener('click',()=>{ drawer.classList.add('open'); });
-  close.addEventListener('click',()=> drawer.classList.remove('open'));
-  bg.addEventListener('click',()=> drawer.classList.remove('open'));
-  function doSearch(q){
-    if(!q.trim()){ res.innerHTML=''; info.textContent=''; return; }
-    const hits=searchMawqif(q);
-    info.textContent=`${hits.length} آية لموقفك`;
-    res.innerHTML='';
-    hits.forEach(v=>{
-      const [s,a]=v.key.split(':').map(Number);
-      const div=document.createElement('div');
-      div.style.cssText='padding:10px;border:1px solid #efe6c8;background:#fff;border-radius:11px;cursor:pointer';
-      div.innerHTML=`<b style="color:#143d2a;font-size:12px">${suraNames[s]} ${v.key}</b><div style="font-family:'Amiri Quran',serif;font-size:15px;margin-top:4px;color:#1a1a1a">${v.text_uthmani.slice(0,120)}</div><div style="font-size:10px;color:#7a6a3a;margin-top:4px">ص ${v.page} • اضغط للانتقال والتظليل</div>`;
-      div.addEventListener('click',()=>{
-        current=v.page; render(); drawer.classList.remove('open');
-        setTimeout(()=>{
-          document.querySelectorAll('.ayah').forEach(el=>el.classList.remove('playing'));
-          const el=document.querySelector(`.ayah[data-key="${v.key}"]`);
-          if(el){ el.classList.add('playing'); el.scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(()=>el.classList.remove('playing'),3000); }
-        },400);
-      });
-      res.appendChild(div);
-    });
-    if(hits.length===0) res.innerHTML='<div style="padding:10px;color:#7a6a3a;font-size:12px">لم نجد آية مطابقة — جرب كلمة أخرى مثل: صبر، خوف، رزق</div>';
-  }
-  input.addEventListener('input',()=> doSearch(input.value));
-  document.querySelectorAll('#mawqifChips button').forEach(b=> b.addEventListener('click',()=>{ input.value=b.dataset.q; doSearch(b.dataset.q); }));
-}
-// 🗣️ مصحفك يصحح تلاوتك — Web Speech API
-function initSpeechCorrect(){
-  const btn=document.getElementById('micBtn');
-  if(!btn) return;
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SpeechRecognition){
-    btn.title='المتصفح لا يدعم التعرف الصوتي';
-    btn.style.opacity='.5';
-    return;
-  }
-  const rec=new SpeechRecognition();
-  rec.lang='ar-SA'; rec.interimResults=false; rec.maxAlternatives=1;
-  let isListening=false;
-  btn.addEventListener('click',()=>{
-    if(isListening){ rec.stop(); return; }
-    const pageVerses=(pages[String(current)]||[]).map(v=>v.text_uthmani).join(' ');
-    if(!pageVerses){ alert('لا نص للصفحة'); return; }
-    isListening=true; btn.textContent='⏹️ وقف'; btn.style.background='#c0392b'; btn.style.color='#fff';
-    document.getElementById('audioInfo').textContent='🎤 استمع إليك — اقرأ الصفحة الآن...';
-    rec.start();
-  });
-  rec.onresult=(e)=>{
-    const transcript=e.results[0][0].transcript;
-    const pageText=(pages[String(current)]||[]).map(v=>normalizeMawqif(v.text_uthmani)).join(' ');
-    const normTrans=normalizeMawqif(transcript);
-    const words=pageText.split(' ').filter(w=>w.length>2);
-    const transWords=new Set(normTrans.split(' '));
-    let correct=0;
-    words.forEach(w=>{ if(transWords.has(w)) correct++; });
-    const pct=Math.round(correct/words.length*100);
-    const info=document.getElementById('audioInfo');
-    // تظليل الكلمات الصحيحة بالأخضر والغلط بالأحمر
-    document.querySelectorAll('.ayah').forEach(ay=>{
-      const ayWords=normalizeMawqif(ay.textContent).split(' ');
-      let html=ay.innerHTML;
-      // بسيط: لو نسبة عالية اعتبرها صح
-      if(pct>70) ay.classList.add('playing');
-      else ay.style.background='rgba(192,57,43,.08)';
-    });
-    info.textContent=`سمعت: "${transcript.slice(0,40)}" — دقة ${pct}% ${pct>70?'✅ أحسنت':'⚠️ حاول مرة أخرى وركز على التجويد'}`;
-    setTimeout(()=>{ document.querySelectorAll('.ayah').forEach(el=>{ el.classList.remove('playing'); el.style.background=''; }); },4000);
-  };
-  rec.onerror=(e)=>{
-    document.getElementById('audioInfo').textContent='❌ خطأ في التعرف — تأكد من الميكروفون والإنترنت';
-    console.log(e);
-  };
-  rec.onend=()=>{
-    isListening=false; btn.textContent='🎤 صحح'; btn.style.background='#fff'; btn.style.color='#c0392b';
-  };
-}
 // 🧠 الحفظ الذكي — تكرار متباعد 1-3-7-14-30
 let hifzData=JSON.parse(localStorage.getItem('sirag_hifz')||'{}'); // page -> {added, nextDue, intervalIdx, reps}
 const hifzIntervals=[1,3,7,14,30];
