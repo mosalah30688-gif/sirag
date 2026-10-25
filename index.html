@@ -6,6 +6,7 @@
 <title>سراج</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New:wght@400;700&family=Tajawal:wght@400;500;700&family=Reem+Kufi:wght@600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
 @font-face{font-family:'AmiriQuranLocal';src:url('assets/fonts/AmiriQuran.ttf') format('truetype');font-display:swap}
 :root{--green:#143d2a;--gold:#c2a15a;--gold2:#8c6f1f;--cream:#fffef7;--paper:#fefcf3}
@@ -539,7 +540,7 @@ function playPage(){
   if(!audioQueue.length){ document.getElementById('audioInfo').textContent='لا يوجد صوت للاختيار الحالي'; return; }
   playCurrent();
 }
-function playCurrent(){
+async function playCurrent(){
   if(audioIndex>=audioQueue.length){
     const isInf=audioQueue[0]?.repeatAll;
     if(isInf){ audioIndex=0; } else { pauseAudio(); document.getElementById('audioInfo').textContent='انتهت التلاوة'; return; }
@@ -547,10 +548,17 @@ function playCurrent(){
   const item=audioQueue[audioIndex];
   const audio=document.getElementById('audioPlayer');
   document.getElementById('audioInfo').textContent=`يُشغّل ${item.key} — ${audioIndex+1}/${audioQueue.length}`;
-  audio.src=item.url;
-  audio.play().catch(()=>{ document.getElementById('audioInfo').textContent='اضغط تشغيل للسماح بالصوت'; });
+  let src=item.url;
+  try{
+    if('caches' in window){
+      const hit=await caches.match(item.url);
+      if(hit){ const b=await hit.blob(); src=URL.createObjectURL(b); }
+    }
+  }catch(e){}
+  audio.src=src;
+  try{ await audio.play(); }catch(e){ document.getElementById('audioInfo').textContent='اضغط تشغيل للسماح بالصوت'; }
 }
-function nextAudio(){ audioIndex++; playCurrent(); }
+async function nextAudio(){ audioIndex++; await playCurrent(); }
 function pauseAudio(){
   const audio=document.getElementById('audioPlayer');
   audio.pause(); audio.currentTime=0;
@@ -560,52 +568,96 @@ function getSelectedReciter(){
   const id=document.getElementById('reciterSelect').value;
   return reciterMap[id]||{id, source:'everyayah'};
 }
-function downloadSura(){
+async function cachePut(url){
+  try{
+    if('caches' in window){
+      const cache=await caches.open('sirag-audio-v1');
+      const resp=await fetch(url);
+      if(resp.ok) await cache.put(url, resp.clone());
+      return true;
+    }
+  }catch(e){ console.log('cachePut fail',e); }
+  return false;
+}
+async function cacheHas(url){
+  try{ if('caches' in window){ const m=await caches.match(url); return !!m; } }catch(e){}
+  return false;
+}
+async function downloadSura(){
   const rec=getSelectedReciter();
   let s=parseInt(document.getElementById('audioSura').value||'');
-  if(!s){ // من الصفحة الحالية
-    const data=pages[String(current)]||[];
-    s=parseInt(data[0]?.key?.split(':')[0]||'1');
-  }
+  if(!s){ const data=pages[String(current)]||[]; s=parseInt(data[0]?.key?.split(':')[0]||'1'); }
   const s3=String(s).padStart(3,'0');
-  let url, name;
+  const info=document.getElementById('audioInfo');
   if(rec.source==='mp3quran' && rec.server){
-    url=`${rec.server}${s3}.mp3`;
-    name=`${rec.name}-${suraNames[s]}.mp3`;
+    const url=`${rec.server}${s3}.mp3`;
+    info.textContent=`⬇️ جاري تحميل سورة ${suraNames[s]} وتخزينها...`;
+    const ok=await cachePut(url);
+    info.textContent= ok? `✅ تم تخزين سورة ${suraNames[s]} وستعمل بدون نت` : `⬇️ جاري التنزيل... افتح ${url}`;
+    if(!ok) window.open(url,'_blank');
+    setTimeout(()=> info.textContent='', 4000);
   } else {
-    // EveryAyah: نحمل أول آية كعينة، والكامل عبر الأرشيف
-    url=`https://everyayah.com/data/${rec.id}/${s3}001.mp3`;
-    name=`${rec.name}-${suraNames[s]}-001.mp3`;
-    // لو عايز السورة كاملة آية بآية نفتح صفحة الأرشيف
-    if(confirm(`تحميل سورة ${suraNames[s]} للقارئ ${rec.name}؟\n\n- للـ MP3Quran: سورة كاملة MP3\n- لـ EveryAyah: الآية الأولى كعينة — للسورة كاملة افتح الأرشيف؟`)){
-      if(rec.source==='everyayah'){
-        window.open(`https://everyayah.com/data/${rec.id}/`, '_blank');
-        return;
-      }
-    } else return;
+    // EveryAyah: حمّل كل آيات السورة آية بآية وخزنها تلقائياً
+    const cnt=suraAyaCount[s]||7;
+    info.textContent=`⬇️ جاري تحميل سورة ${suraNames[s]} (${cnt} آية)... 0/${cnt}`;
+    let done=0;
+    for(let a=1;a<=cnt;a++){
+      const a3=String(a).padStart(3,'0');
+      const url=`https://everyayah.com/data/${rec.id}/${s3}${a3}.mp3`;
+      if(!(await cacheHas(url))) await cachePut(url);
+      done++; info.textContent=`⬇️ جاري تخزين سورة ${suraNames[s]}... ${done}/${cnt}`;
+      await new Promise(r=> setTimeout(r,80));
+    }
+    info.textContent=`✅ تم تخزين سورة ${suraNames[s]} كاملة وستعمل بدون نت`;
+    setTimeout(()=> info.textContent='', 4000);
   }
-  const a=document.createElement('a'); a.href=url; a.download=name; a.target='_blank'; document.body.appendChild(a); a.click(); a.remove();
-  document.getElementById('audioInfo').textContent=`⬇️ جاري تحميل سورة ${suraNames[s]}...`;
-  setTimeout(()=> document.getElementById('audioInfo').textContent='', 3000);
 }
-function downloadMushaf(){
+async function downloadMushaf(){
   const rec=getSelectedReciter();
-  let url, name;
+  const info=document.getElementById('audioInfo');
   if(rec.source==='mp3quran' && rec.server){
-    // صفحة القارئ على MP3Quran فيها كل السور
-    const qName=rec.name.split('—')[0].trim();
-    if(confirm(`تحميل المصحف كامل للقارئ ${qName}؟\nسيتم فتح صفحة التحميل الرسمية (114 سورة).`)){
-      // نحاول فتح صفحة mp3quran للقارئ أو الأرشيف
-      window.open(rec.server, '_blank');
+    info.textContent=`⬇️ جاري تخزين المصحف كامل (114 سورة) — قد يستغرق دقائق... 0/114`;
+    let done=0;
+    for(let s=1;s<=114;s++){
+      const s3=String(s).padStart(3,'0');
+      const url=`${rec.server}${s3}.mp3`;
+      if(!(await cacheHas(url))) await cachePut(url);
+      done++; if(done%10===0) info.textContent=`⬇️ جاري التخزين... ${done}/114 سورة`;
+      await new Promise(r=> setTimeout(r,60));
     }
-    return;
+    info.textContent=`✅ تم تخزين المصحف كامل وسيعمل بدون نت`;
+    setTimeout(()=> info.textContent='', 5000);
   } else {
-    // EveryAyah أرشيف ZIP كامل
-    const zip=`https://archive.org/download/quran-every-ayah/${rec.id}.zip`;
-    if(confirm(`تحميل المصحف كامل للقارئ ${rec.name}؟\n~500MB-1GB — من الأرشيف.`)){
-      window.open(zip, '_blank');
+    // EveryAyah ZIP — نحاول فكه تلقائياً
+    const zipUrl=`https://archive.org/download/quran-every-ayah/${rec.id}.zip`;
+    info.textContent=`⬇️ جاري تحميل المصحف المضغوط...`;
+    try{
+      const resp=await fetch(zipUrl);
+      if(!resp.ok) throw new Error('no zip');
+      const buf=await resp.arrayBuffer();
+      info.textContent=`📦 جاري فك الضغط وتخزينه...`;
+      const zip=await JSZip.loadAsync(buf);
+      const cache=await caches.open('sirag-audio-v1');
+      let i=0, total=Object.keys(zip.files).length;
+      for(const [name, file] of Object.entries(zip.files)){
+        if(file.dir) continue;
+        const m=name.match(/(\d{3})(\d{3})\.mp3/);
+        if(!m) continue;
+        const s=m[1], a=m[2];
+        const url=`https://everyayah.com/data/${rec.id}/${s}${a}.mp3`;
+        if(!(await cache.match(url))){
+          const blob=await file.async('blob');
+          await cache.put(url, new Response(blob, {headers:{'Content-Type':'audio/mpeg'}}));
+        }
+        i++; if(i%200===0) info.textContent=`📦 جاري التخزين... ${i}/${total}`;
+      }
+      info.textContent=`✅ تم تخزين المصحف كامل وسيعمل بدون نت`;
+    }catch(e){
+      info.textContent=`ℹ️ افتح الرابط للتحميل اليدوي`;
+      window.open(zipUrl,'_blank');
+      console.log(e);
     }
-    return;
+    setTimeout(()=> info.textContent='', 5000);
   }
 }
 const tajweedInfo={
