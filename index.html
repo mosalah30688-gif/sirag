@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>سراج</title>
+<title>سراج — مصحف مميز</title>
+<meta name="author" content="محمد صلاح عبد الخالق">
+<meta name="copyright" content="© 2026 محمد صلاح عبد الخالق — MIT License">
+<meta name="contact" content="+201007002934">
+<meta name="repository" content="https://github.com/mosalah30688-gif/sirag">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.json">
@@ -190,6 +194,38 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
       </div>
       <div style="margin-top:10px">
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">تتبع الختمة الذكي <input type="checkbox" id="khatmToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
+      </div>
+    </div>
+    <!-- حول التطبيق — المطور وحقوقه -->
+    <div style="margin-top:12px;background:#fff;border:1px solid #efe6c8;border-radius:12px;overflow:hidden">
+      <button id="aboutToggle" style="width:100%;display:flex;align-items:center;gap:8px;padding:10px 12px;border:none;background:linear-gradient(180deg,#fffdf4,#fff6d6);cursor:pointer;font-weight:700;color:#143d2a;font-size:13px">ℹ️ حول التطبيق — المطور والحقوق</button>
+      <div id="aboutPanel" style="display:none;padding:12px;border-top:1px solid #efe6c8;font-size:12px;line-height:1.8;color:#1a1a1a">
+        <div style="text-align:center;margin-bottom:10px">
+          <img src="icon-192.png" alt="سراج" style="width:64px;height:64px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.15)">
+          <div style="font-weight:700;color:#143d2a;margin-top:6px">سِرَاج — مُصْحَفٌ مُمَيَّزٌ</div>
+          <div style="font-size:11px;color:#7a6a3a">الإصدار 1.0.0 — 2026-10-26</div>
+        </div>
+        <div style="background:#fffef7;border:1px solid #efe6c8;border-radius:10px;padding:10px;margin-bottom:8px">
+          <b style="color:#143d2a">المُطوِّر:</b> محمد صلاح عبد الخالق<br>
+          <b style="color:#143d2a">التواصل:</b> <a href="https://wa.me/201007002934" target="_blank" style="color:#2b6b4a">+201007002934</a> (واتساب / تليجرام)<br>
+          <b style="color:#143d2a">المستودع:</b> <a href="https://github.com/mosalah30688-gif/sirag" target="_blank" style="color:#2b6b4a">github.com/mosalah30688-gif/sirag</a><br>
+          <b style="color:#143d2a">الترخيص:</b> MIT — © 2026 محمد صلاح عبد الخالق — يُسمح بالنسخ والتعديل مع ذكر المصدر<br>
+          <b style="color:#143d2a">التحديث:</b> يتم عبر المستودع — اسحب آخر نسخة بـ <code>git pull</code> أو حمّل ZIP من GitHub
+        </div>
+        <div style="background:#fff;border:1px solid #efe6c8;border-radius:10px;padding:10px">
+          <b style="color:#143d2a;display:block;margin-bottom:6px">مُمَيِّزَاتُ المُصْحَفِ:</b>
+          <ul style="margin:0;padding-right:16px;color:#1a1a1a">
+            <li>مصحفٌ عثمانيٌّ برواية حفصٍ عن عاصمٍ، 604 صفحاتٍ مطابقٌ لمصحف المدينة المنوَّرة</li>
+            <li>فهرسٌ ذكيٌّ للسُّور والأجزاء والآيات، مع بحثٍ لحظيٍّ يُجريه في 6236 آيةٍ في أقلَّ من 300 جزءٍ من الثانية</li>
+            <li>تفسيرٌ ميسَّرٌ وترجمةٌ إنجليزيةٌ معتمدةٌ، مع إمكانية إظهارهما أو إخفائهما</li>
+            <li>تلاواتٌ صوتيةٌ لـ 311 قارئاً من مشارق الأرض ومغاربها، مع اختيار السورة والآية وتكرارٍ وخزنٍ تلقائيٍّ للعمل دون اتصال</li>
+            <li>تظليلُ الآية بإصبع القارئ وحفظُها كعلامةٍ مرجعيةٍ بعلامةِ صفحةٍ، مع مفضلةٍ مستقلة</li>
+            <li>فهرسُ الوحي مرتبٌ حسب نزول السور (1 العلق → 114 النصر)، وخطٌّ زمنيٌّ يمتدُّ ثلاثاً وعشرين سنةً</li>
+            <li>خريطةُ القرآنِ يفسِّرُ بعضُه بعضاً على مستوى 6236 آيةٍ، ووضعُ المحوِ للحفظ، وتتبعُ ختمةٍ ذكيٌّ يُحلِّلُ عاداتِ القارئ ويُذكِّره بقوله تعالى: ﴿وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا﴾</li>
+            <li>أيقونةُ سراج (كتابٌ مضيءٌ) علامةٌ مائيةٌ في كلِّ المستويات، والحقوقُ محفوظةٌ بترخيص MIT</li>
+          </ul>
+        </div>
+        <div style="text-align:center;margin-top:10px;font-size:11px;color:#7a6a3a">© 2026 سراج — صُنع بإتقان كما قال الكتاب</div>
       </div>
     </div>
 <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8"></div>
@@ -431,6 +467,14 @@ function initSettings(){
     applyFading();
     fadingToggle.addEventListener('change',()=>{ localStorage.setItem('sirag_fading', fadingToggle.checked?'1':'0'); applyFading(); if(fadingToggle.checked) alert('تم تفعيل وضع المحو — النص باهت، اضغط على الآية لإظهارها'); });
     // في وضع المحو: ضغط الآية يظهرها مؤقتاً
+  // حول التطبيق
+  const aboutBtn=document.getElementById('aboutToggle'), aboutPanel=document.getElementById('aboutPanel');
+  if(aboutBtn && aboutPanel){
+    aboutBtn.addEventListener('click',()=>{
+      const open=aboutPanel.style.display!=='none';
+      aboutPanel.style.display=open?'none':'block';
+    });
+  }
     pageBody.addEventListener('click',e=>{
       if(!fadingToggle.checked) return;
       const ay=e.target.closest('.ayah');
