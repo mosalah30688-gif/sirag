@@ -71,9 +71,6 @@ tajweed.madda_normal, tajweed.madda_permissible, tajweed.madda_necessary, tajwee
 .ayah.bookmarked{background:rgba(194,161,90,.22);border:1px solid #e9ddb8;box-shadow:inset 0 0 0 1px rgba(194,161,90,.15)}
 .fading .ayah{opacity:.18;filter:blur(1px)}
 .fading .ayah.revealed{opacity:1;filter:none;background:rgba(255,239,153,.25)}
-.word-irab{cursor:pointer;border-bottom:1px dotted #c2a15a}
-#irabTip{position:fixed;z-index:30;background:#143d2a;color:#fff;padding:12px 14px;border-radius:12px;font-size:12px;line-height:1.7;max-width:280px;box-shadow:0 8px 22px rgba(0,0,0,.28);display:none;border:1px solid #2b6b4a}
-#irabTip b{color:#ffef99;display:block;font-size:13px}
 .fav-item{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid #efe6c8;background:#fff;border-radius:11px;margin-bottom:8px;cursor:pointer}
 .fav-item:hover{background:#fff9e6}
 .fav-item b{color:#143d2a;font-size:13px}
@@ -97,7 +94,6 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 <body>
 <div class="progress"><i id="progressBar"></i></div>
 <div id="tajweedTip"></div>
-<div id="irabTip"></div>
 <!-- Header -->
 <div class="top">
   <div class="top-actions" style="order:1">
@@ -189,7 +185,6 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التفسير الميسر <input type="checkbox" id="tafsirToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الترجمة الإنجليزية <input type="checkbox" id="transToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">وضع المحو للحفظ <input type="checkbox" id="fadingToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
-        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">لوحة الإعراب <input type="checkbox" id="irabToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
       </div>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
       </div>
@@ -419,105 +414,6 @@ function initSettings(){
       ay.classList.add('revealed');
       setTimeout(()=> ay.classList.remove('revealed'), 2500);
     });
-  }
-  // لوحة الإعراب — اضغط على كلمة
-  const irabToggle=document.getElementById('irabToggle');
-  const irabTip=document.getElementById('irabTip');
-  if(irabToggle && irabTip){
-    irabToggle.checked=localStorage.getItem('sirag_irab')==='1';
-    irabToggle.addEventListener('change',()=>{ localStorage.setItem('sirag_irab', irabToggle.checked?'1':'0'); if(irabToggle.checked) alert('تم تفعيل لوحة الإعراب — اضغط على أي كلمة داخل الآية'); else irabTip.style.display='none'; });
-    pageBody.addEventListener('click',e=>{
-      if(!irabToggle.checked) return;
-      // تجاهل لو ضغط على آية كاملة (مفضلة) إلا لو ضغط مباشر على نص
-      const ay=e.target.closest('.ayah');
-      if(!ay) return;
-      // استخرج الكلمة الأقرب
-      let word='';
-      if(e.target.classList.contains('word-irab')) word=e.target.textContent.trim();
-      else {
-        const sel=window.getSelection();
-        word=sel.toString().trim().split(/\s+/)[0] || ay.textContent.trim().split(/\s+/)[0];
-      }
-      if(!word || word.length<2) return;
-      // إعراب مفصل تلقائي لكل كلمة
-      // قاعدة إعراب موسعة — 80 كلمة شائعة من أول المصحف
-      const irabDB={
-        'بِسْمِ':['جار ومجرور','الباء حرف جر، اسم مجرور بالكسرة، متعلق بمحذوف تقديره أبدأ','جذر: س-م-و'],
-        'اللَّهِ':['لفظ الجلالة مضاف إليه','مجرور بالكسرة، علامة الجر الكسرة الظاهرة','جذر: أ-ل-ه'],
-        'الرَّحْمَٰنِ':['نعت أول لله','مجرور بالكسرة، صفة مشبهة على وزن فعلان','جذر: ر-ح-م'],
-        'الرَّحِيمِ':['نعت ثان لله','مجرور بالكسرة، صفة مشبهة على وزن فعيل','جذر: ر-ح-م'],
-        'الْحَمْدُ':['مبتدأ مرفوع','مرفوع بالضمة، وهو مصدر حمد','جذر: ح-م-د'],
-        'لِلَّهِ':['جار ومجرور خبر','اللام حرف جر، الله مجرور، شبه جملة في محل رفع خبر','جذر: ل + أ-ل-ه'],
-        'رَبِّ':['نعت / بدل من الله','مجرور بالكسرة، مضاف','جذر: ر-ب-ب'],
-        'الْعَالَمِينَ':['مضاف إليه','مجرور بالياء لأنه ملحق بجمع المذكر السالم، النون عوض','جذر: ع-ل-م'],
-        'مَالِكِ':['نعت ثالث / بدل','مجرور بالكسرة','جذر: م-ل-ك'],
-        'يَوْمِ':['مضاف إليه','مجرور بالكسرة، ظرف زمان مضاف','جذر: ي-و-م'],
-        'الدِّينِ':['مضاف إليه','مجرور بالكسرة','جذر: د-ي-ن'],
-        'إِيَّاكَ':['ضمير منفصل في محل نصب مفعول به مقدم','مبني على الفتح','جذر: ضمير'],
-        'نَعْبُدُ':['فعل مضارع مرفوع','مرفوع بالضمة، الفاعل مستتر نحن','جذر: ع-ب-د'],
-        'وَإِيَّاكَ':['عطف + مفعول به','الواو عاطفة، إياك مفعول به ثان مقدم','جذر: و + ضمير'],
-        'نَسْتَعِينُ':['فعل مضارع','مرفوع بالضمة، على وزن نستفعل','جذر: ع-و-ن'],
-        'اهْدِنَا':['فعل أمر + مفعولين','اهدِ فعل أمر مبني، نا مفعول به أول','جذر: ه-د-ي'],
-        'الصِّرَاطَ':['مفعول به ثان','منصوب بالفتحة','جذر: ص-ر-ط'],
-        'الْمُسْتَقِيمَ':['نعت للصراط','منصوب بالفتحة، اسم فاعل من استقام','جذر: ق-و-م'],
-        'الَّذِينَ':['اسم موصول نعت','مبني في محل نصب نعت للصراط','جذر: موصول'],
-        'أَنْعَمْتَ':['فعل ماض + فاعل','أنعم فعل ماض، التاء فاعل','جذر: ن-ع-م'],
-        'عَلَيْهِمْ':['جار ومجرور','على حرف جر، هم ضمير في محل جر','جذر: على + هم'],
-        'غَيْرِ':['بدل / نعت','مجرور بالكسرة، مضاف','جذر: غ-ي-ر'],
-        'الْمَغْضُوبِ':['مضاف إليه','مجرور بالكسرة، اسم مفعول','جذر: غ-ض-ب'],
-        'عَلَيْهِمْ_2':['جار ومجرور متعلق بالمغضوب','على حرف جر، هم ضمير','جذر: على + هم'],
-        'الضَّالِّينَ':['معطوف على المغضوب','مجرور بالياء، جمع مذكر سالم','جذر: ض-ل-ل'],
-        'الم':['حروف مقطعة','لا محل لها من الإعراب، أو خبر لمبتدأ محذوف','جذر: مقطعة'],
-        'ذَٰلِكَ':['اسم إشارة مبتدأ','مبني في محل رفع مبتدأ، اللام للبعد','جذر: ذا'],
-        'الْكِتَابُ':['خبر','مرفوع بالضمة، بدل من ذلك','جذر: ك-ت-ب'],
-        'لَا':['نافية للجنس','حرف نفي','جذر: حرف'],
-        'رَيْبَ':['اسم لا مبني','مبني على الفتح في محل نصب','جذر: ر-ي-ب'],
-        'فِيهِ':['جار ومجرور خبر ثان','في حرف جر، الهاء ضمير في محل جر','جذر: في + ه'],
-        'هُدًى':['خبر ثالث أو حال','مرفوع بضمة مقدرة، أو منصوب','جذر: ه-د-ي'],
-        'لِلْمُتَّقِينَ':['جار ومجرور متعلق بهدى','اللام حرف جر، المتقين مجرور بالياء','جذر: و-ق-ي'],
-      };
-      let clean=word.replace(/[ًٌٍَُِّْٓٔ]/g,'').trim();
-      let key=word;
-      if(!irabDB[key] && clean) key=Object.keys(irabDB).find(k=> k.replace(/[ًٌٍَُِّْٓٔ]/g,'')===clean) || word;
-      // توليد إعراب مفصل لكل كلمة — يغطي القرآن كله (77k كلمة) بدون استثناء
-      function genIrab(w){
-        const c=w.replace(/[ًٌٍَُِّْٓٔ]/g,'').trim();
-        let typ='اسم', تفصيل='', جذر=w.slice(0,3).replace(/[^ء-ي]/g,'');
-        // تحديد النوع بدقة
-        if(['في','من','على','إلى','عن','حتى','مع','ب','ل','ك','و','ف','ثم','أو','أم','إن','أن','لن','لم','لا','ما','منذ','مذ'].includes(c)) typ='حرف';
-        else if(c.startsWith('سوف')||c.startsWith('س')) typ='حرف استقبال + فعل';
-        else if(c.match(/^(ي|ت|ن|أ).+ون$/)) typ='فعل مضارع مرفوع بثبوت النون';
-        else if(c.match(/^(ي|ت|ن|أ).+$/ ) && c.length>3) typ='فعل مضارع';
-        else if(c.endsWith('وا')||c.endsWith('تم')||c.endsWith('ت')) typ='فعل ماض';
-        else if(c.startsWith('ال')) typ='اسم معرف';
-        else if(c.endsWith('ون')||c.endsWith('ين')) typ='جمع مذكر سالم';
-        else if(c.endsWith('ات')) typ='جمع مؤنث سالم';
-        else if(c.endsWith('ان')) typ='مثنى';
-        // الإعراب التفصيلي
-        if(typ==='حرف') تفصيل='مبني لا محل له من الإعراب';
-        else if(c.startsWith('ال') && (c.endsWith('ون')||c.endsWith('ين'))) تفصيل='مرفوع بالواو / مجرور بالياء حسب موقعه، النون عوض عن التنوين';
-        else if(c.startsWith('ال')) تفصيل='معرف بـ ال، '+(c.endsWith('ُ')?'مرفوع بالضمة':c.endsWith('َ')?'منصوب بالفتحة':c.endsWith('ِ')?'مجرور بالكسرة':'مرفوع/منصوب/مجرور حسب موقعه');
-        else if(typ.includes('فعل مضارع')) تفصيل='مرفوع بالضمة الظاهرة، الفاعل ضمير مستتر تقديره هو/نحن';
-        else if(typ==='فعل ماض') تفصيل='مبني على الفتح، والفاعل ضمير مستتر أو متصل';
-        else if(c.endsWith('ًا')||c.endsWith('ا')) تفصيل='منصوب بالفتحة، حال أو مفعول به';
-        else if(c.endsWith('ٍ')||c.endsWith('ِ')) تفصيل='مجرور بالكسرة';
-        else تفصيل='مرفوع بالضمة أو حسب موقعه في الجملة — انظر السياق';
-        const وزن = c.length>5 ? 'مُسْتَفْعِل' : c.length>4 ? 'مُفَعِّل' : c.length>3 ? 'فَاعِل' : 'فَعَل';
-        return [typ, تفصيل + ' — الوزن: ' + وزن + ' — الجذر: ' + جذر + ' — ' + (c.length>6?'كلمة مركبة':'مفرد')];
-      }
-      const info=irabDB[key] || genIrab(word);
-      const extra=info[2]||'';
-      irabTip.innerHTML=`<b style="font-size:14px">${word} <span style="font-weight:400;color:#ffef99;font-size:11px">${info[0]}</span></b><span style="display:block;color:#fff;font-weight:400;margin-top:6px;line-height:1.7">${info[1]}${extra?'<br><span style=color:#ffef99>'+extra+'</span>':''}</span><span style="display:block;margin-top:6px;font-size:10px;color:#ffef99;opacity:.8">اضغط مطولاً لنسخ الإعراب</span>`;
-      irabTip.style.display='block';
-      const r=ay.getBoundingClientRect();
-      let top=r.bottom+8, left=r.left;
-      if(top+80>window.innerHeight) top=r.top-70;
-      if(left+260>window.innerWidth) left=window.innerWidth-270;
-      irabTip.style.top=top+'px'; irabTip.style.left=left+'px';
-      setTimeout(()=> irabTip.style.display='none', 6000);
-      e.stopPropagation();
-    });
-    document.addEventListener('click',e=>{ if(!e.target.closest('.ayah')) irabTip.style.display='none'; });
   }
 }
 let transData=null;
