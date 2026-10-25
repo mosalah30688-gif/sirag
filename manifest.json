@@ -10,10 +10,25 @@
   "copyright": "© 2026 محمد صلاح عبد الخالق — MIT License",
   "contact": "+201007002934",
   "repository": "https://github.com/mosalah30688-gif/sirag",
-  "version": "1.0.0 — 2026-10-26",
+  "version": "1.0.1 — 2026-10-26",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }
