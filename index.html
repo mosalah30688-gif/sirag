@@ -112,9 +112,6 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <button class="icon-btn" id="openMap" title="الخريطة" style="border-color:#2b6b4a;background:rgba(43,107,74,.18)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 1 10 10M2 12a10 10 0 0 1 10-10"/><path d="M12 22a10 10 0 0 1-10-10M22 12a10 10 0 0 0-10 10"/><circle cx="12" cy="7" r="1" fill="currentColor"/><circle cx="17" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="17" r="1" fill="currentColor"/><circle cx="7" cy="12" r="1" fill="currentColor"/></svg>
     </button>
-    <button class="icon-btn" id="openAsk" title="اسأل القرآن — خارقة" style="border-color:#8c6f1f;background:rgba(194,161,90,.22)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 21l2-5.5A8.5 8.5 0 0 1 21 11.5Z"/><path d="M8 11h8M8 15h5"/></svg>
-    </button>
   </div>
   <div class="spacer" style="order:2"></div>
     <div class="brand" aria-label="سراج" style="order:3">
@@ -233,21 +230,6 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <div id="mapEmpty" style="text-align:center;color:#7a6a3a;font-size:12px;padding:14px">اضغط على أي آية في الصفحة لعرض الآيات التي تشرحها</div>
   </div>
 </div>
-<!-- Drawer اسأل القرآن — خارقة -->
-<div class="drawer" id="askDrawer" aria-hidden="true">
-  <div class="drawer-bg" id="askBg"></div>
-  <div class="drawer-panel" style="width:380px;max-width:92vw">
-    <div class="drawer-head"><h3>💬 اسأل القرآن</h3><button class="close" id="closeAsk">إغلاق ✕</button></div>
-    <div style="display:flex;gap:6px;margin-bottom:10px">
-      <input id="askInput" placeholder="اسأل القرآن... مثلاً: كيف أصبر؟" style="flex:1;padding:10px;border:1.5px solid #c2a15a;background:#fff;border-radius:11px;font-size:13px">
-      <button id="askBtn" style="padding:10px 14px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:11px;cursor:pointer;font-size:13px">اسأل</button>
-    </div>
-    <div id="askInfo" style="font-size:11px;color:#8c6f1f;margin-bottom:8px"></div>
-    <div id="askList" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto"></div>
-    <div id="askEmpty" style="text-align:center;color:#7a6a3a;font-size:12px;padding:14px;display:none"></div>
-  </div>
-</div>
-
 <script>
 const suraNames=["","الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 let pages=null, current=1;
@@ -969,7 +951,7 @@ async function load(){
     pages=await r.json();
     const saved=parseInt(localStorage.getItem('sirag_page')||'1');
     if(saved>=1 && saved<=604) current=saved;
-    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initWahy(); renderKhatm(); khatmNotifyCheck(); initAsk();
+    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initWahy(); renderKhatm(); khatmNotifyCheck();
   }catch(e){ pageBody.innerHTML='<div class=loader>تعذّر تحميل الصفحات: '+e.message+'</div>'; console.error(e); }
 }
 document.getElementById('prev').addEventListener('click',()=>{ if(current>1){ current--; render(); }});
@@ -1064,71 +1046,6 @@ function buildQuranMap(){
   const ms=Math.round(performance.now()-start);
   if(info) info.textContent=`تم بناء الخريطة لـ ${quranVerses.length} آية في ${ms}ms — كل آية تربط بـ 5 آيات تشرحها`;
   console.log('quranMap built', ms+'ms');
-}
-// اسأل القرآن — بحث دلالي خارق
-const askSynonyms={
-  'توبة':['توب','غفر','استغفر','تاب','رحم'],
-  'صبر':['صبر','احتسب','ثبت','ثابت'],
-  'رزق':['رزق','مال','غنى','فقر','أنفق'],
-  'ظلم':['ظلم','جور','عدل','قسط'],
-  'والدين':['والد','أم','أب','والدين','بر'],
-  'خوف':['خوف','خشي','رهب','فزع'],
-  'حزن':['حزن','هم','غم','كرب'],
-  'دعاء':['دعا','سأل','ادع','ربنا'],
-  'جنة':['جنة','نعيم','فردوس','رضوان'],
-  'نار':['نار','جهنم','عذاب','سعير'],
-};
-function expandAskQuery(q){
-  const n=normalizeMap(q);
-  let ex=[n];
-  for(const [k, syns] of Object.entries(askSynonyms)){
-    if(n.includes(k) || syns.some(s=> n.includes(s))){
-      ex=ex.concat(syns, [k]);
-    }
-  }
-  return [...new Set(ex.join(' ').split(' '))].filter(w=>w.length>2);
-}
-function askQuran(question){
-  if(!quranVerses.length) buildQuranMap();
-  const exWords=expandAskQuery(question);
-  const scores=[];
-  quranVerses.forEach(v=>{
-    const nt=normalizeMap(v.text);
-    let sc=0;
-    exWords.forEach(w=>{ if(nt.includes(w)) sc+= (w.length>4?2:1); });
-    // تعزيز للآيات القصيرة الواضحة
-    if(sc>0) scores.push({v, sc});
-  });
-  scores.sort((a,b)=> b.sc - a.sc);
-  return scores.slice(0,7);
-}
-function initAsk(){
-  const drawer=document.getElementById('askDrawer');
-  document.getElementById('openAsk')?.addEventListener('click',()=>{ drawer.classList.add('open'); });
-  document.getElementById('closeAsk')?.addEventListener('click',()=>{ drawer.classList.remove('open'); });
-  document.getElementById('askBg')?.addEventListener('click',()=>{ drawer.classList.remove('open'); });
-  const input=document.getElementById('askInput'), btn=document.getElementById('askBtn'), list=document.getElementById('askList'), info=document.getElementById('askInfo'), empty=document.getElementById('askEmpty');
-  function doAsk(){
-    const q=input.value.trim();
-    if(!q){ list.innerHTML=''; info.textContent=''; empty.style.display='block'; return; }
-    const start=performance.now();
-    const hits=askQuran(q);
-    const ms=Math.round(performance.now()-start);
-    info.textContent=`${hits.length} آيات تجيبك — ${ms}ms`;
-    empty.style.display='none';
-    list.innerHTML='';
-    if(!hits.length){ list.innerHTML='<div style="color:#7a6a3a;font-size:12px">لم أجد إجابة مباشرة — جرب كلمة أخرى مثل: توبة، صبر، رزق</div>'; return; }
-    hits.forEach(({v,sc})=>{
-      const sNum=parseInt(v.key.split(':')[0]);
-      const div=document.createElement('div');
-      div.style.cssText='padding:10px;border:1px solid #efe6c8;background:#fff;border-radius:11px;cursor:pointer';
-      div.innerHTML=`<b style="display:block;color:#143d2a;font-size:12px">${suraNames[sNum]} ${v.key} <span style="color:#8c6f1f;font-weight:400">(${sc} تطابق)</span></b><span style="font-family:'Amiri Quran',serif;font-size:14px;color:#1a1a1a">${v.text.slice(0,120)}${v.text.length>120?'…':''}</span>`;
-      div.addEventListener('click',()=>{ current=v.page; render(); drawer.classList.remove('open'); });
-      list.appendChild(div);
-    });
-  }
-  btn?.addEventListener('click', doAsk);
-  input?.addEventListener('keydown',e=>{ if(e.key==='Enter') doAsk(); });
 }
 function showMapForKey(key){
   if(!quranMap) buildQuranMap();
