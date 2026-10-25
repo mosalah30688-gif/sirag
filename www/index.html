@@ -123,9 +123,11 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <div id="pageBody"><div class="loader">يُحمّل صفحات المصحف (604 صفحات) ...</div></div>
     <div id="audioBox" style="display:flex;align-items:center;gap:8px;border-top:1px solid #efe6c8;background:#fff9e6;padding:10px 14px;flex-wrap:wrap">
       <b style="color:#143d2a;font-size:13px">🎧 الصوتيات</b>
-      <select id="reciterSelect" style="flex:1;min-width:140px;padding:7px;border:1px solid #e8e0c8;border-radius:10px;font-size:12px;background:#fff"></select>
-      <button id="playBtn" style="padding:7px 12px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:10px;cursor:pointer;font-size:13px">▶️ تشغيل الصفحة</button>
-      <button id="pauseBtn" style="display:none;padding:7px 12px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;cursor:pointer;font-size:13px">⏸️ إيقاف</button>
+      <select id="reciterSelect" style="flex:1;min-width:120px;padding:7px;border:1px solid #e8e0c8;border-radius:10px;font-size:12px;background:#fff"></select>
+      <select id="playScope" style="padding:7px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;font-size:12px"><option value="page">الصفحة</option><option value="sura">سورة</option><option value="aya">آية</option></select>
+      <select id="repeatCount" style="padding:7px;border:1px solid #e8e0c8;background:#fff;border-radius:10px;font-size:12px"><option value="1">×1</option><option value="3">×3</option><option value="5">×5</option><option value="999">∞</option></select>
+      <button id="playBtn" style="padding:7px 10px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:10px;cursor:pointer;font-size:13px">▶️ تشغيل</button>
+      <button id="pauseBtn" style="display:none;padding:7px 10px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;cursor:pointer;font-size:13px">⏸️ إيقاف</button>
       <span id="audioInfo" style="font-size:11px;color:#7a6a3a"></span>
       <audio id="audioPlayer" preload="none" style="display:none"></audio>
     </div>
@@ -466,13 +468,32 @@ function initAudio(){
   audio.addEventListener('error',()=>{ document.getElementById('audioInfo').textContent='تعذر التشغيل — جرّب قارئ آخر'; });
 }
 function buildQueue(){
-  const data=pages[String(current)];
-  if(!data) return [];
-  return data.map(v=>{
-    const [s,a]=v.key.split(':').map(Number);
+  const scope=document.getElementById('playScope')?.value||'page';
+  const repeat=parseInt(document.getElementById('repeatCount')?.value||'1');
+  let keys=[];
+  if(scope==='page'){
+    const data=pages[String(current)]||[];
+    keys=data.map(v=>v.key);
+  } else if(scope==='sura'){
+    const data=pages[String(current)]||[];
+    const s=data[0]?.key?.split(':')[0];
+    if(s){ for(let p=1;p<=604;p++){ for(const v of pages[String(p)]||[]){ if(v.key.startsWith(s+':')) keys.push(v.key); } } }
+  } else if(scope==='aya'){
+    // آية واحدة: أول آية في الصفحة الحالية (أو المظللة بالمفضلة)
+    const favFirst=[...favSet][0];
+    const data=pages[String(current)]||[];
+    const key = favFirst && data.some(v=>v.key===favFirst) ? favFirst : data[0]?.key;
+    if(key) keys=[key];
+  }
+  // كرر
+  let expanded=[];
+  for(let i=0;i<Math.min(repeat,999);i++) expanded=expanded.concat(keys);
+  if(repeat===999) expanded=keys; // ∞ نكرر نفس القائمة ونعيدها عند الانتهاء
+  return expanded.map(k=>{
+    const [s,a]=k.split(':').map(Number);
     const s3=String(s).padStart(3,'0'), a3=String(a).padStart(3,'0');
     const rec=document.getElementById('reciterSelect').value;
-    return {key:v.key, url:`https://everyayah.com/data/${rec}/${s3}${a3}.mp3`};
+    return {key:k, url:`https://everyayah.com/data/${rec}/${s3}${a3}.mp3`, repeatAll: repeat===999};
   });
 }
 function playPage(){
@@ -483,7 +504,10 @@ function playPage(){
   playCurrent();
 }
 function playCurrent(){
-  if(audioIndex>=audioQueue.length){ pauseAudio(); document.getElementById('audioInfo').textContent='انتهت تلاوة الصفحة'; return; }
+  if(audioIndex>=audioQueue.length){
+    const isInf=audioQueue[0]?.repeatAll;
+    if(isInf){ audioIndex=0; } else { pauseAudio(); document.getElementById('audioInfo').textContent='انتهت التلاوة'; return; }
+  }
   const item=audioQueue[audioIndex];
   const audio=document.getElementById('audioPlayer');
   document.getElementById('audioInfo').textContent=`يُشغّل ${item.key} — ${audioIndex+1}/${audioQueue.length}`;

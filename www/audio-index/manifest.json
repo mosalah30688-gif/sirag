@@ -1,0 +1,19 @@
+{
+  "hybrid": true,
+  "sources": {
+    "everyayah": {
+      "base": "https://everyayah.com/data/",
+      "pattern": "{reciter}/{SSS}{AAA}.mp3",
+      "reciters": 22
+    },
+    "mp3quran": {
+      "api": "https://mp3quran.net/api/v3/reciters?language=ar",
+      "pattern": "{server}/{SSS}.mp3"
+    },
+    "quranicaudio": {
+      "base": "https://download.quranicaudio.com/quran/",
+      "pattern": "{reciter}/{SSS}.mp3"
+    }
+  },
+  "note": "GitHub يحفظ الفهرس فقط — الصوت ستريم مباشر من المصدر الأصلي + تحميل أوفلاين للجهاز عبر Cache"
+}
