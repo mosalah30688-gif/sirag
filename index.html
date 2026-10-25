@@ -121,14 +121,15 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 <div class="page" id="pageCard">
     <div class="page-head" id="pageHead"><span>جاري التحميل...</span><span>—</span></div>
     <div id="pageBody"><div class="loader">يُحمّل صفحات المصحف (604 صفحات) ...</div></div>
-    <div id="audioBox" style="display:flex;align-items:center;gap:8px;border-top:1px solid #efe6c8;background:#fff9e6;padding:10px 14px;flex-wrap:wrap">
-      <b style="color:#143d2a;font-size:13px">🎧 الصوتيات</b>
-      <select id="reciterSelect" style="flex:1;min-width:120px;padding:7px;border:1px solid #e8e0c8;border-radius:10px;font-size:12px;background:#fff"></select>
-      <select id="playScope" style="padding:7px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;font-size:12px"><option value="page">الصفحة</option><option value="sura">سورة</option><option value="aya">آية</option></select>
-      <select id="repeatCount" style="padding:7px;border:1px solid #e8e0c8;background:#fff;border-radius:10px;font-size:12px"><option value="1">×1</option><option value="3">×3</option><option value="5">×5</option><option value="999">∞</option></select>
-      <button id="playBtn" style="padding:7px 10px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:10px;cursor:pointer;font-size:13px">▶️ تشغيل</button>
-      <button id="pauseBtn" style="display:none;padding:7px 10px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;cursor:pointer;font-size:13px">⏸️ إيقاف</button>
-      <span id="audioInfo" style="font-size:11px;color:#7a6a3a"></span>
+    <div id="audioBox" style="display:flex;align-items:center;gap:6px;border-top:1px solid #efe6c8;background:#fff9e6;padding:8px 10px;flex-wrap:wrap">
+      <b style="color:#143d2a;font-size:13px;white-space:nowrap">🎧</b>
+      <select id="reciterSelect" style="flex:0 0 92px;min-width:80px;max-width:110px;padding:6px 4px;border:1px solid #e8e0c8;border-radius:10px;font-size:11px;background:#fff"></select>
+      <select id="audioSura" style="flex:0 0 88px;min-width:70px;padding:6px 4px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;font-size:11px"><option value="">سورة</option></select>
+      <select id="audioAya" style="flex:0 0 68px;min-width:60px;padding:6px 4px;border:1px solid #e8e0c8;background:#fff;border-radius:10px;font-size:11px"><option value="">آية</option></select>
+      <select id="repeatCount" style="padding:6px 4px;border:1px solid #e8e0c8;background:#fff;border-radius:10px;font-size:11px"><option value="1">×1</option><option value="3">×3</option><option value="5">×5</option><option value="999">∞</option></select>
+      <button id="playBtn" style="padding:6px 9px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:10px;cursor:pointer;font-size:12px;white-space:nowrap">▶️</button>
+      <button id="pauseBtn" style="display:none;padding:6px 9px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;cursor:pointer;font-size:12px">⏸️</button>
+      <span id="audioInfo" style="font-size:11px;color:#7a6a3a;flex:1;min-width:100px"></span>
       <audio id="audioPlayer" preload="none" style="display:none"></audio>
     </div>
     <div id="tafsirBox" style="display:none;border-top:2px solid #c2a15a;background:#fffdf4;padding:12px 14px"></div>
@@ -426,40 +427,69 @@ async function renderTrans(){
   });
   box.innerHTML=html;
 }
-// الصوتيات - 22 قارئ
-const reciters=[
-  {id:'Alafasy_64kbps',name:'مشاري العفاسي'},
-  {id:'Abdul_Basit_Murattal_64kbps',name:'عبدالباسط عبدالصمد'},
-  {id:'Abdul_Basit_Mujawwad_64kbps',name:'عبدالباسط مجود'},
-  {id:'Abdullah_Basfar_64kbps',name:'عبدالله بصفر'},
-  {id:'Abdurrahmaan_As-Sudais_64kbps',name:'عبدالرحمن السديس'},
-  {id:'Abu_Bakr_Ash-Shaatree_64kbps',name:'أبو بكر الشاطري'},
-  {id:'Ahmed_ibn_Ali_al-Ajamy_64kbps',name:'أحمد العجمي'},
-  {id:'Al-Hussary_64kbps',name:'محمود الحصري'},
-  {id:'Al-Hussary_Mujawwad_64kbps',name:'الحصري مجود'},
-  {id:'Ghamadi_40kbps',name:'سعد الغامدي'},
-  {id:'Hani_Rifai_64kbps',name:'هاني الرفاعي'},
-  {id:'Husary_Mujawwad_64kbps',name:'الحصري مجود (2)'},
-  {id:'Husary_64kbps',name:'الحصري مرتل'},
-  {id:'Maher_AlMuaiqly_64kbps',name:'ماهر المعيقلي'},
-  {id:'Minshawy_Murattal_128kbps',name:'محمد صديق المنشاوي'},
-  {id:'Minshawy_Mujawwad_64kbps',name:'المنشاوي مجود'},
-  {id:'Mohammad_al_Tablaway_64kbps',name:'محمد الطبلاوي'},
-  {id:'Muhammad_Ayyoub_64kbps',name:'محمد أيوب'},
-  {id:'Muhammad_Jibreel_64kbps',name:'محمد جبريل'},
-  {id:'Saood_ash-Shuraym_64kbps',name:'سعود الشريم'},
-  {id:'Shaatree_64kbps',name:'الشاطري'},
-  {id:'Yasser_Ad-Dosari_64kbps',name:'ياسر الدوسري'},
+// الصوتيات - قراء العالم كله (هجين: EveryAyah + MP3Quran)
+let reciters=[
+  {id:'Alafasy_64kbps',name:'مشاري العفاسي',source:'everyayah'},
+  {id:'Abdul_Basit_Murattal_64kbps',name:'عبدالباسط عبدالصمد',source:'everyayah'},
+  {id:'Abdul_Basit_Mujawwad_64kbps',name:'عبدالباسط مجود',source:'everyayah'},
+  {id:'Abdullah_Basfar_64kbps',name:'عبدالله بصفر',source:'everyayah'},
+  {id:'Abdurrahmaan_As-Sudais_64kbps',name:'عبدالرحمن السديس',source:'everyayah'},
+  {id:'Abu_Bakr_Ash-Shaatree_64kbps',name:'أبو بكر الشاطري',source:'everyayah'},
+  {id:'Ahmed_ibn_Ali_al-Ajamy_64kbps',name:'أحمد العجمي',source:'everyayah'},
+  {id:'Al-Hussary_64kbps',name:'محمود الحصري',source:'everyayah'},
+  {id:'Al-Hussary_Mujawwad_64kbps',name:'الحصري مجود',source:'everyayah'},
+  {id:'Ghamadi_40kbps',name:'سعد الغامدي',source:'everyayah'},
+  {id:'Hani_Rifai_64kbps',name:'هاني الرفاعي',source:'everyayah'},
+  {id:'Husary_Mujawwad_64kbps',name:'الحصري مجود (2)',source:'everyayah'},
+  {id:'Husary_64kbps',name:'الحصري مرتل',source:'everyayah'},
+  {id:'Maher_AlMuaiqly_64kbps',name:'ماهر المعيقلي',source:'everyayah'},
+  {id:'Minshawy_Murattal_128kbps',name:'محمد صديق المنشاوي',source:'everyayah'},
+  {id:'Minshawy_Mujawwad_64kbps',name:'المنشاوي مجود',source:'everyayah'},
+  {id:'Mohammad_al_Tablaway_64kbps',name:'محمد الطبلاوي',source:'everyayah'},
+  {id:'Muhammad_Ayyoub_64kbps',name:'محمد أيوب',source:'everyayah'},
+  {id:'Muhammad_Jibreel_64kbps',name:'محمد جبريل',source:'everyayah'},
+  {id:'Saood_ash-Shuraym_64kbps',name:'سعود الشريم',source:'everyayah'},
+  {id:'Shaatree_64kbps',name:'الشاطري',source:'everyayah'},
+  {id:'Yasser_Ad-Dosari_64kbps',name:'ياسر الدوسري',source:'everyayah'},
 ];
+let reciterMap={}; // id -> reciter obj (for mp3quran server)
 let audioQueue=[], audioIndex=0;
+async function loadWorldReciters(){
+  try{
+    const r=await fetch('./audio-index/reciters_world.json?v=1');
+    if(!r.ok) return;
+    const world=await r.json();
+    if(Array.isArray(world) && world.length>30){
+      reciters=world;
+      const sel=document.getElementById('reciterSelect');
+      const saved=localStorage.getItem('sirag_reciter');
+      sel.innerHTML='';
+      world.forEach(rec=>{
+        reciterMap[rec.id]=rec;
+        const o=document.createElement('option'); o.value=rec.id; o.textContent=rec.name;
+        if(rec.id===saved) o.selected=true;
+        sel.appendChild(o);
+      });
+      if(!saved) sel.value=world[0].id;
+    }
+  }catch(e){ console.log('world reciters fallback',e); }
+}
 function initAudio(){
   const sel=document.getElementById('reciterSelect');
   const saved=localStorage.getItem('sirag_reciter')||'Alafasy_64kbps';
   reciters.forEach(r=>{
+    reciterMap[r.id]=r;
     const o=document.createElement('option'); o.value=r.id; o.textContent=r.name;
     if(r.id===saved) o.selected=true;
     sel.appendChild(o);
   });
+  // سورة/آية للمشغل — كله متاح
+  const as=document.getElementById('audioSura'), aa=document.getElementById('audioAya');
+  for(let s=1;s<=114;s++){ const o=document.createElement('option'); o.value=s; o.textContent=suraNames[s]; as.appendChild(o); }
+  function fillAudioAya(s){ aa.innerHTML='<option value="">آية</option>'; const cnt=suraAyaCount[s]||7; for(let a=1;a<=cnt;a++){ const o=document.createElement('option'); o.value=a; o.textContent=a; aa.appendChild(o);} }
+  as.addEventListener('change',()=>{ const s=parseInt(as.value); if(s) fillAudioAya(s); });
+  // تحميل قراء العالم
+  loadWorldReciters();
   sel.addEventListener('change',()=>{ localStorage.setItem('sirag_reciter',sel.value); if(audioQueue.length) pauseAudio(); });
   document.getElementById('playBtn').addEventListener('click',playPage);
   document.getElementById('pauseBtn').addEventListener('click',pauseAudio);
@@ -468,32 +498,36 @@ function initAudio(){
   audio.addEventListener('error',()=>{ document.getElementById('audioInfo').textContent='تعذر التشغيل — جرّب قارئ آخر'; });
 }
 function buildQueue(){
-  const scope=document.getElementById('playScope')?.value||'page';
   const repeat=parseInt(document.getElementById('repeatCount')?.value||'1');
+  const audioSuraVal=parseInt(document.getElementById('audioSura')?.value||'');
+  const audioAyaVal=parseInt(document.getElementById('audioAya')?.value||'');
   let keys=[];
-  if(scope==='page'){
+  if(audioSuraVal && audioAyaVal){
+    keys=[`${audioSuraVal}:${audioAyaVal}`];
+  } else if(audioSuraVal){
+    // سورة كاملة
+    for(let p=1;p<=604;p++){ for(const v of pages[String(p)]||[]){ if(parseInt(v.key.split(':')[0])===audioSuraVal) keys.push(v.key); } }
+  } else {
+    // الصفحة الحالية
     const data=pages[String(current)]||[];
     keys=data.map(v=>v.key);
-  } else if(scope==='sura'){
-    const data=pages[String(current)]||[];
-    const s=data[0]?.key?.split(':')[0];
-    if(s){ for(let p=1;p<=604;p++){ for(const v of pages[String(p)]||[]){ if(v.key.startsWith(s+':')) keys.push(v.key); } } }
-  } else if(scope==='aya'){
-    // آية واحدة: أول آية في الصفحة الحالية (أو المظللة بالمفضلة)
-    const favFirst=[...favSet][0];
-    const data=pages[String(current)]||[];
-    const key = favFirst && data.some(v=>v.key===favFirst) ? favFirst : data[0]?.key;
-    if(key) keys=[key];
   }
   // كرر
   let expanded=[];
   for(let i=0;i<Math.min(repeat,999);i++) expanded=expanded.concat(keys);
-  if(repeat===999) expanded=keys; // ∞ نكرر نفس القائمة ونعيدها عند الانتهاء
+  if(repeat===999) expanded=keys;
   return expanded.map(k=>{
     const [s,a]=k.split(':').map(Number);
     const s3=String(s).padStart(3,'0'), a3=String(a).padStart(3,'0');
-    const rec=document.getElementById('reciterSelect').value;
-    return {key:k, url:`https://everyayah.com/data/${rec}/${s3}${a3}.mp3`, repeatAll: repeat===999};
+    const recId=document.getElementById('reciterSelect').value;
+    const rec=reciterMap[recId]||{source:'everyayah',id:recId};
+    let url;
+    if(rec.source==='mp3quran' && rec.server){
+      url=`${rec.server}${s3}.mp3`;
+    } else {
+      url=`https://everyayah.com/data/${rec.id}/${s3}${a3}.mp3`;
+    }
+    return {key:k, url, repeatAll: repeat===999};
   });
 }
 function playPage(){
