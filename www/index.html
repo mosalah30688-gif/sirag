@@ -95,13 +95,16 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 <!-- Header -->
 <div class="top">
   <div class="top-actions" style="order:1">
-    <button class="icon-btn" id="openDrawer" title="الفهرس والإعدادات والخدمات">
+    <button class="icon-btn" id="openDrawer" title="الإعدادات">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7H20"/><path d="M4 12H20"/><path d="M4 17H20"/></svg>
     </button>
-    <button class="icon-btn" id="openFav" title="المفضلة — علامات مرجعية" style="border-color:#c2a15a;background:rgba(194,161,90,.18)">
+    <button class="icon-btn" id="openWahy" title="فهرس الوحي — ترتيب النزول" style="border-color:#8c6f1f;background:rgba(140,111,31,.14)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V5a1 1 0 0 1 1-1h8v17H5a1 1 0 0 1-1-1Z" fill="rgba(255,255,255,.15)"/><path d="M12 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-7"/><path d="M12 4v17"/><path d="M7 8h4M7 12h4M15 8h3M15 12h3"/></svg>
+    </button>
+    <button class="icon-btn" id="openFav" title="المفضلة" style="border-color:#c2a15a;background:rgba(194,161,90,.18)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12a1 1 0 0 1 1 1v16l-7-4-7 4V5a1 1 0 0 1 1-1Z" fill="rgba(255,255,255,.12)"/><path d="M6 4h12a1 1 0 0 1 1 1v16l-7-4-7 4V5a1 1 0 0 1 1-1Z"/></svg>
     </button>
-    <button class="icon-btn" id="openMap" title="خريطة القرآن يفسر بعضه" style="border-color:#2b6b4a;background:rgba(43,107,74,.18)">
+    <button class="icon-btn" id="openMap" title="الخريطة" style="border-color:#2b6b4a;background:rgba(43,107,74,.18)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 1 10 10M2 12a10 10 0 0 1 10-10"/><path d="M12 22a10 10 0 0 1-10-10M22 12a10 10 0 0 0-10 10"/><circle cx="12" cy="7" r="1" fill="currentColor"/><circle cx="17" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="17" r="1" fill="currentColor"/><circle cx="7" cy="12" r="1" fill="currentColor"/></svg>
     </button>
   </div>
@@ -183,15 +186,16 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
       </div>
     </div>
-    <!-- فهرس الوحي المستقل — ترتيب النزول وخطتك -->
-    <div style="margin-top:12px;background:#fff;border:1px solid #efe6c8;border-radius:12px;overflow:hidden">
-      <button id="wahyToggle" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:none;background:linear-gradient(180deg,#fffdf4,#fff6d6);cursor:pointer;font-weight:700;color:#143d2a;font-size:13px">📖 فهرس الوحي — ترتيب النزول <span id="wahyArrow" style="font-size:11px">▲</span></button>
-      <div id="wahyPanel" style="display:block;padding:10px;max-height:320px;overflow:auto;border-top:1px solid #efe6c8">
-        <div style="font-size:11px;color:#7a6a3a;line-height:1.6;margin-bottom:8px">ترتيب القرآن حسب النزول (1 العلق → 114 النصر) — اضغط السورة للانتقال لصفحتها. خطتك المقترحة: اقرأ 1-5 يومياً حسب النزول لتفهم تدرج الوحي.</div>
-        <div id="wahyList" style="display:flex;flex-direction:column;gap:6px"></div>
-      </div>
-    </div>
 <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8"></div>
+<!-- Drawer فهرس الوحي — صفحة مستقلة بترتيب السور -->
+<div class="drawer" id="wahyDrawer" aria-hidden="true">
+  <div class="drawer-bg" id="wahyBg"></div>
+  <div class="drawer-panel" style="width:380px;max-width:92vw">
+    <div class="drawer-head"><h3>📖 فهرس الوحي</h3><button class="close" id="closeWahy">إغلاق ✕</button></div>
+    <div style="font-size:11px;color:#7a6a3a;line-height:1.6;margin-bottom:8px">ترتيب السور حسب النزول (1 العلق → 114 النصر) — اضغط <b>عرض السورة</b> للانتقال. خطتك: 5 سور يومياً حسب النزول.</div>
+    <div id="wahyListPage" style="display:flex;flex-direction:column;gap:8px;max-height:70vh;overflow:auto"></div>
+  </div>
+</div>
 <!-- Drawer المفضلة — علامات مرجعية -->
 <div class="drawer" id="favDrawer" aria-hidden="true">
   <div class="drawer-bg" id="favBg"></div>
@@ -849,12 +853,13 @@ pageBody.addEventListener('click',e=>{
   // نبضة تأكيد
   ay.animate([{transform:'scale(1)'},{transform:'scale(1.03)'},{transform:'scale(1)'}],{duration:180});
 });
-// فهرس الوحي المستقل
+// فهرس الوحي المستقل — زر مستقل بصفحة كاملة
 async function initWahy(){
-  const btn=document.getElementById('wahyToggle'), panel=document.getElementById('wahyPanel'), arrow=document.getElementById('wahyArrow'), list=document.getElementById('wahyList');
-  if(!btn||!panel) return;
-  btn.addEventListener('click',()=>{ const open=panel.style.display!=='none'; panel.style.display=open?'none':'block'; arrow.textContent=open?'▼':'▲'; if(!open && !list.dataset.loaded) loadWahyList(); });
-  if(panel.style.display!=='none' && !list.dataset.loaded) loadWahyList();
+  const drawerW=document.getElementById('wahyDrawer'), btn=document.getElementById('openWahy'), close=document.getElementById('closeWahy'), bg=document.getElementById('wahyBg'), list=document.getElementById('wahyListPage');
+  if(!btn||!drawerW) return;
+  btn.addEventListener('click',()=>{ drawerW.classList.add('open'); drawerW.setAttribute('aria-hidden','false'); if(!list.dataset.loaded) loadWahyList(); });
+  close.addEventListener('click',()=>{ drawerW.classList.remove('open'); });
+  bg.addEventListener('click',()=>{ drawerW.classList.remove('open'); });
   async function loadWahyList(){
     try{
       const r=await fetch('./data/surah_info.json?v=1'); const data=await r.json();
@@ -863,9 +868,9 @@ async function initWahy(){
       arr.forEach(it=>{
         const s=it.s;
         const div=document.createElement('div');
-        div.style.cssText='display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #efe6c8;background:#fff;border-radius:10px;cursor:pointer';
-        div.innerHTML=`<span style="width:26px;height:26px;border-radius:999px;background:#143d2a;color:#ffef99;display:flex;align-items:center;justify-content:center;font-size:11px;flex:0 0 26px">${(it.order||'?').toLocaleString('ar-EG')}</span><div style="flex:1;min-width:0"><b style="color:#143d2a;font-size:12px">${s.toLocaleString('ar-EG')} - ${suraNames[s]}</b><span style="display:block;font-size:11px;color:#7a6a3a">${it.type} • ${it.ayahs} آية • ص ${it.pages[0]}-${it.pages[1]}</span></div><span style="font-size:11px;color:#8c6f1f">›</span>`;
-        div.addEventListener('click',()=>{ current=it.pages[0]; render(); drawer.classList.remove('open'); });
+        div.style.cssText='display:flex;align-items:center;gap:8px;padding:10px;border:1px solid #efe6c8;background:#fff;border-radius:11px';
+        div.innerHTML=`<span style="width:28px;height:28px;border-radius:999px;background:#143d2a;color:#ffef99;display:flex;align-items:center;justify-content:center;font-size:11px;flex:0 0 28px">${(it.order||'?').toLocaleString('ar-EG')}</span><div style="flex:1;min-width:0"><b style="color:#143d2a;font-size:13px">${s.toLocaleString('ar-EG')} - ${suraNames[s]}</b><span style="display:block;font-size:11px;color:#7a6a3a">${it.type} • ${it.ayahs} آية • ص ${it.pages[0]}-${it.pages[1]}</span></div><button data-s="${s}" style="padding:6px 10px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:9px;cursor:pointer;font-size:11px;white-space:nowrap">عرض السورة</button>`;
+        div.querySelector('button').addEventListener('click',()=>{ current=it.pages[0]; render(); drawerW.classList.remove('open'); });
         list.appendChild(div);
       });
       list.dataset.loaded='1';
