@@ -66,9 +66,14 @@ tajweed.madda_normal, tajweed.madda_permissible, tajweed.madda_necessary, tajwee
 .drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .drawer-head h3{margin:0;font-size:16px;color:var(--green)}
 .close{border:1px solid #e8e0c8;background:#fff;border-radius:10px;padding:6px 10px;cursor:pointer}
-.ayah{cursor:pointer;border-radius:6px;padding:1px 2px;transition:background .15s}
+.ayah{cursor:pointer;border-radius:6px;padding:1px 2px;transition:background .15s,opacity .4s}
 .ayah:hover{background:rgba(194,161,90,.10)}
 .ayah.bookmarked{background:rgba(194,161,90,.22);border:1px solid #e9ddb8;box-shadow:inset 0 0 0 1px rgba(194,161,90,.15)}
+.fading .ayah{opacity:.18;filter:blur(1px)}
+.fading .ayah.revealed{opacity:1;filter:none;background:rgba(255,239,153,.25)}
+.word-irab{cursor:pointer;border-bottom:1px dotted #c2a15a}
+#irabTip{position:fixed;z-index:30;background:#143d2a;color:#fff;padding:10px 12px;border-radius:12px;font-size:12px;line-height:1.6;max-width:260px;box-shadow:0 6px 18px rgba(0,0,0,.25);display:none}
+#irabTip b{color:#ffef99;display:block;font-size:13px}
 .fav-item{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid #efe6c8;background:#fff;border-radius:11px;margin-bottom:8px;cursor:pointer}
 .fav-item:hover{background:#fff9e6}
 .fav-item b{color:#143d2a;font-size:13px}
@@ -92,6 +97,7 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 <body>
 <div class="progress"><i id="progressBar"></i></div>
 <div id="tajweedTip"></div>
+<div id="irabTip"></div>
 <!-- Header -->
 <div class="top">
   <div class="top-actions" style="order:1">
@@ -182,6 +188,8 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التجويد الملوّن <input type="checkbox" id="tajweedToggle2" style="accent-color:#143d2a;width:18px;height:18px" checked></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التفسير الميسر <input type="checkbox" id="tafsirToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الترجمة الإنجليزية <input type="checkbox" id="transToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">وضع المحو للحفظ <input type="checkbox" id="fadingToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">لوحة الإعراب <input type="checkbox" id="irabToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
       </div>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
       </div>
@@ -395,6 +403,64 @@ function initSettings(){
   fs.addEventListener('change',e=>{ applyFontFamily(e.target.value); localStorage.setItem('sirag_fontFamily',e.target.value); });
   function applyFontFamily(v){ const m=document.querySelector('.mushaf'); if(!m) return; if(v==='scheherazade'){ m.style.fontFamily="'Scheherazade New','Amiri Quran',serif"; } else { m.style.fontFamily="'Amiri Quran','AmiriQuranLocal','Scheherazade New',serif"; } }
   window.applyFontFamily=applyFontFamily;
+  // وضع المحو للحفظ — يبهت النص
+  const fadingToggle=document.getElementById('fadingToggle');
+  if(fadingToggle){
+    const savedFading=localStorage.getItem('sirag_fading')==='1';
+    fadingToggle.checked=savedFading;
+    function applyFading(){ document.body.classList.toggle('fading', fadingToggle.checked); }
+    applyFading();
+    fadingToggle.addEventListener('change',()=>{ localStorage.setItem('sirag_fading', fadingToggle.checked?'1':'0'); applyFading(); if(fadingToggle.checked) alert('تم تفعيل وضع المحو — النص باهت، اضغط على الآية لإظهارها'); });
+    // في وضع المحو: ضغط الآية يظهرها مؤقتاً
+    pageBody.addEventListener('click',e=>{
+      if(!fadingToggle.checked) return;
+      const ay=e.target.closest('.ayah');
+      if(!ay) return;
+      ay.classList.add('revealed');
+      setTimeout(()=> ay.classList.remove('revealed'), 2500);
+    });
+  }
+  // لوحة الإعراب — اضغط على كلمة
+  const irabToggle=document.getElementById('irabToggle');
+  const irabTip=document.getElementById('irabTip');
+  if(irabToggle && irabTip){
+    irabToggle.checked=localStorage.getItem('sirag_irab')==='1';
+    irabToggle.addEventListener('change',()=>{ localStorage.setItem('sirag_irab', irabToggle.checked?'1':'0'); if(irabToggle.checked) alert('تم تفعيل لوحة الإعراب — اضغط على أي كلمة داخل الآية'); else irabTip.style.display='none'; });
+    pageBody.addEventListener('click',e=>{
+      if(!irabToggle.checked) return;
+      // تجاهل لو ضغط على آية كاملة (مفضلة) إلا لو ضغط مباشر على نص
+      const ay=e.target.closest('.ayah');
+      if(!ay) return;
+      // استخرج الكلمة الأقرب
+      let word='';
+      if(e.target.classList.contains('word-irab')) word=e.target.textContent.trim();
+      else {
+        const sel=window.getSelection();
+        word=sel.toString().trim().split(/\s+/)[0] || ay.textContent.trim().split(/\s+/)[0];
+      }
+      if(!word || word.length<2) return;
+      // إعراب مبسط (مؤقت — قاعدة بيانات كاملة قادمة)
+      const irabDB={
+        'اللَّه':['لفظ الجلالة','مرفوع بالضمة / مجرور حسب السياق'],
+        'الرحمن':['صفة','مجرورة لله'],
+        'الرحيم':['صفة ثانية','مجرورة'],
+        'الحمد':['مبتدأ','مرفوع'],
+        'رب':['بدل / خبر','مجرور'],
+        'العالمين':['مضاف إليه','مجرور بالياء لأنه جمع مذكر'],
+      };
+      const info=irabDB[word] || ['كلمة قرآنية','إعراب تفصيلي قادم — جذر: '+word.slice(0,3)];
+      irabTip.innerHTML=`<b>${word}</b>${info[0]}<span style="display:block;color:#fff;font-weight:400;margin-top:4px">${info[1]}</span>`;
+      irabTip.style.display='block';
+      const r=ay.getBoundingClientRect();
+      let top=r.bottom+8, left=r.left;
+      if(top+80>window.innerHeight) top=r.top-70;
+      if(left+260>window.innerWidth) left=window.innerWidth-270;
+      irabTip.style.top=top+'px'; irabTip.style.left=left+'px';
+      setTimeout(()=> irabTip.style.display='none', 3500);
+      e.stopPropagation();
+    });
+    document.addEventListener('click',e=>{ if(!e.target.closest('.ayah')) irabTip.style.display='none'; });
+  }
 }
 let transData=null;
 let transEnabled = localStorage.getItem('sirag_trans')==='1';
