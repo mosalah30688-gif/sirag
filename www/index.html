@@ -243,13 +243,13 @@ function initDrops(){
     }
   }
   // fill sura drop
-  const ds=document.getElementById('dropSura'); ds.innerHTML='<option value="">— اختر السورة —</option>';
+  const ds=document.getElementById('dropSura'); ds.innerHTML='<option value="">السورة</option>';
   for(let s=1;s<=114;s++){
     const o=document.createElement('option'); o.value=s;
     o.textContent=`${s.toLocaleString('ar-EG')} - سورة ${suraNames[s]} (ص ${ (suraPageMap[s]||1).toLocaleString('ar-EG')})`;
     ds.appendChild(o);
   }
-  const dj=document.getElementById('dropJuz'); dj.innerHTML='<option value="">— اختر الجزء —</option>';
+  const dj=document.getElementById('dropJuz'); dj.innerHTML='<option value="">الجزء</option>';
   for(let j=1;j<=30;j++){
     const o=document.createElement('option'); o.value=j;
     o.textContent=`الجزء ${j.toLocaleString('ar-EG')} - صفحة ${(juzPageMap[j]||1).toLocaleString('ar-EG')} (${juzStartKeyMap[j]||''})`;
@@ -280,7 +280,7 @@ function initDrops(){
 function fillAyaDrop(s){
   const da=document.getElementById('dropAya');
   const cnt=suraAyaCount[s]||7;
-  da.innerHTML='<option value="">— اختر الآية —</option>';
+  da.innerHTML='<option value="">الآية</option>';
   for(let a=1;a<=cnt;a++){
     const o=document.createElement('option'); o.value=a;
     o.textContent=`آية ${a.toLocaleString('ar-EG')} - ${suraNames[s]}:${a}`;
