@@ -188,6 +188,17 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
       </div>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
       </div>
+      <!-- تتبع الختمة الذكي -->
+      <div id="khatmBox" style="margin-top:12px;background:linear-gradient(180deg,#fffdf4,#fff9e6);border:1px solid #efe6c8;border-radius:11px;padding:10px">
+        <b style="display:block;color:#143d2a;font-size:13px;margin-bottom:6px">📊 تتبع الختمة الذكي</b>
+        <div id="khatmStats" style="font-size:12px;color:#1a1a1a;line-height:1.7"></div>
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:#7a6a3a"><input type="checkbox" id="khatmNotify" style="accent-color:#143d2a"> تذكير يومي</label>
+          <input type="time" id="khatmTime" value="08:00" style="padding:4px 6px;border:1px solid #e8e0c8;border-radius:8px;font-size:11px">
+          <button id="khatmTestBtn" style="padding:4px 8px;border:1px solid #c2a15a;background:#fff;border-radius:8px;font-size:11px;cursor:pointer">جرّب الإشعار</button>
+        </div>
+        <div style="font-size:10px;color:#8c6f1f;margin-top:4px">“ورتل القرآن ترتيلا” — سيذكرك حسب عادتك ويعرض اتقرأ كام وفاضل كام</div>
+      </div>
     </div>
 <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8"></div>
 <!-- Drawer فهرس الوحي — صفحة مستقلة بترتيب السور -->
@@ -428,8 +439,68 @@ function updateProgress(){
   const bar=document.getElementById('progressBar'); if(bar) bar.style.width=pct+'%';
   const box=document.getElementById('progressBox');
   if(box) box.innerHTML=`📊 تقدم الختمة: <b>${visited.size.toLocaleString('ar-EG')} / 604</b> صفحة — ${pct}% — آخر صفحة ${current.toLocaleString('ar-EG')} <button id="resetProgress" style="float:left;border:1px solid #e8e0c8;background:#fff;border-radius:8px;padding:2px 8px;cursor:pointer;font-size:11px">إعادة</button>`;
-  const btn=document.getElementById('resetProgress'); if(btn) btn.onclick=()=>{ if(confirm('إعادة تقدم الختمة؟')){ visited.clear(); localStorage.removeItem('sirag_visited'); updateProgress(); } };
+  const btn=document.getElementById('resetProgress'); if(btn) btn.onclick=()=>{ if(confirm('إعادة تقدم الختمة؟')){ visited.clear(); localStorage.removeItem('sirag_visited'); localStorage.removeItem('sirag_habit'); updateProgress(); renderKhatm(); } };
+  // عادة يومية
+  const today=new Date().toISOString().slice(0,10);
+  const habit=JSON.parse(localStorage.getItem('sirag_habit')||'{}');
+  habit[today]=(habit[today]||0)+1;
+  // احتفظ بآخر 30 يوم فقط
+  const keys=Object.keys(habit).sort();
+  if(keys.length>30){ delete habit[keys[0]]; }
+  localStorage.setItem('sirag_habit', JSON.stringify(habit));
+  renderKhatm();
 }
+function renderKhatm(){
+  const el=document.getElementById('khatmStats');
+  if(!el) return;
+  const read=visited.size, total=604, remain=total-read, pct=Math.round(read/total*100);
+  const habit=JSON.parse(localStorage.getItem('sirag_habit')||'{}');
+  const days=Object.keys(habit).sort().slice(-7);
+  const avg= days.length? (days.reduce((s,d)=>s+habit[d],0)/days.length).toFixed(1): '0';
+  const est= parseFloat(avg)>0 ? Math.ceil(remain/parseFloat(avg)) : '—';
+  const streak= (()=>{ let c=0, d=new Date(); for(let i=0;i<30;i++){ const k=d.toISOString().slice(0,10); if(habit[k]) c++; else break; d.setDate(d.getDate()-1); } return c; })();
+  el.innerHTML=`اتقرأ: <b>${read} / ${total}</b> (${pct}%) • فاضل: <b>${remain} صفحة</b><br>معدلك: <b>${avg} صفحة/يوم</b> (آخر 7 أيام) • متوقع تخلص بعد <b>${est} يوم</b><br>سلسلة قراءة: <b>${streak} يوم</b> ${streak>=3?'🔥':''}`;
+}
+function khatmNotifyCheck(){
+  const chk=document.getElementById('khatmNotify'), timeEl=document.getElementById('khatmTime');
+  if(!chk||!timeEl) return;
+  const savedNotify=localStorage.getItem('sirag_khatm_notify')==='1';
+  const savedTime=localStorage.getItem('sirag_khatm_time')||'08:00';
+  chk.checked=savedNotify; timeEl.value=savedTime;
+  chk.addEventListener('change',async()=>{
+    localStorage.setItem('sirag_khatm_notify', chk.checked?'1':'0');
+    if(chk.checked && Notification && Notification.permission!=='granted'){
+      const p=await Notification.requestPermission();
+      if(p!=='granted'){ chk.checked=false; localStorage.setItem('sirag_khatm_notify','0'); alert('يجب السماح بالإشعارات'); }
+    }
+  });
+  timeEl.addEventListener('change',()=> localStorage.setItem('sirag_khatm_time', timeEl.value));
+  document.getElementById('khatmTestBtn')?.addEventListener('click',()=> showKhatmNotif(true));
+}
+function showKhatmNotif(isTest=false){
+  const read=visited.size, remain=604-read;
+  const ayahs=["وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا","إِنَّ هَٰذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ","وَنُنَزِّلُ مِنَ الْقُرْآنِ مَا هُوَ شِفَاءٌ"];
+  const aya=ayahs[Math.floor(Math.random()*ayahs.length)];
+  const title=isTest? 'تذكير تجريبي — ورتل القرآن ترتيلا' : 'ورتل القرآن ترتيلا';
+  const body=`${aya} — اتقرأ ${read} وفاضل ${remain} صفحة. افتح سراج الآن.`;
+  if(Notification && Notification.permission==='granted'){
+    try{ new Notification(title,{body, icon:'icon-mushaf-light.png'}); }catch(e){ alert(body); }
+  } else {
+    alert(`🔔 ${title}\n${body}`);
+  }
+}
+// فحص كل دقيقة هل حان وقت التذكير
+setInterval(()=>{
+  const chk=localStorage.getItem('sirag_khatm_notify')==='1';
+  if(!chk || Notification?.permission!=='granted') return;
+  const t=localStorage.getItem('sirag_khatm_time')||'08:00';
+  const now=new Date(); const cur=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  if(cur===t){
+    const last=localStorage.getItem('sirag_last_notif');
+    const today=new Date().toISOString().slice(0,10);
+    if(last!==today){ localStorage.setItem('sirag_last_notif', today); showKhatmNotif(); }
+  }
+}, 60000);
 async function ensureTafsir(){
   if(tafsirData) return tafsirData;
   const r=await fetch('./data/tafsir_muyassar.json?v=1');
@@ -831,7 +902,7 @@ async function load(){
     pages=await r.json();
     const saved=parseInt(localStorage.getItem('sirag_page')||'1');
     if(saved>=1 && saved<=604) current=saved;
-    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initWahy();
+    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initWahy(); renderKhatm(); khatmNotifyCheck();
   }catch(e){ pageBody.innerHTML='<div class=loader>تعذّر تحميل الصفحات: '+e.message+'</div>'; console.error(e); }
 }
 document.getElementById('prev').addEventListener('click',()=>{ if(current>1){ current--; render(); }});
