@@ -307,9 +307,6 @@ function initSettings(){
   fs.addEventListener('change',e=>{ applyFontFamily(e.target.value); localStorage.setItem('sirag_fontFamily',e.target.value); });
   function applyFontFamily(v){ const m=document.querySelector('.mushaf'); if(!m) return; if(v==='scheherazade'){ m.style.fontFamily="'Scheherazade New','Amiri Quran',serif"; } else { m.style.fontFamily="'Amiri Quran','AmiriQuranLocal','Scheherazade New',serif"; } }
   window.applyFontFamily=applyFontFamily;
-  // share }catch(e){} }
-    else { await navigator.clipboard.writeText(shareText); alert('تم نسخ نص الصفحة ✅'); }
-  });
 }
 let transData=null;
 let transEnabled = localStorage.getItem('sirag_trans')==='1';
