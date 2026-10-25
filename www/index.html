@@ -118,6 +118,12 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
       <h3>الفهرس</h3>
       <button class="close" id="closeDrawer">إغلاق ✕</button>
     </div>
+    <!-- بحث لحظي -->
+    <div style="margin-bottom:12px">
+      <input id="searchInput" placeholder="ابحث في القرآن — بالحركات أو بدونها" style="width:100%;padding:10px;border:1.5px solid #c2a15a;background:#fff;color:#143d2a;border-radius:11px;font-size:13px">
+      <div id="searchInfo" style="font-size:11px;color:#7a6a3a;margin-top:4px">اكتب كلمة — النتائج تظهر فوراً (6236 آية)</div>
+      <div id="searchResults" style="max-height:220px;overflow:auto;margin-top:8px;display:flex;flex-direction:column;gap:6px"></div>
+    </div>
     <!-- قوائم منسدلة سور - أجزاء - آيات -->
     <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
       <select id="dropSura" class="drp" style="width:100%;padding:10px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:11px;font-size:13px;font-weight:600"></select>
@@ -274,13 +280,61 @@ function initSettings(){
   // expose for render to keep
   window.applyFontFamily=applyFontFamily;
 }
+function initSearch(){
+  const input=document.getElementById('searchInput');
+  const results=document.getElementById('searchResults');
+  const info=document.getElementById('searchInfo');
+  if(!input) return;
+  // build flat index
+  const verses=[];
+  for(let p=1;p<=604;p++){
+    for(const v of pages[String(p)]){
+      verses.push({key:v.key, text:v.text_uthmani||'', page:p, juz:v.juz});
+    }
+  }
+  function normalize(s){
+    return s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,'')
+            .replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي')
+            .replace(/\s+/g,' ').trim();
+  }
+  let t0=0;
+  input.addEventListener('input',()=>{
+    const q=input.value.trim();
+    if(!q){ results.innerHTML=''; info.textContent='اكتب كلمة — النتائج تظهر فوراً (6236 آية)'; return; }
+    const start=performance.now();
+    const nq=normalize(q);
+    const hits=[];
+    for(const v of verses){
+      const nt=normalize(v.text);
+      if(nt.includes(nq)){
+        hits.push(v);
+        if(hits.length>=30) break;
+      }
+    }
+    const ms=Math.round(performance.now()-start);
+    info.textContent=`${hits.length.toLocaleString('ar-EG')} نتيجة — ${ms}ms`;
+    if(hits.length===0){ results.innerHTML='<div style="padding:8px;color:#7a6a3a;font-size:12px">لا نتائج</div>'; return; }
+    results.innerHTML='';
+    hits.forEach(v=>{
+      const sNum=parseInt(v.key.split(':')[0]), aNum=parseInt(v.key.split(':')[1]);
+      const btn=document.createElement('button');
+      btn.style.cssText='text-align:right;padding:8px 10px;border:1px solid #efe6c8;background:#fff;border-radius:11px;cursor:pointer';
+      // highlight query inside text (simple)
+      let txt=v.text;
+      // escape for display
+      btn.innerHTML=`<b style="display:block;color:#143d2a;font-size:12px">${suraNames[sNum]} ${v.key} — ص ${v.page.toLocaleString('ar-EG')}</b><span style="font-family:'Amiri Quran',serif;font-size:15px;color:#1a1a1a">${txt.slice(0,90)}${txt.length>90?'…':''}</span>`;
+      btn.addEventListener('click',()=>{ current=v.page; render(); drawer.classList.remove('open'); input.value=''; results.innerHTML=''; info.textContent='اكتب كلمة — النتائج تظهر فوراً (6236 آية)'; });
+      results.appendChild(btn);
+    });
+  });
+}
 async function load(){
   try{
     const r=await fetch('./data/pages_quran_com.json?v=2');
     pages=await r.json();
     const saved=parseInt(localStorage.getItem('sirag_page')||'1');
     if(saved>=1 && saved<=604) current=saved;
-    fillSelect(); render(); initDrops(); initSettings();
+    fillSelect(); render(); initDrops(); initSettings(); initSearch();
   }catch(e){ pageBody.innerHTML='<div class=loader>تعذّر تحميل الصفحات: '+e.message+'</div>'; console.error(e); }
 }
 document.getElementById('prev').addEventListener('click',()=>{ if(current>1){ current--; render(); }});
