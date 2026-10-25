@@ -160,13 +160,11 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <div style="background:#fff;border:1px solid #efe6c8;border-radius:12px;padding:12px">
       <b style="display:block;color:#143d2a;margin-bottom:8px;font-size:14px">⚙️ الإعدادات</b>
       <div id="progressBox" style="background:#fffdf4;border:1px solid #efe6c8;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:12px;color:#6b5a2a"></div>
-      <div id="dailyBox" style="background:#f0f7f3;border:1px solid #d6e8dd;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:12px;color:#1a5a3a"></div>
       <div style="display:flex;flex-direction:column;gap:10px">
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">حجم الخط <span><button id="fontMinus" style="width:28px;height:28px;border:1px solid #c2a15a;background:#fff;border-radius:8px;cursor:pointer">-</button> <span id="fontVal" style="display:inline-block;min-width:36px;text-align:center">27</span> <button id="fontPlus" style="width:28px;height:28px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:8px;cursor:pointer">+</button></span></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التجويد الملوّن <input type="checkbox" id="tajweedToggle2" style="accent-color:#143d2a;width:18px;height:18px" checked></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التفسير الميسر <input type="checkbox" id="tafsirToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الترجمة الإنجليزية <input type="checkbox" id="transToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
-        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">هدف يومي <select id="dailyGoal" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="1">صفحة/يوم</option><option value="2">صفحتين/يوم</option><option value="5">5 صفحات/يوم</option><option value="10">10 صفحات/يوم</option><option value="20">20 صفحة/يوم</option></select></label>
       </div>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
       </div>
@@ -319,11 +317,6 @@ function initSettings(){
   fs.addEventListener('change',e=>{ applyFontFamily(e.target.value); localStorage.setItem('sirag_fontFamily',e.target.value); });
   function applyFontFamily(v){ const m=document.querySelector('.mushaf'); if(!m) return; if(v==='scheherazade'){ m.style.fontFamily="'Scheherazade New','Amiri Quran',serif"; } else { m.style.fontFamily="'Amiri Quran','AmiriQuranLocal','Scheherazade New',serif"; } }
   window.applyFontFamily=applyFontFamily;
-  // daily goal
-  const dg=document.getElementById('dailyGoal');
-  const savedGoal=localStorage.getItem('sirag_dailyGoal')||'1';
-  dg.value=savedGoal;
-  dg.addEventListener('change',e=>{ localStorage.setItem('sirag_dailyGoal', e.target.value); updateDaily(); });
   // share
   document.getElementById('sharePage').addEventListener('click',async()=>{
     const data=pages[String(current)]; if(!data) return;
@@ -350,29 +343,7 @@ function updateProgress(){
   const bar=document.getElementById('progressBar'); if(bar) bar.style.width=pct+'%';
   const box=document.getElementById('progressBox');
   if(box) box.innerHTML=`📊 تقدم الختمة: <b>${visited.size.toLocaleString('ar-EG')} / 604</b> صفحة — ${pct}% — آخر صفحة ${current.toLocaleString('ar-EG')} <button id="resetProgress" style="float:left;border:1px solid #e8e0c8;background:#fff;border-radius:8px;padding:2px 8px;cursor:pointer;font-size:11px">إعادة</button>`;
-  const btn=document.getElementById('resetProgress'); if(btn) btn.onclick=()=>{ if(confirm('إعادة تقدم الختمة؟')){ visited.clear(); localStorage.removeItem('sirag_visited'); updateProgress(); updateDaily(); } };
-  updateDaily();
-}
-function updateDaily(){
-  const goal=parseInt(localStorage.getItem('sirag_dailyGoal')||'1');
-  const box=document.getElementById('dailyBox');
-  if(!box) return;
-  // today's progress: count visited today? simple: today pages = visited size % goal? better: today count = visited size - lastReset? For now show goal progress as visited today approximated by entries today not tracked. So show daily goal vs overall.
-  // Estimate days left
-  const remaining=604-visited.size;
-  const daysLeft=goal>0?Math.ceil(remaining/goal):0;
-  const todayDone=Math.min(visited.size % goal || goal, goal); // simplistic
-  // Better: store daily count in localStorage with date
-  const todayKey=new Date().toISOString().slice(0,10);
-  const lastDate=localStorage.getItem('sirag_dailyDate');
-  let todayCount=parseInt(localStorage.getItem('sirag_todayCount')||'0');
-  if(lastDate!==todayKey){ todayCount=0; localStorage.setItem('sirag_dailyDate',todayKey); }
-  // increment todayCount when new page visited today (we just added current, so check if not counted today)
-  const todayVisitedKey='sirag_todayVisited';
-  let todaySet=new Set(JSON.parse(localStorage.getItem(todayVisitedKey)||'[]'));
-  if(!todaySet.has(current)){ todaySet.add(current); todayCount=todaySet.size; localStorage.setItem(todayVisitedKey, JSON.stringify([...todaySet])); localStorage.setItem('sirag_todayCount', String(todayCount)); }
-  if(lastDate!==todayKey){ todaySet=new Set([current]); todayCount=1; localStorage.setItem(todayVisitedKey, JSON.stringify([...todaySet])); localStorage.setItem('sirag_todayCount','1'); localStorage.setItem('sirag_dailyDate',todayKey); }
-  box.innerHTML=`🎯 هدفك اليومي: <b>${goal.toLocaleString('ar-EG')} صفحة</b> — أنجزت اليوم <b>${todayCount}/${goal}</b> ${todayCount>=goal?'✅ ممتاز!':''} — باقي <b>${remaining.toLocaleString('ar-EG')}</b> صفحة (~${daysLeft} يوم)`;
+  const btn=document.getElementById('resetProgress'); if(btn) btn.onclick=()=>{ if(confirm('إعادة تقدم الختمة؟')){ visited.clear(); localStorage.removeItem('sirag_visited'); updateProgress(); } };
 }
 async function ensureTafsir(){
   if(tafsirData) return tafsirData;
