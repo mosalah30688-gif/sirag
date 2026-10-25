@@ -112,6 +112,9 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <button class="icon-btn" id="openMap" title="الخريطة" style="border-color:#2b6b4a;background:rgba(43,107,74,.18)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 1 10 10M2 12a10 10 0 0 1 10-10"/><path d="M12 22a10 10 0 0 1-10-10M22 12a10 10 0 0 0-10 10"/><circle cx="12" cy="7" r="1" fill="currentColor"/><circle cx="17" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="17" r="1" fill="currentColor"/><circle cx="7" cy="12" r="1" fill="currentColor"/></svg>
     </button>
+    <button class="icon-btn" id="openTimeline" title="الخط الزمني 23 سنة" style="border-color:#7a5a12;background:rgba(122,90,18,.15)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h18"/><path d="M12 3v18"/><circle cx="12" cy="12" r="7" fill="none"/><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+    </button>
   </div>
   <div class="spacer" style="order:2"></div>
     <div class="brand" aria-label="سراج" style="order:3">
@@ -228,6 +231,17 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <div id="mapCurrent" style="background:#fff;border:1px solid #c2a15a;border-radius:11px;padding:10px;margin-bottom:10px;display:none"></div>
     <div id="mapList" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto"></div>
     <div id="mapEmpty" style="text-align:center;color:#7a6a3a;font-size:12px;padding:14px">اضغط على أي آية في الصفحة لعرض الآيات التي تشرحها</div>
+  </div>
+</div>
+<!-- Drawer الخط الزمني 23 سنة -->
+<div class="drawer" id="timelineDrawer" aria-hidden="true">
+  <div class="drawer-bg" id="timelineBg"></div>
+  <div class="drawer-panel" style="width:420px;max-width:94vw">
+    <div class="drawer-head"><h3>⏳ الخط الزمني — 23 سنة</h3><button class="close" id="closeTimeline">إغلاق ✕</button></div>
+    <div style="font-size:11px;color:#7a6a3a;line-height:1.6;margin-bottom:10px">من <b>610م غار حراء</b> إلى <b>632م المدينة</b> — اسحب يمين/شمال وشوف كل سورة نزلت فين وامتى. <span style="display:inline-block;width:10px;height:10px;background:#143d2a;border-radius:50%;vertical-align:middle"></span> مكية <span style="display:inline-block;width:10px;height:10px;background:#c2a15a;border-radius:50%;vertical-align:middle;margin-right:8px"></span> مدنية</div>
+    <div id="timelineBar" style="position:relative;height:6px;background:linear-gradient(90deg,#143d2a 0%,#143d2a 52%,#c2a15a 52%,#c2a15a 100%);border-radius:999px;margin:10px 0 14px"></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:#7a6a3a;margin-bottom:10px"><span>610م مكة</span><span>622م هجرة</span><span>632م مدينة</span></div>
+    <div id="timelineList" style="display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow:auto"></div>
   </div>
 </div>
 <script>
@@ -951,7 +965,7 @@ async function load(){
     pages=await r.json();
     const saved=parseInt(localStorage.getItem('sirag_page')||'1');
     if(saved>=1 && saved<=604) current=saved;
-    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initWahy(); renderKhatm(); khatmNotifyCheck();
+    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initWahy(); initTimeline(); renderKhatm(); khatmNotifyCheck();
   }catch(e){ pageBody.innerHTML='<div class=loader>تعذّر تحميل الصفحات: '+e.message+'</div>'; console.error(e); }
 }
 document.getElementById('prev').addEventListener('click',()=>{ if(current>1){ current--; render(); }});
@@ -1015,6 +1029,33 @@ async function initWahy(){
       });
       list.dataset.loaded='1';
     }catch(e){ list.innerHTML='<div style="color:#7a6a3a;font-size:12px">تعذر تحميل فهرس الوحي</div>'; }
+  }
+}
+function initTimeline(){
+  const drawer=document.getElementById('timelineDrawer'), btn=document.getElementById('openTimeline'), close=document.getElementById('closeTimeline'), bg=document.getElementById('timelineBg'), list=document.getElementById('timelineList');
+  if(!btn||!drawer) return;
+  btn.addEventListener('click',()=>{ drawer.classList.add('open'); if(!list.dataset.loaded) loadTimeline(); });
+  close.addEventListener('click',()=> drawer.classList.remove('open'));
+  bg.addEventListener('click',()=> drawer.classList.remove('open'));
+  async function loadTimeline(){
+    try{
+      const r=await fetch('./data/surah_info.json?v=1'); const data=await r.json();
+      const arr=Object.entries(data).map(([k,v])=> ({s:parseInt(k), ...v})).sort((a,b)=> (a.order||999)-(b.order||999));
+      list.innerHTML='';
+      arr.forEach(it=>{
+        const s=it.s;
+        const year=610 + Math.round((it.order-1)/114*22); // 610-632
+        const isMeccan=it.type.includes('مكي');
+        const dot=isMeccan?'#143d2a':'#c2a15a';
+        const place=isMeccan? 'مكة':'المدينة';
+        const div=document.createElement('div');
+        div.style.cssText='display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #efe6c8;background:#fff;border-radius:11px';
+        div.innerHTML=`<div style="text-align:center;min-width:56px"><span style="display:block;width:12px;height:12px;border-radius:50%;background:${dot};margin:0 auto 4px"></span><span style="font-size:10px;color:#7a6a3a">${year}م</span><span style="display:block;font-size:9px;color:#8c6f1f">${place}</span></div><div style="flex:1;min-width:0"><b style="color:#143d2a;font-size:13px">${it.order.toLocaleString('ar-EG')} - ${suraNames[s]}</b><span style="display:block;font-size:11px;color:#7a6a3a">${it.ayahs} آية • ص ${it.pages[0]}-${it.pages[1]} • ${it.type}</span></div><button style="padding:6px 10px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:9px;cursor:pointer;font-size:11px">عرض</button>`;
+        div.querySelector('button').addEventListener('click',()=>{ current=it.pages[0]; render(); drawer.classList.remove('open'); });
+        list.appendChild(div);
+      });
+      list.dataset.loaded='1';
+    }catch(e){ list.innerHTML='<div style="color:#7a6a3a">تعذر تحميل الخط الزمني</div>'; }
   }
 }
 // خريطة القرآن يفسر بعضه — مطبقة على المصحف كله (6236 آية)
