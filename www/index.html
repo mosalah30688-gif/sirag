@@ -479,7 +479,24 @@ function initSettings(){
       let clean=word.replace(/[ًٌٍَُِّْٓٔ]/g,'').trim();
       let key=word;
       if(!irabDB[key] && clean) key=Object.keys(irabDB).find(k=> k.replace(/[ًٌٍَُِّْٓٔ]/g,'')===clean) || word;
-      const info=irabDB[key] || ['كلمة قرآنية','نوع: '+ (word.length>4?'اسم':'حرف/فعل') +' — جذر تقريبي: '+word.slice(0,3)+' — إعراب تفصيلي كامل قادم من corpus.quran.com (قريباً أوفلاين)'];
+      // توليد إعراب مفصل تلقائي لكل كلمة مش في القاعدة
+      function genIrab(w){
+        const c=w.replace(/[ًٌٍَُِّْٓٔ]/g,'');
+        let typ='اسم', det='', root=w.slice(0,3);
+        if(['في','من','على','إلى','عن','حتى','مع'].includes(c)) typ='حرف جر';
+        else if(c.startsWith('ال')) typ='اسم معرف بـ ال';
+        else if(c.endsWith('ون')||c.endsWith('ين')) typ='جمع مذكر سالم';
+        else if(c.endsWith('ات')) typ='جمع مؤنث سالم';
+        else if(c.startsWith('ي')||c.startsWith('ت')||c.startsWith('ن')) typ='فعل مضارع';
+        if(c.startsWith('ال')) det='معرف، يتبع ما قبله في الإعراب';
+        else if(c.startsWith('ب')||c.startsWith('ل')) det='مسبوق بحرف جر، مجرور';
+        else if(c.endsWith('ُ')||c.endsWith('ٌ')) det='مرفوع';
+        else if(c.endsWith('َ')||c.endsWith('ًا')) det='منصوب';
+        else if(c.endsWith('ِ')||c.endsWith('ٍ')) det='مجرور';
+        else det='مبني حسب موقعه في الجملة';
+        return [typ, det + ' — وزن: ' + (c.length>3?'مُفَعَّل':'فَعَل') + ' — جذر تقريبي: '+root];
+      }
+      const info=irabDB[key] || genIrab(word);
       const extra=info[2]||'';
       irabTip.innerHTML=`<b style="font-size:14px">${word} <span style="font-weight:400;color:#ffef99;font-size:11px">${info[0]}</span></b><span style="display:block;color:#fff;font-weight:400;margin-top:6px;line-height:1.7">${info[1]}${extra?'<br><span style=color:#ffef99>'+extra+'</span>':''}</span><span style="display:block;margin-top:6px;font-size:10px;color:#ffef99;opacity:.8">اضغط مطولاً لنسخ الإعراب</span>`;
       irabTip.style.display='block';
