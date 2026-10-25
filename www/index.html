@@ -103,6 +103,7 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <div class="page-head" id="pageHead"><span>جاري التحميل...</span><span>—</span></div>
     <div id="pageBody"><div class="loader">يُحمّل صفحات المصحف (604 صفحات) ...</div></div>
     <div id="tafsirBox" style="display:none;border-top:2px solid #c2a15a;background:#fffdf4;padding:12px 14px"></div>
+    <div id="transBox" style="display:none;border-top:2px solid #2b6b4a;background:#f0f7f3;padding:12px 14px"></div>
     <div class="page-foot" id="pageFoot"><span id="footRight"></span><span id="footCenter"></span><span id="footPage"></span></div>
   </div>
 </div>
@@ -142,6 +143,7 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">حجم الخط <span><button id="fontMinus" style="width:28px;height:28px;border:1px solid #c2a15a;background:#fff;border-radius:8px;cursor:pointer">-</button> <span id="fontVal" style="display:inline-block;min-width:36px;text-align:center">27</span> <button id="fontPlus" style="width:28px;height:28px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:8px;cursor:pointer">+</button></span></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التجويد الملوّن <input type="checkbox" id="tajweedToggle2" style="accent-color:#143d2a;width:18px;height:18px" checked></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التفسير الميسر <input type="checkbox" id="tafsirToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الترجمة الإنجليزية <input type="checkbox" id="transToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
       </div>
     </div>
@@ -208,6 +210,7 @@ function render(){
   window.scrollTo({top:0, behavior:'smooth'});
   localStorage.setItem('sirag_page', current);
   renderTafsir();
+  renderTrans();
   updateProgress();
 }
 let suraPageMap={}, juzPageMap={}, juzStartKeyMap={}, suraAyaCount={};
@@ -282,6 +285,9 @@ function initSettings(){
   // tafsir toggle
   const tt=document.getElementById('tafsirToggle'); tt.checked=tafsirEnabled;
   tt.addEventListener('change',async()=>{ tafsirEnabled=tt.checked; localStorage.setItem('sirag_tafsir',tafsirEnabled?'1':'0'); await renderTafsir(); });
+  // trans toggle
+  const tr=document.getElementById('transToggle'); tr.checked=transEnabled;
+  tr.addEventListener('change',async()=>{ transEnabled=tr.checked; localStorage.setItem('sirag_trans',transEnabled?'1':'0'); await renderTrans(); });
   // font select
   const fs=document.getElementById('fontSelect');
   const savedFont=localStorage.getItem('sirag_fontFamily')||'amiri';
@@ -291,6 +297,8 @@ function initSettings(){
   // expose for render to keep
   window.applyFontFamily=applyFontFamily;
 }
+let transData=null;
+let transEnabled = localStorage.getItem('sirag_trans')==='1';
 let tafsirData=null;
 let tafsirEnabled = localStorage.getItem('sirag_tafsir')==='1';
 let visited=new Set(JSON.parse(localStorage.getItem('sirag_visited')||'[]'));
@@ -323,6 +331,29 @@ async function renderTafsir(){
     const txt=tafsirData[v.key]||'';
     if(!txt) return;
     html+=`<div style="margin-bottom:10px;padding:8px 10px;background:#fff;border:1px solid #efe6c8;border-radius:10px"><b style="color:#8c6f1f;font-size:12px">${v.key} — ${suraNames[parseInt(v.key.split(':')[0])]}</b><div style="font-size:13px;line-height:1.7;color:#1a1a1a;margin-top:4px">${txt}</div></div>`;
+  });
+  box.innerHTML=html;
+}
+async function ensureTrans(){
+  if(transData) return transData;
+  const r=await fetch('./data/translation_en_sahih.json?v=1');
+  transData=await r.json();
+  return transData;
+}
+async function renderTrans(){
+  const box=document.getElementById('transBox');
+  const toggle=document.getElementById('transToggle');
+  if(!box) return;
+  if(!transEnabled || !toggle.checked){ box.style.display='none'; box.innerHTML=''; return; }
+  await ensureTrans();
+  const data=pages[String(current)];
+  if(!data){ box.style.display='none'; return; }
+  box.style.display='block';
+  let html='<div style="font-size:13px;color:#2b6b4a;font-weight:700;margin-bottom:8px">🌐 الترجمة الإنجليزية — Sahih International</div>';
+  data.forEach(v=>{
+    const txt=transData[v.key]||'';
+    if(!txt) return;
+    html+=`<div style="margin-bottom:8px;padding:8px 10px;background:#fff;border:1px solid #d6e8dd;border-radius:10px"><b style="color:#2b6b4a;font-size:11px">${v.key}</b><div style="font-size:13px;line-height:1.6;color:#143d2a;margin-top:2px;font-family:system-ui">${txt}</div></div>`;
   });
   box.innerHTML=html;
 }
