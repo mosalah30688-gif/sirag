@@ -113,9 +113,6 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <button class="icon-btn" id="openFav" title="المفضلة" style="border-color:#c2a15a;background:rgba(194,161,90,.18)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12a1 1 0 0 1 1 1v16l-7-4-7 4V5a1 1 0 0 1 1-1Z" fill="rgba(255,255,255,.12)"/><path d="M6 4h12a1 1 0 0 1 1 1v16l-7-4-7 4V5a1 1 0 0 1 1-1Z"/></svg>
     </button>
-    <button class="icon-btn" id="openMap" title="الخريطة" style="border-color:#2b6b4a;background:rgba(43,107,74,.18)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 1 10 10M2 12a10 10 0 0 1 10-10"/><path d="M12 22a10 10 0 0 1-10-10M22 12a10 10 0 0 0-10 10"/><circle cx="12" cy="7" r="1" fill="currentColor"/><circle cx="17" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="17" r="1" fill="currentColor"/><circle cx="7" cy="12" r="1" fill="currentColor"/></svg>
-    </button>
     <button class="icon-btn" id="openTimeline" title="الخط الزمني 23 سنة" style="border-color:#7a5a12;background:rgba(122,90,18,.15)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h18"/><path d="M12 3v18"/><circle cx="12" cy="12" r="7" fill="none"/><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
     </button>
@@ -254,17 +251,6 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     </div>
   </div>
 </div>
-<!-- Drawer خريطة القرآن يفسر بعضه — على المصحف كله -->
-<div class="drawer" id="mapDrawer" aria-hidden="true">
-  <div class="drawer-bg" id="mapBg"></div>
-  <div class="drawer-panel" style="width:380px;max-width:92vw">
-    <div class="drawer-head"><h3>🔗 خريطة القرآن</h3><button class="close" id="closeMap">إغلاق ✕</button></div>
-    <div style="font-size:11px;color:#7a6a3a;line-height:1.6;margin-bottom:8px">القرآن يفسر بعضه — مطبقة على <b>6236 آية</b>. اضغط أي آية في المصحف تظهر خريطتها هنا. <span id="mapBuildInfo" style="color:#8c6f1f"></span></div>
-    <div id="mapCurrent" style="background:#fff;border:1px solid #c2a15a;border-radius:11px;padding:10px;margin-bottom:10px;display:none"></div>
-    <div id="mapList" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto"></div>
-    <div id="mapEmpty" style="text-align:center;color:#7a6a3a;font-size:12px;padding:14px">اضغط على أي آية في الصفحة لعرض الآيات التي تشرحها</div>
-  </div>
-</div>
 <!-- Drawer الخط الزمني 23 سنة -->
 <div class="drawer" id="timelineDrawer" aria-hidden="true">
   <div class="drawer-bg" id="timelineBg"></div>
@@ -318,7 +304,7 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 const suraNames=["","الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
 // ===== التحديث التلقائي — سراج =====
-const SIRAG_VERSION = "1.1";
+const SIRAG_VERSION = "1.2";
 async function checkForUpdate(manual=false, statusEl){
   const el = statusEl || document.getElementById('updateStatus') || document.getElementById('updateStatus2');
   function setStatus(t,c){ if(!el) return; el.style.display='block'; el.style.color=c||'#7a6a3a'; el.textContent=t; }
@@ -1134,19 +1120,8 @@ document.getElementById('openFav').addEventListener('click',()=>{ renderFavList(
 document.getElementById('closeFav').addEventListener('click',()=>{ favDrawer.classList.remove('open'); favDrawer.setAttribute('aria-hidden','true'); });
 document.getElementById('favBg').addEventListener('click',()=>{ favDrawer.classList.remove('open'); });
 // Map Drawer — خريطة القرآن يفسر بعضه
-const mapDrawer=document.getElementById('mapDrawer');
-document.getElementById('openMap').addEventListener('click',()=>{ if(!quranMap) buildQuranMap(); mapDrawer.classList.add('open'); mapDrawer.setAttribute('aria-hidden','false'); });
-document.getElementById('closeMap').addEventListener('click',()=>{ mapDrawer.classList.remove('open'); mapDrawer.setAttribute('aria-hidden','true'); });
-document.getElementById('mapBg').addEventListener('click',()=>{ mapDrawer.classList.remove('open'); });
 // تظليل الآية بالإصبع — ضغطة على الآية تحفظ/تلغي علامة مرجعية زي آيات
 pageBody.addEventListener('click',e=>{
-  const mapLink=e.target.closest('.mapLink');
-  if(mapLink){
-    e.stopPropagation();
-    const key=mapLink.dataset.map;
-    if(key){ if(!quranMap) buildQuranMap(); showMapForKey(key); mapDrawer.classList.add('open'); mapDrawer.setAttribute('aria-hidden','false'); }
-    return;
-  }
   const ay=e.target.closest('.ayah');
   if(!ay) return;
   const key=ay.dataset.key;
@@ -1181,57 +1156,6 @@ function initTimeline(){
       list.dataset.loaded='1';
     }catch(e){ list.innerHTML='<div style="color:#7a6a3a">تعذر تحميل الخط الزمني</div>'; }
   }
-}
-// خريطة القرآن يفسر بعضه — مطبقة على المصحف كله (6236 آية)
-let quranMap=null, quranVerses=[];
-function normalizeMap(s){ return s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[^\u0621-\u064A\s]/g,' ').replace(/\s+/g,' ').trim(); }
-function buildQuranMap(){
-  const info=document.getElementById('mapBuildInfo');
-  if(quranMap) return;
-  const start=performance.now();
-  quranVerses=[];
-  for(let p=1;p<=604;p++){ for(const v of pages[String(p)]||[]){ quranVerses.push({key:v.key, text:v.text_uthmani||'', page:p}); } }
-  const inv={};
-  quranVerses.forEach(v=>{
-    const words=[...new Set(normalizeMap(v.text).split(' ').filter(w=>w.length>2))];
-    words.forEach(w=>{ if(!inv[w]) inv[w]=[]; inv[w].push(v.key); });
-  });
-  quranMap={};
-  quranVerses.forEach(v=>{
-    const words=[...new Set(normalizeMap(v.text).split(' ').filter(w=>w.length>2))];
-    const scores={};
-    words.forEach(w=>{
-      const list=inv[w]||[];
-      if(list.length>80) return; // كلمات شائعة جداً
-      list.forEach(k=>{ if(k===v.key) return; scores[k]=(scores[k]||0)+1; });
-    });
-    const top=Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,sc])=>({key:k, score:sc}));
-    quranMap[v.key]=top;
-  });
-  const ms=Math.round(performance.now()-start);
-  if(info) info.textContent=`تم بناء الخريطة لـ ${quranVerses.length} آية في ${ms}ms — كل آية تربط بـ 5 آيات تشرحها`;
-  console.log('quranMap built', ms+'ms');
-}
-function showMapForKey(key){
-  if(!quranMap) buildQuranMap();
-  const cur=document.getElementById('mapCurrent'), list=document.getElementById('mapList'), empty=document.getElementById('mapEmpty');
-  const v=quranVerses.find(x=>x.key===key);
-  if(!v) return;
-  const sNum=parseInt(key.split(':')[0]), aNum=parseInt(key.split(':')[1]);
-  cur.style.display='block'; cur.innerHTML=`<b style="color:#143d2a">الآية الحالية: ${suraNames[sNum]} ${sNum}:${aNum}</b><div style="font-family:'Amiri Quran',serif;font-size:15px;margin-top:6px;color:#1a1a1a">${v.text.slice(0,120)}</div><div style="font-size:11px;color:#7a6a3a;margin-top:4px">ص ${v.page} • اضغط أي آية من الخريطة للانتقال</div>`;
-  list.innerHTML=''; empty.style.display='none';
-  const rel=quranMap[key]||[];
-  if(rel.length===0){ list.innerHTML='<div style="color:#7a6a3a;font-size:12px">لا روابط قوية — جرب آية أطول</div>'; return; }
-  rel.forEach(r=>{
-    const rv=quranVerses.find(x=>x.key===r.key);
-    if(!rv) return;
-    const rs=parseInt(r.key.split(':')[0]);
-    const div=document.createElement('div');
-    div.style.cssText='padding:10px;border:1px solid #efe6c8;background:#fff;border-radius:11px;cursor:pointer';
-    div.innerHTML=`<b style="display:block;color:#2b6b4a;font-size:12px">${suraNames[rs]} ${r.key} — ص ${rv.page} <span style="color:#8c6f1f;font-weight:400">(${r.score} كلمات مشتركة)</span></b><span style="font-family:'Amiri Quran',serif;font-size:14px;color:#1a1a1a">${rv.text.slice(0,95)}${rv.text.length>95?'…':''}</span>`;
-    div.addEventListener('click',()=>{ current=rv.page; render(); document.getElementById('mapDrawer').classList.remove('open'); });
-    list.appendChild(div);
-  });
 }
 load();
 </script>
