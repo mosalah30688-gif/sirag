@@ -162,19 +162,13 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
       <div id="searchInfo" style="font-size:11px;color:#7a6a3a;margin-top:4px">اكتب كلمة — النتائج تظهر فوراً (6236 آية)</div>
       <div id="searchResults" style="max-height:220px;overflow:auto;margin-top:8px;display:flex;flex-direction:column;gap:6px"></div>
     </div>
-    <!-- قوائم منسدلة سور - أجزاء - آيات -->
-    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
-      <select id="dropSura" class="drp" style="width:100%;padding:10px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:11px;font-size:13px;font-weight:600"></select>
-      <select id="dropJuz" class="drp" style="width:100%;padding:10px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:11px;font-size:13px"></select>
-      <select id="dropAya" class="drp" style="width:100%;padding:10px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:11px;font-size:13px"></select>
+    <!-- قوائم منسدلة سور - أجزاء - آيات جنب بعض صغار -->
+    <div style="display:flex;gap:6px;margin-bottom:12px">
+      <select id="dropSura" class="drp" style="flex:1;padding:8px 6px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;font-size:12px;font-weight:600"></select>
+      <select id="dropJuz" class="drp" style="flex:1;padding:8px 6px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:10px;font-size:12px"></select>
+      <select id="dropAya" class="drp" style="flex:1;padding:8px 6px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:10px;font-size:12px"></select>
     </div>
-    <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8">
-    
-    <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>التفسير</b><span>قريباً — ابن كثير والجلالين</span></div></div>
-    <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>التراجم</b><span>قريباً — إنجليزية وفرنسية</span></div></div>
-    <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>الصوتيات — 22 قارئ</b><span>قريباً — تحميل واستماع أوفلاين</span></div></div>
-    <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>البحث والتذكير</b><span>قريباً — بحث لحظي + أذان</span></div></div>
-  </div>
+    <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8"></div>
 
 <script>
 const suraNames=["","الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
