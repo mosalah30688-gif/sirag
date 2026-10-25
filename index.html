@@ -128,7 +128,9 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
       <select id="audioAya" style="flex:0 0 68px;min-width:60px;padding:6px 4px;border:1px solid #e8e0c8;background:#fff;border-radius:10px;font-size:11px"><option value="">آية</option></select>
       <select id="repeatCount" style="padding:6px 4px;border:1px solid #e8e0c8;background:#fff;border-radius:10px;font-size:11px"><option value="1">×1</option><option value="3">×3</option><option value="5">×5</option><option value="999">∞</option></select>
       <button id="playBtn" style="padding:6px 9px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:10px;cursor:pointer;font-size:12px;white-space:nowrap">▶️</button>
-      <button id="pauseBtn" style="display:none;padding:6px 9px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;cursor:pointer;font-size:12px">⏸️</button>
+      <button id="pauseBtn" title="إيقاف" style="padding:6px 9px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;cursor:pointer;font-size:12px;white-space:nowrap">⏹️ إيقاف</button>
+      <button id="dlSuraBtn" title="تحميل السورة" style="padding:6px 8px;border:1px solid #8c6f1f;background:#fff;color:#8c6f1f;border-radius:10px;cursor:pointer;font-size:11px;white-space:nowrap">⬇️ سورة</button>
+      <button id="dlMushafBtn" title="تحميل المصحف كامل" style="padding:6px 8px;border:1px solid #143d2a;background:#fff;color:#143d2a;border-radius:10px;cursor:pointer;font-size:11px;white-space:nowrap">⬇️ مصحف</button>
       <span id="audioInfo" style="font-size:11px;color:#7a6a3a;flex:1;min-width:100px"></span>
       <audio id="audioPlayer" preload="none" style="display:none"></audio>
     </div>
@@ -493,6 +495,8 @@ function initAudio(){
   sel.addEventListener('change',()=>{ localStorage.setItem('sirag_reciter',sel.value); if(audioQueue.length) pauseAudio(); });
   document.getElementById('playBtn').addEventListener('click',playPage);
   document.getElementById('pauseBtn').addEventListener('click',pauseAudio);
+  document.getElementById('dlSuraBtn').addEventListener('click',downloadSura);
+  document.getElementById('dlMushafBtn').addEventListener('click',downloadMushaf);
   const audio=document.getElementById('audioPlayer');
   audio.addEventListener('ended',nextAudio);
   audio.addEventListener('error',()=>{ document.getElementById('audioInfo').textContent='تعذر التشغيل — جرّب قارئ آخر'; });
@@ -532,9 +536,7 @@ function buildQueue(){
 }
 function playPage(){
   audioQueue=buildQueue(); audioIndex=0;
-  if(!audioQueue.length) return;
-  document.getElementById('playBtn').style.display='none';
-  document.getElementById('pauseBtn').style.display='inline-block';
+  if(!audioQueue.length){ document.getElementById('audioInfo').textContent='لا يوجد صوت للاختيار الحالي'; return; }
   playCurrent();
 }
 function playCurrent(){
@@ -552,9 +554,59 @@ function nextAudio(){ audioIndex++; playCurrent(); }
 function pauseAudio(){
   const audio=document.getElementById('audioPlayer');
   audio.pause(); audio.currentTime=0;
-  document.getElementById('playBtn').style.display='inline-block';
-  document.getElementById('pauseBtn').style.display='none';
   document.getElementById('audioInfo').textContent='';
+}
+function getSelectedReciter(){
+  const id=document.getElementById('reciterSelect').value;
+  return reciterMap[id]||{id, source:'everyayah'};
+}
+function downloadSura(){
+  const rec=getSelectedReciter();
+  let s=parseInt(document.getElementById('audioSura').value||'');
+  if(!s){ // من الصفحة الحالية
+    const data=pages[String(current)]||[];
+    s=parseInt(data[0]?.key?.split(':')[0]||'1');
+  }
+  const s3=String(s).padStart(3,'0');
+  let url, name;
+  if(rec.source==='mp3quran' && rec.server){
+    url=`${rec.server}${s3}.mp3`;
+    name=`${rec.name}-${suraNames[s]}.mp3`;
+  } else {
+    // EveryAyah: نحمل أول آية كعينة، والكامل عبر الأرشيف
+    url=`https://everyayah.com/data/${rec.id}/${s3}001.mp3`;
+    name=`${rec.name}-${suraNames[s]}-001.mp3`;
+    // لو عايز السورة كاملة آية بآية نفتح صفحة الأرشيف
+    if(confirm(`تحميل سورة ${suraNames[s]} للقارئ ${rec.name}؟\n\n- للـ MP3Quran: سورة كاملة MP3\n- لـ EveryAyah: الآية الأولى كعينة — للسورة كاملة افتح الأرشيف؟`)){
+      if(rec.source==='everyayah'){
+        window.open(`https://everyayah.com/data/${rec.id}/`, '_blank');
+        return;
+      }
+    } else return;
+  }
+  const a=document.createElement('a'); a.href=url; a.download=name; a.target='_blank'; document.body.appendChild(a); a.click(); a.remove();
+  document.getElementById('audioInfo').textContent=`⬇️ جاري تحميل سورة ${suraNames[s]}...`;
+  setTimeout(()=> document.getElementById('audioInfo').textContent='', 3000);
+}
+function downloadMushaf(){
+  const rec=getSelectedReciter();
+  let url, name;
+  if(rec.source==='mp3quran' && rec.server){
+    // صفحة القارئ على MP3Quran فيها كل السور
+    const qName=rec.name.split('—')[0].trim();
+    if(confirm(`تحميل المصحف كامل للقارئ ${qName}؟\nسيتم فتح صفحة التحميل الرسمية (114 سورة).`)){
+      // نحاول فتح صفحة mp3quran للقارئ أو الأرشيف
+      window.open(rec.server, '_blank');
+    }
+    return;
+  } else {
+    // EveryAyah أرشيف ZIP كامل
+    const zip=`https://archive.org/download/quran-every-ayah/${rec.id}.zip`;
+    if(confirm(`تحميل المصحف كامل للقارئ ${rec.name}؟\n~500MB-1GB — من الأرشيف.`)){
+      window.open(zip, '_blank');
+    }
+    return;
+  }
 }
 const tajweedInfo={
   ham_wasl:['همزة الوصل','تثبت ابتداءً وتسقط وصلاً'],
