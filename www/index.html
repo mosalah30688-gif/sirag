@@ -14,6 +14,8 @@ body{font-family:'Tajawal',system-ui,sans-serif;color:#1a1a1a}
 
 /* Top bar - سراج */
 .top{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#143d2a 0%,#0f2e1f 100%);color:#fff;padding:8px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.25);flex-direction:row;direction:ltr}
+.progress{height:3px;background:rgba(255,255,255,.2)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#c2a15a,#ffef99);width:0%}
 .brand{direction:rtl}
 .brand{display:flex;align-items:center;gap:10px;cursor:default;user-select:none}
 .brand-icon{width:36px;height:36px;flex:0 0 36px;background:radial-gradient(circle at 30% 25%,#ffe9a3 0%,#e6c56b 22%,#c2a15a 45%,#8c6f1f 72%);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.25)}
@@ -73,6 +75,7 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 </style>
 </head>
 <body>
+<div class="progress"><i id="progressBar"></i></div>
 <!-- Header -->
 <div class="top">
   <div class="top-actions" style="order:1">
@@ -134,6 +137,7 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8">
     <div style="background:#fff;border:1px solid #efe6c8;border-radius:12px;padding:12px">
       <b style="display:block;color:#143d2a;margin-bottom:8px;font-size:14px">⚙️ الإعدادات</b>
+      <div id="progressBox" style="background:#fffdf4;border:1px solid #efe6c8;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:12px;color:#6b5a2a"></div>
       <div style="display:flex;flex-direction:column;gap:10px">
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">حجم الخط <span><button id="fontMinus" style="width:28px;height:28px;border:1px solid #c2a15a;background:#fff;border-radius:8px;cursor:pointer">-</button> <span id="fontVal" style="display:inline-block;min-width:36px;text-align:center">27</span> <button id="fontPlus" style="width:28px;height:28px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:8px;cursor:pointer">+</button></span></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التجويد الملوّن <input type="checkbox" id="tajweedToggle2" style="accent-color:#143d2a;width:18px;height:18px" checked></label>
@@ -204,6 +208,7 @@ function render(){
   window.scrollTo({top:0, behavior:'smooth'});
   localStorage.setItem('sirag_page', current);
   renderTafsir();
+  updateProgress();
 }
 let suraPageMap={}, juzPageMap={}, juzStartKeyMap={}, suraAyaCount={};
 function initDrops(){
@@ -288,6 +293,16 @@ function initSettings(){
 }
 let tafsirData=null;
 let tafsirEnabled = localStorage.getItem('sirag_tafsir')==='1';
+let visited=new Set(JSON.parse(localStorage.getItem('sirag_visited')||'[]'));
+function updateProgress(){
+  visited.add(current);
+  localStorage.setItem('sirag_visited', JSON.stringify([...visited]));
+  const pct=Math.round(visited.size/604*100);
+  const bar=document.getElementById('progressBar'); if(bar) bar.style.width=pct+'%';
+  const box=document.getElementById('progressBox');
+  if(box) box.innerHTML=`📊 تقدم الختمة: <b>${visited.size.toLocaleString('ar-EG')} / 604</b> صفحة — ${pct}% — آخر صفحة ${current.toLocaleString('ar-EG')} <button id="resetProgress" style="float:left;border:1px solid #e8e0c8;background:#fff;border-radius:8px;padding:2px 8px;cursor:pointer;font-size:11px">إعادة</button>`;
+  const btn=document.getElementById('resetProgress'); if(btn) btn.onclick=()=>{ if(confirm('إعادة تقدم الختمة؟')){ visited.clear(); localStorage.removeItem('sirag_visited'); updateProgress(); } };
+}
 async function ensureTafsir(){
   if(tafsirData) return tafsirData;
   const r=await fetch('./data/tafsir_muyassar.json?v=1');
