@@ -111,6 +111,9 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <button class="icon-btn" id="openAbout" title="حول التطبيق" style="border-color:#c2a15a;background:rgba(194,161,90,.18)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 10v6"/><circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg>
     </button>
+    <button class="icon-btn" id="openHifz" title="الحفظ الذكي" style="border-color:#7a5a12;background:rgba(122,90,18,.15)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3z"/><path d="M19 14l1 2.2L22 17l-2 0.8L19 20l-1-2.2L16 17l2-0.8L19 14z"/><path d="M5 14l1 1.5L7.5 16l-1.5 1L5 18.5l-1-1.5L2.5 16l1.5-.5L5 14z"/></svg>
+    </button>
     <button class="icon-btn" id="openFav" title="المفضلة" style="border-color:#c2a15a;background:rgba(194,161,90,.18)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12a1 1 0 0 1 1 1v16l-7-4-7 4V5a1 1 0 0 1 1-1Z" fill="rgba(255,255,255,.12)"/><path d="M6 4h12a1 1 0 0 1 1 1v16l-7-4-7 4V5a1 1 0 0 1 1-1Z"/></svg>
     </button>
@@ -301,11 +304,26 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <div style="text-align:center;margin-top:10px;font-size:11px;color:#7a6a3a">© 2026 سراج — صُنع بإتقان كما قال الكتاب</div>
   </div>
 </div>
+<!-- Drawer الحفظ الذكي — تكرار متباعد -->
+<div class="drawer" id="hifzDrawer" aria-hidden="true">
+  <div class="drawer-bg" id="hifzBg"></div>
+  <div class="drawer-panel" style="width:420px;max-width:94vw">
+    <div class="drawer-head"><h3>🧠 الحفظ الذكي</h3><button class="close" id="closeHifz">إغلاق ✕</button></div>
+    <div style="font-size:11px;color:#7a6a3a;line-height:1.6;margin-bottom:10px">احفظ الصفحة بضغطة ⭐ — التطبيق يبهتها ويذكرك بها <b>1 → 3 → 7 → 14 → 30 يوم</b> حسب تذكرك. <span style="display:inline-block;width:10px;height:10px;background:#c0392b;border-radius:50%;vertical-align:middle"></span> مستحق <span style="display:inline-block;width:10px;height:10px;background:#27ae60;border-radius:50%;vertical-align:middle;margin-right:8px"></span> محفوظ</div>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button id="hifzAddCurrent" style="flex:1;padding:8px;background:#143d2a;color:#ffef99;border:1px solid #0f2e1f;border-radius:10px;cursor:pointer;font-size:12px;font-weight:600">⭐ احفظ الصفحة الحالية (<span id="hifzCurrentPage">1</span>)</button>
+      <button id="hifzReviewDue" style="padding:8px 12px;background:#c2a15a;color:#fff;border:1px solid #8c6f1f;border-radius:10px;cursor:pointer;font-size:12px">📝 مراجعة</button>
+    </div>
+    <div id="hifzStats" style="background:#fffef7;border:1px solid #efe6c8;border-radius:10px;padding:8px;margin-bottom:10px;font-size:11px;color:#1a1a1a;line-height:1.7;display:none"></div>
+    <div id="hifzList" style="display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow:auto"></div>
+    <div id="hifzEmpty" style="text-align:center;color:#7a6a3a;font-size:12px;padding:14px">لا صفحات للحفظ — افتح أي صفحة واضغط ⭐</div>
+  </div>
+</div>
 <script>
 const suraNames=["","الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
 // ===== التحديث التلقائي — سراج =====
-const SIRAG_VERSION = "1.4.3";
+const SIRAG_VERSION = "1.5";
 async function checkForUpdate(manual=false, statusEl){
   const el = statusEl || document.getElementById('updateStatus') || document.getElementById('updateStatus2');
   function setStatus(t,c){ if(!el) return; el.style.display='block'; el.style.color=c||'#7a6a3a'; el.textContent=t; }
@@ -1137,7 +1155,7 @@ async function load(){
     pages=await r.json();
     const saved=parseInt(localStorage.getItem('sirag_page')||'1');
     if(saved>=1 && saved<=604) current=saved;
-    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initTimeline(); renderKhatm(); khatmNotifyCheck();
+    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initTimeline(); initHifz(); renderHifz(); renderKhatm(); khatmNotifyCheck();
   }catch(e){ pageBody.innerHTML='<div class=loader>تعذّر تحميل الصفحات: '+e.message+'</div>'; console.error(e); }
 }
 document.getElementById('prev').addEventListener('click',()=>{ if(current>1){ current--; render(); }});
@@ -1188,6 +1206,79 @@ pageBody.addEventListener('click',e=>{
   // نبضة تأكيد
   ay.animate([{transform:'scale(1)'},{transform:'scale(1.03)'},{transform:'scale(1)'}],{duration:180});
 });
+// 🧠 الحفظ الذكي — تكرار متباعد 1-3-7-14-30
+let hifzData=JSON.parse(localStorage.getItem('sirag_hifz')||'{}'); // page -> {added, nextDue, intervalIdx, reps}
+const hifzIntervals=[1,3,7,14,30];
+function saveHifz(){ localStorage.setItem('sirag_hifz', JSON.stringify(hifzData)); }
+function addHifz(page){
+  const now=Date.now();
+  if(hifzData[page]){ alert('الصفحة محفوظة بالفعل'); return; }
+  hifzData[page]={added:now, nextDue: now + hifzIntervals[0]*86400000, intervalIdx:0, reps:0};
+  saveHifz(); renderHifz(); 
+  // فعل وضع المحو تلقائيا
+  const ft=document.getElementById('fadingToggle');
+  if(ft && !ft.checked){ ft.checked=true; ft.dispatchEvent(new Event('change')); }
+}
+function renderHifz(){
+  const list=document.getElementById('hifzList'), empty=document.getElementById('hifzEmpty'), stats=document.getElementById('hifzStats'), curSpan=document.getElementById('hifzCurrentPage');
+  if(curSpan) curSpan.textContent=current.toLocaleString('ar-EG');
+  if(!list) return;
+  const pagesKeys=Object.keys(hifzData).map(Number).sort((a,b)=>a-b);
+  const now=Date.now();
+  let due=0, total=pagesKeys.length;
+  pagesKeys.forEach(p=>{ if(hifzData[p].nextDue <= now) due++; });
+  if(stats){
+    if(total===0){ stats.style.display='none'; } else {
+      stats.style.display='block';
+      stats.innerHTML=`📊 ${total.toLocaleString('ar-EG')} صفحة محفوظة • <b style="color:#c0392b">${due.toLocaleString('ar-EG')} مستحق الآن</b> • ${ (total-due).toLocaleString('ar-EG')} قيد الانتظار`;
+    }
+  }
+  if(total===0){ empty.style.display='block'; list.innerHTML=''; return; }
+  empty.style.display='none';
+  list.innerHTML='';
+  pagesKeys.forEach(p=>{
+    const d=hifzData[p];
+    const isDue=d.nextDue <= now;
+    const daysLeft=Math.ceil((d.nextDue-now)/86400000);
+    const when=isDue ? 'الآن' : `بعد ${daysLeft} يوم`;
+    const color=isDue ? '#c0392b' : '#27ae60';
+    const div=document.createElement('div');
+    div.style.cssText='display:flex;align-items:center;gap:8px;padding:10px;border:1px solid #efe6c8;background:#fff;border-radius:11px';
+    div.innerHTML=`<span style="width:10px;height:10px;border-radius:50%;background:${color};flex:0 0 10px"></span><div style="flex:1;min-width:0"><b style="color:#143d2a;font-size:12px">صفحة ${p.toLocaleString('ar-EG')}</b><span style="display:block;font-size:11px;color:#7a6a3a">${when} • مرحلة ${d.intervalIdx+1}/5 • ${d.reps} مراجعات</span></div><button data-act="go" data-p="${p}" style="padding:6px 8px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:8px;cursor:pointer;font-size:11px">عرض</button><button data-act="ok" data-p="${p}" style="padding:6px 8px;border:1px solid #27ae60;background:#fff;color:#27ae60;border-radius:8px;cursor:pointer;font-size:11px">تذكرت ✓</button><button data-act="fail" data-p="${p}" style="padding:6px 8px;border:1px solid #c0392b;background:#fff;color:#c0392b;border-radius:8px;cursor:pointer;font-size:11px">نسيت ✕</button><button data-act="del" data-p="${p}" style="padding:4px 6px;border:1px solid #e8e0c8;background:#fff;border-radius:8px;cursor:pointer;font-size:11px">🗑️</button>`;
+    div.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click',e=>{
+        e.stopPropagation();
+        const pp=parseInt(btn.dataset.p), act=btn.dataset.act;
+        if(act==='go'){ current=pp; render(); document.getElementById('hifzDrawer').classList.remove('open'); }
+        else if(act==='ok'){ // تذكرت -> انتقل للمرحلة التالية
+          const rec=hifzData[pp]; rec.reps++; if(rec.intervalIdx < hifzIntervals.length-1) rec.intervalIdx++; rec.nextDue=Date.now() + hifzIntervals[rec.intervalIdx]*86400000; saveHifz(); renderHifz();
+        }
+        else if(act==='fail'){ // نسيت -> ارجع للبداية
+          const rec=hifzData[pp]; rec.intervalIdx=0; rec.nextDue=Date.now() + hifzIntervals[0]*86400000; saveHifz(); renderHifz();
+        }
+        else if(act==='del'){ delete hifzData[pp]; saveHifz(); renderHifz(); }
+      });
+    });
+    list.appendChild(div);
+  });
+}
+function initHifz(){
+  const drawer=document.getElementById('hifzDrawer'), btn=document.getElementById('openHifz'), close=document.getElementById('closeHifz'), bg=document.getElementById('hifzBg');
+  if(!btn||!drawer) return;
+  btn.addEventListener('click',()=>{ renderHifz(); drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); });
+  close.addEventListener('click',()=> drawer.classList.remove('open'));
+  bg.addEventListener('click',()=> drawer.classList.remove('open'));
+  document.getElementById('hifzAddCurrent')?.addEventListener('click',()=> addHifz(current));
+  document.getElementById('hifzReviewDue')?.addEventListener('click',()=>{
+    const now=Date.now();
+    const duePages=Object.keys(hifzData).filter(p=>hifzData[p].nextDue<=now).map(Number).sort((a,b)=>a-b);
+    if(duePages.length===0){ alert('لا صفحات مستحقة الآن — أحسنت!'); return; }
+    current=duePages[0]; render(); drawer.classList.remove('open');
+    // فعل المحو للمراجعة
+    const ft=document.getElementById('fadingToggle');
+    if(ft && !ft.checked){ ft.checked=true; ft.dispatchEvent(new Event('change')); }
+  });
+}
 function initTimeline(){
   const drawer=document.getElementById('timelineDrawer'), btn=document.getElementById('openTimeline'), close=document.getElementById('closeTimeline'), bg=document.getElementById('timelineBg'), list=document.getElementById('timelineList');
   if(!btn||!drawer) return;
