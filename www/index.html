@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>سراج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New:wght@400;700&family=Tajawal:wght@400;500;700&family=Reem+Kufi:wght@600&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'AmiriQuranLocal';src:url('assets/fonts/AmiriQuran.ttf') format('truetype');font-display:swap}
+:root{--green:#143d2a;--gold:#c2a15a;--gold2:#8c6f1f;--cream:#fffef7;--paper:#fefcf3}
+*{box-sizing:border-box}html,body{margin:0;background:#f3efe3}
+body{font-family:'Tajawal',system-ui,sans-serif;color:#1a1a1a}
+
+/* Top bar - سراج */
+.top{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#143d2a 0%,#0f2e1f 100%);color:#fff;padding:8px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.25);flex-direction:row;direction:ltr}
+.brand{direction:rtl}
+.brand{display:flex;align-items:center;gap:10px;cursor:default;user-select:none}
+.brand-icon{width:36px;height:36px;flex:0 0 36px;background:radial-gradient(circle at 30% 25%,#ffe9a3 0%,#e6c56b 22%,#c2a15a 45%,#8c6f1f 72%);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.25)}
+.brand-icon svg{width:22px;height:22px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.brand-text{font-family:'Reem Kufi','Tajawal',sans-serif;font-size:22px;font-weight:600;letter-spacing:.3px;color:#ffefb8;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.brand-text b{color:#fff;font-weight:700}
+.top .spacer{flex:1}
+.top-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{appearance:none;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.10);color:#fff;width:38px;height:38px;border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.icon-btn:hover{background:rgba(255,255,255,.16)}
+.icon-btn svg{width:18px;height:18px}
+
+/* Controls bar - السابق والتالي */
+/* Controls bar - السابق والتالي تحت خالص زي الأول */
+.bar{max-width:760px;margin:12px auto 16px;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:nowrap}
+.bar .btn{appearance:none;border:1px solid #143d2a;background:#143d2a;color:#fff;padding:7px 16px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;min-width:78px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.bar .btn:hover{background:#0f2e1f}
+.bar .btn:active{transform:translateY(1px)}
+.bar .select{width:120px;min-width:110px;max-width:120px;flex:0 0 120px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;padding:7px 8px;border-radius:10px;font-size:13px;text-align:center}
+
+
+.page-wrap{max-width:760px;width:100%;margin:10px auto;padding:0 10px}
+.page{background:var(--paper);border:1px solid #e8e0c8;box-shadow:0 6px 18px rgba(0,0,0,.07);border-radius:12px;overflow:hidden;width:100%}
+.page-head{padding:9px 14px;border-bottom:1px solid #efe6c8;background:linear-gradient(180deg,#fffdf4 0%,#fff9e6 100%);display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:#6b5a2a}
+.page-head b{color:var(--green)}
+.sura-title{margin:14px 16px 6px;background:linear-gradient(180deg,#fffdf4,#fff6d6);border:1px solid #e9ddb8;border-radius:12px;padding:9px 14px;text-align:center;color:var(--green);font-weight:700;font-size:15px}
+.basmala{text-align:center;color:#2b6b4a;font-family:'Amiri Quran','AmiriQuranLocal','Scheherazade New',serif;font-size:20px;margin:6px 0 8px}
+.mushaf{padding:16px 18px 6px;font-family:'Amiri Quran','AmiriQuranLocal','Scheherazade New',serif;font-size:clamp(20px,5vw,27px);line-height:2.1;text-align:justify;text-justify:inter-word;word-spacing:.06em;color:#0f1f16;overflow-wrap:break-word;word-break:break-word;hyphens:auto}
+.mushaf .end{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:24px;padding:0 6px;margin:0 5px 0 2px;border:1px solid #e0d3a8;background:#fffef7;border-radius:999px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:700;color:var(--gold2);vertical-align:middle;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+tajweed{font-family:inherit}
+tajweed.ham_wasl, tajweed.laam_shamsiyah, tajweed.slnt{color:#a0a0a0}
+tajweed.ghunnah{color:#d35400}
+tajweed.qalaqah{color:#c0392b}
+tajweed.ikhafa, tajweed.ikhafa_shafawi{color:#8e44ad}
+tajweed.idgham_ghunnah, tajweed.idgham_wo_ghunnah, tajweed.idgham_shafawi{color:#27ae60}
+tajweed.iqlab{color:#2980b9}
+tajweed.madda_normal, tajweed.madda_permissible, tajweed.madda_necessary, tajweed.madda_obligatory{color:#1a5276}
+.page-foot{padding:10px 14px;border-top:1px solid #efe6c8;background:#fffdf4;display:flex;align-items:center;justify-content:space-between;color:#7a6a3a;font-size:12px}
+.loader{padding:40px;text-align:center;color:#6b5a2a}
+.drawer{position:fixed;inset:0;display:none;z-index:20}
+.drawer.open{display:block}
+.drawer-bg{position:absolute;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(2px)}
+.drawer-panel{position:absolute;top:0;right:0;bottom:0;width:320px;max-width:88vw;background:#fffef7;border-left:1px solid #e8e0c8;box-shadow:-8px 0 28px rgba(0,0,0,.18);padding:14px;overflow:auto}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.drawer-head h3{margin:0;font-size:16px;color:var(--green)}
+.close{border:1px solid #e8e0c8;background:#fff;border-radius:10px;padding:6px 10px;cursor:pointer}
+.svc{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #efe6c8;background:#fff;border-radius:12px;margin-bottom:8px}
+.svc b{font-size:13px;color:#143d2a;display:block}
+.svc span{font-size:11px;color:#7a6a3a}
+.svc .dot{width:8px;height:8px;border-radius:50%;background:#c2a15a;flex:0 0 8px}
+.svc.coming{opacity:.55}
+img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
+.top{flex-wrap:wrap}
+.page-head{flex-wrap:wrap}
+@media(max-width:600px){.mushaf{padding:12px 12px 6px;line-height:2}.page-head{font-size:11px}.bar{gap:6px}.bar .btn{min-width:72px;padding:7px 10px}.bar .select{width:110px;min-width:100px;max-width:110px}}
+@media(max-width:380px){.mushaf{font-size:19px}}
+</style>
+</head>
+<body>
+<!-- Header -->
+<div class="top">
+  <div class="top-actions" style="order:1">
+    <button class="icon-btn" id="openDrawer" title="الفهرس والإعدادات والخدمات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7H20"/><path d="M4 12H20"/><path d="M4 17H20"/></svg>
+    </button>
+  </div>
+  <div class="spacer" style="order:2"></div>
+  <div class="brand" aria-label="سراج" style="order:3">
+    <div class="brand-icon" style="background:radial-gradient(circle at 35% 20%,#fff7cc 0%,#ffefa3 22%,#e6c56b 42%,#c2a15a 62%,#8c6f1f 80%);">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:26px;height:26px">
+        <ellipse cx="16" cy="12" rx="11" ry="6" fill="#fff" opacity=".88"/>
+        <path d="M5 12H16V24H6.5C5.7 24 5 23.3 5 22.5V12Z" fill="#fffef7" stroke="#7a5a12" stroke-width="0.85"/>
+        <path d="M16 12H27V22.5C27 23.3 26.3 24 25.5 24H16V12Z" fill="#fffef7" stroke="#7a5a12" stroke-width="0.85"/>
+        <path d="M16 12V24" stroke="#7a5a12" stroke-width="1"/>
+        <path d="M16 2 L16.6 3.8 18.5 4.4 16.6 5 16 6.8 15.4 5 13.5 4.4 15.4 3.8 Z" fill="#fff"/>
+      </svg>
+    </div>
+    <div class="brand-text">سِـراج</div>
+  </div>
+</div>
+
+<div class="page-wrap">
+  <div class="page" id="pageCard">
+    <div class="page-head" id="pageHead"><span>جاري التحميل...</span><span>—</span></div>
+    <div id="pageBody"><div class="loader">يُحمّل صفحات المصحف (604 صفحات) ...</div></div>
+    <div class="page-foot" id="pageFoot"><span id="footRight"></span><span id="footCenter"></span><span id="footPage"></span></div>
+  </div>
+</div>
+
+<!-- شريط السابق والتالي تحت خالص زي الأول -->
+<div class="bar">
+  <button class="btn" id="prev">› السابق</button>
+  <select class="select" id="pageSelect" title="اختر الصفحة"></select>
+  <button class="btn" id="next">التالي ‹</button>
+</div>
+
+<!-- Drawer الفهرس والخدمات -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-bg" id="drawerBg"></div>
+  <div class="drawer-panel">
+    <div class="drawer-head">
+      <h3>الفهرس</h3>
+      <button class="close" id="closeDrawer">إغلاق ✕</button>
+    </div>
+    <!-- قوائم منسدلة سور - أجزاء - آيات -->
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+      <select id="dropSura" class="drp" style="width:100%;padding:10px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:11px;font-size:13px;font-weight:600"></select>
+      <select id="dropJuz" class="drp" style="width:100%;padding:10px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:11px;font-size:13px"></select>
+      <select id="dropAya" class="drp" style="width:100%;padding:10px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:11px;font-size:13px"></select>
+    </div>
+    <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8">
+    <div style="background:#fff;border:1px solid #efe6c8;border-radius:12px;padding:12px">
+      <b style="display:block;color:#143d2a;margin-bottom:8px;font-size:14px">⚙️ الإعدادات</b>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">حجم الخط <span><button id="fontMinus" style="width:28px;height:28px;border:1px solid #c2a15a;background:#fff;border-radius:8px;cursor:pointer">-</button> <span id="fontVal" style="display:inline-block;min-width:36px;text-align:center">27</span> <button id="fontPlus" style="width:28px;height:28px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:8px;cursor:pointer">+</button></span></label>
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التجويد الملوّن <input type="checkbox" id="tajweedToggle2" style="accent-color:#143d2a;width:18px;height:18px" checked></label>
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
+      </div>
+    </div>
+    <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>التفسير</b><span>قريباً — ابن كثير والجلالين</span></div></div>
+    <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>التراجم</b><span>قريباً — إنجليزية وفرنسية</span></div></div>
+    <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>الصوتيات — 22 قارئ</b><span>قريباً — تحميل واستماع أوفلاين</span></div></div>
+    <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>البحث والتذكير</b><span>قريباً — بحث لحظي + أذان</span></div></div>
+  </div>
+</div>
+
+<script>
+const suraNames=["","الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
+let pages=null, current=1;
+const pageSelect=document.getElementById('pageSelect');
+const pageHead=document.getElementById('pageHead');
+const pageBody=document.getElementById('pageBody');
+const footPage=document.getElementById('footPage');
+const footCenter=document.getElementById('footCenter');
+const footRight=document.getElementById('footRight');
+// التجويد يظل مفعّل داخلياً بدون زر ظاهر
+let useTajweed = localStorage.getItem('sirag_tajweed') !== '0';
+
+function fillSelect(){
+  pageSelect.innerHTML='';
+  for(let i=1;i<=604;i++){
+    const o=document.createElement('option');
+    o.value=i; o.textContent='صفحة '+i;
+    pageSelect.appendChild(o);
+  }
+  pageSelect.value=current;
+}
+function juzName(j){ return 'الجزء ' + j.toLocaleString('ar-EG'); }
+function hizbName(h){ return 'الحزب ' + h.toLocaleString('ar-EG'); }
+
+function render(){
+  if(!pages) return;
+  const data = pages[String(current)];
+  if(!data){ pageBody.innerHTML='<div class=loader>الصفحة غير موجودة</div>'; return; }
+  pageSelect.value=current;
+  const firstKey=data[0]?.key || "";
+  const lastKey=data[data.length-1]?.key || "";
+  const juz = data[0]?.juz || 1;
+  const hizb = data[0]?.hizb || 1;
+  const surahsOnPage=new Set();
+  data.forEach(v=>{ surahsOnPage.add(parseInt(v.key.split(':')[0])) });
+  pageHead.innerHTML = `<span><b>${hizbName(hizb)}</b> • ${juzName(juz)}</span><span>${[...surahsOnPage].map(s=>suraNames[s]).join(' • ')}</span>`;
+  footPage.textContent = 'صفحة ' + current.toLocaleString('ar-EG') + ' / ٦٠٤';
+  footCenter.textContent = firstKey + ' — ' + lastKey;
+  footRight.textContent = suraNames[parseInt(firstKey.split(':')[0])] || '';
+  let html=''; let lastSura=null;
+  data.forEach(v=>{
+    const [s,a]=v.key.split(':').map(Number);
+    if(a===1 && lastSura!==s){
+      html+=`<div class="sura-title">سورة ${suraNames[s]}</div>`;
+      if(s!==1 && s!==9) html+=`<div class="basmala">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>`;
+    }
+    lastSura=s;
+    let chunk='';
+    if(useTajweed && v.text_tajweed) chunk=v.text_tajweed;
+    else { const num=Number(a).toLocaleString('ar-EG'); chunk=`${v.text_uthmani||''} <span class="end">${num}</span>`; }
+    html+= `<span class="ayah">${chunk}</span> `;
+  });
+  pageBody.innerHTML = `<div class="mushaf">${html}</div>`;
+  window.scrollTo({top:0, behavior:'smooth'});
+  localStorage.setItem('sirag_page', current);
+}
+let suraPageMap={}, juzPageMap={}, juzStartKeyMap={}, suraAyaCount={};
+function initDrops(){
+  // compute maps
+  suraPageMap={}; juzPageMap={}; juzStartKeyMap={}; suraAyaCount={};
+  for(let p=1;p<=604;p++){
+    for(const v of pages[String(p)]){
+      const s=parseInt(v.key.split(':')[0]), a=parseInt(v.key.split(':')[1]);
+      if(!(s in suraPageMap)) suraPageMap[s]=p;
+      if(!(s in suraAyaCount) || a > suraAyaCount[s]) suraAyaCount[s]=a;
+      const j=v.juz;
+      if(!(j in juzPageMap)){ juzPageMap[j]=p; juzStartKeyMap[j]=v.key; }
+    }
+  }
+  // fill sura drop
+  const ds=document.getElementById('dropSura'); ds.innerHTML='<option value="">— اختر السورة —</option>';
+  for(let s=1;s<=114;s++){
+    const o=document.createElement('option'); o.value=s;
+    o.textContent=`${s.toLocaleString('ar-EG')} - سورة ${suraNames[s]} (ص ${ (suraPageMap[s]||1).toLocaleString('ar-EG')})`;
+    ds.appendChild(o);
+  }
+  const dj=document.getElementById('dropJuz'); dj.innerHTML='<option value="">— اختر الجزء —</option>';
+  for(let j=1;j<=30;j++){
+    const o=document.createElement('option'); o.value=j;
+    o.textContent=`الجزء ${j.toLocaleString('ar-EG')} - صفحة ${(juzPageMap[j]||1).toLocaleString('ar-EG')} (${juzStartKeyMap[j]||''})`;
+    dj.appendChild(o);
+  }
+  // aya drop initially for Fatiha
+  fillAyaDrop(1);
+  ds.addEventListener('change',e=>{
+    const s=parseInt(e.target.value); if(!s) return;
+    fillAyaDrop(s);
+    current=suraPageMap[s]||1; render(); // keep drawer open for aya selection
+  });
+  dj.addEventListener('change',e=>{
+    const j=parseInt(e.target.value); if(!j) return;
+    current=juzPageMap[j]||1; render(); drawer.classList.remove('open');
+  });
+  document.getElementById('dropAya').addEventListener('change',e=>{
+    const a=parseInt(e.target.value); const s=parseInt(ds.value);
+    if(!a||!s) return;
+    // find page containing s:a
+    const key=`${s}:${a}`;
+    for(let p=1;p<=604;p++){
+      if(pages[String(p)].some(v=>v.key===key)){ current=p; render(); break; }
+    }
+    drawer.classList.remove('open');
+  });
+}
+function fillAyaDrop(s){
+  const da=document.getElementById('dropAya');
+  const cnt=suraAyaCount[s]||7;
+  da.innerHTML='<option value="">— اختر الآية —</option>';
+  for(let a=1;a<=cnt;a++){
+    const o=document.createElement('option'); o.value=a;
+    o.textContent=`آية ${a.toLocaleString('ar-EG')} - ${suraNames[s]}:${a}`;
+    da.appendChild(o);
+  }
+}
+function initSettings(){
+  // font size
+  let fSize=parseInt(localStorage.getItem('sirag_fontSize')||'27');
+  const mushafStyle=document.createElement('style'); mushafStyle.id='dynFont'; document.head.appendChild(mushafStyle);
+  function applyFont(){ mushafStyle.textContent=`.mushaf{font-size:${fSize}px !important}`; document.getElementById('fontVal').textContent=fSize; localStorage.setItem('sirag_fontSize',fSize); }
+  applyFont();
+  document.getElementById('fontPlus').addEventListener('click',()=>{ if(fSize<40){ fSize+=1; applyFont(); }});
+  document.getElementById('fontMinus').addEventListener('click',()=>{ if(fSize>16){ fSize-=1; applyFont(); }});
+  // tajweed toggle (settings version)
+  const t2=document.getElementById('tajweedToggle2'); t2.checked=useTajweed;
+  t2.addEventListener('change',()=>{ useTajweed=t2.checked; localStorage.setItem('sirag_tajweed',useTajweed?'1':'0'); render(); });
+  // font select
+  const fs=document.getElementById('fontSelect');
+  const savedFont=localStorage.getItem('sirag_fontFamily')||'amiri';
+  fs.value=savedFont; applyFontFamily(savedFont);
+  fs.addEventListener('change',e=>{ applyFontFamily(e.target.value); localStorage.setItem('sirag_fontFamily',e.target.value); });
+  function applyFontFamily(v){ const m=document.querySelector('.mushaf'); if(!m) return; if(v==='scheherazade'){ m.style.fontFamily="'Scheherazade New','Amiri Quran',serif"; } else { m.style.fontFamily="'Amiri Quran','AmiriQuranLocal','Scheherazade New',serif"; } }
+  // expose for render to keep
+  window.applyFontFamily=applyFontFamily;
+}
+async function load(){
+  try{
+    const r=await fetch('./data/pages_quran_com.json?v=2');
+    pages=await r.json();
+    const saved=parseInt(localStorage.getItem('sirag_page')||'1');
+    if(saved>=1 && saved<=604) current=saved;
+    fillSelect(); render(); initDrops(); initSettings();
+  }catch(e){ pageBody.innerHTML='<div class=loader>تعذّر تحميل الصفحات: '+e.message+'</div>'; console.error(e); }
+}
+document.getElementById('prev').addEventListener('click',()=>{ if(current>1){ current--; render(); }});
+document.getElementById('next').addEventListener('click',()=>{ if(current<604){ current++; render(); }});
+pageSelect.addEventListener('change',e=>{ current=parseInt(e.target.value); render(); });
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft' && current<604){ current++; render(); }
+  if(e.key==='ArrowRight' && current>1){ current--; render(); }
+});
+// Drawer
+const drawer=document.getElementById('drawer');
+document.getElementById('openDrawer').addEventListener('click',()=>{ drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); });
+document.getElementById('closeDrawer').addEventListener('click',()=>{ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); });
+document.getElementById('drawerBg').addEventListener('click',()=>{ drawer.classList.remove('open'); });
+load();
+</script>
+</body>
+</html>
