@@ -1,0 +1,1256 @@
+{
+  "1": {
+    "name": "الفاتحة",
+    "ename": "Al-Fatihah",
+    "type": "مكية",
+    "ayahs": 7,
+    "order": 5,
+    "pages": [
+      1,
+      1
+    ]
+  },
+  "2": {
+    "name": "البقرة",
+    "ename": "Al-Baqarah",
+    "type": "مدنية",
+    "ayahs": 286,
+    "order": 87,
+    "pages": [
+      2,
+      49
+    ]
+  },
+  "3": {
+    "name": "آل عمران",
+    "ename": "Ali 'Imran",
+    "type": "مدنية",
+    "ayahs": 200,
+    "order": 89,
+    "pages": [
+      50,
+      76
+    ]
+  },
+  "4": {
+    "name": "النساء",
+    "ename": "An-Nisa",
+    "type": "مدنية",
+    "ayahs": 176,
+    "order": 92,
+    "pages": [
+      77,
+      106
+    ]
+  },
+  "5": {
+    "name": "المائدة",
+    "ename": "Al-Ma'idah",
+    "type": "مدنية",
+    "ayahs": 120,
+    "order": 112,
+    "pages": [
+      106,
+      127
+    ]
+  },
+  "6": {
+    "name": "الأنعام",
+    "ename": "Al-An'am",
+    "type": "مكية",
+    "ayahs": 165,
+    "order": 55,
+    "pages": [
+      128,
+      150
+    ]
+  },
+  "7": {
+    "name": "الأعراف",
+    "ename": "Al-A'raf",
+    "type": "مكية",
+    "ayahs": 206,
+    "order": 39,
+    "pages": [
+      151,
+      176
+    ]
+  },
+  "8": {
+    "name": "الأنفال",
+    "ename": "Al-Anfal",
+    "type": "مدنية",
+    "ayahs": 75,
+    "order": 88,
+    "pages": [
+      177,
+      186
+    ]
+  },
+  "9": {
+    "name": "التوبة",
+    "ename": "At-Tawbah",
+    "type": "مدنية",
+    "ayahs": 129,
+    "order": 113,
+    "pages": [
+      187,
+      207
+    ]
+  },
+  "10": {
+    "name": "يونس",
+    "ename": "Yunus",
+    "type": "مكية",
+    "ayahs": 109,
+    "order": 51,
+    "pages": [
+      208,
+      221
+    ]
+  },
+  "11": {
+    "name": "هود",
+    "ename": "Hud",
+    "type": "مكية",
+    "ayahs": 123,
+    "order": 52,
+    "pages": [
+      221,
+      235
+    ]
+  },
+  "12": {
+    "name": "يوسف",
+    "ename": "Yusuf",
+    "type": "مكية",
+    "ayahs": 111,
+    "order": 53,
+    "pages": [
+      235,
+      248
+    ]
+  },
+  "13": {
+    "name": "الرعد",
+    "ename": "Ar-Ra'd",
+    "type": "مدنية",
+    "ayahs": 43,
+    "order": 96,
+    "pages": [
+      249,
+      255
+    ]
+  },
+  "14": {
+    "name": "ابراهيم",
+    "ename": "Ibrahim",
+    "type": "مكية",
+    "ayahs": 52,
+    "order": 72,
+    "pages": [
+      255,
+      261
+    ]
+  },
+  "15": {
+    "name": "الحجر",
+    "ename": "Al-Hijr",
+    "type": "مكية",
+    "ayahs": 99,
+    "order": 54,
+    "pages": [
+      262,
+      267
+    ]
+  },
+  "16": {
+    "name": "النحل",
+    "ename": "An-Nahl",
+    "type": "مكية",
+    "ayahs": 128,
+    "order": 70,
+    "pages": [
+      267,
+      281
+    ]
+  },
+  "17": {
+    "name": "الإسراء",
+    "ename": "Al-Isra",
+    "type": "مكية",
+    "ayahs": 111,
+    "order": 50,
+    "pages": [
+      282,
+      293
+    ]
+  },
+  "18": {
+    "name": "الكهف",
+    "ename": "Al-Kahf",
+    "type": "مكية",
+    "ayahs": 110,
+    "order": 69,
+    "pages": [
+      293,
+      304
+    ]
+  },
+  "19": {
+    "name": "مريم",
+    "ename": "Maryam",
+    "type": "مكية",
+    "ayahs": 98,
+    "order": 44,
+    "pages": [
+      305,
+      312
+    ]
+  },
+  "20": {
+    "name": "طه",
+    "ename": "Taha",
+    "type": "مكية",
+    "ayahs": 135,
+    "order": 45,
+    "pages": [
+      312,
+      321
+    ]
+  },
+  "21": {
+    "name": "الأنبياء",
+    "ename": "Al-Anbya",
+    "type": "مكية",
+    "ayahs": 112,
+    "order": 73,
+    "pages": [
+      322,
+      331
+    ]
+  },
+  "22": {
+    "name": "الحج",
+    "ename": "Al-Hajj",
+    "type": "مدنية",
+    "ayahs": 78,
+    "order": 103,
+    "pages": [
+      332,
+      341
+    ]
+  },
+  "23": {
+    "name": "المؤمنون",
+    "ename": "Al-Mu'minun",
+    "type": "مكية",
+    "ayahs": 118,
+    "order": 74,
+    "pages": [
+      342,
+      349
+    ]
+  },
+  "24": {
+    "name": "النور",
+    "ename": "An-Nur",
+    "type": "مدنية",
+    "ayahs": 64,
+    "order": 102,
+    "pages": [
+      350,
+      359
+    ]
+  },
+  "25": {
+    "name": "الفرقان",
+    "ename": "Al-Furqan",
+    "type": "مكية",
+    "ayahs": 77,
+    "order": 42,
+    "pages": [
+      359,
+      366
+    ]
+  },
+  "26": {
+    "name": "الشعراء",
+    "ename": "Ash-Shu'ara",
+    "type": "مكية",
+    "ayahs": 227,
+    "order": 47,
+    "pages": [
+      367,
+      376
+    ]
+  },
+  "27": {
+    "name": "النمل",
+    "ename": "An-Naml",
+    "type": "مكية",
+    "ayahs": 93,
+    "order": 48,
+    "pages": [
+      377,
+      385
+    ]
+  },
+  "28": {
+    "name": "القصص",
+    "ename": "Al-Qasas",
+    "type": "مكية",
+    "ayahs": 88,
+    "order": 49,
+    "pages": [
+      385,
+      396
+    ]
+  },
+  "29": {
+    "name": "العنكبوت",
+    "ename": "Al-'Ankabut",
+    "type": "مكية",
+    "ayahs": 69,
+    "order": 85,
+    "pages": [
+      396,
+      404
+    ]
+  },
+  "30": {
+    "name": "الروم",
+    "ename": "Ar-Rum",
+    "type": "مكية",
+    "ayahs": 60,
+    "order": 84,
+    "pages": [
+      404,
+      410
+    ]
+  },
+  "31": {
+    "name": "لقمان",
+    "ename": "Luqman",
+    "type": "مكية",
+    "ayahs": 34,
+    "order": 57,
+    "pages": [
+      411,
+      414
+    ]
+  },
+  "32": {
+    "name": "السجدة",
+    "ename": "As-Sajdah",
+    "type": "مكية",
+    "ayahs": 30,
+    "order": 75,
+    "pages": [
+      415,
+      417
+    ]
+  },
+  "33": {
+    "name": "الأحزاب",
+    "ename": "Al-Ahzab",
+    "type": "مدنية",
+    "ayahs": 73,
+    "order": 90,
+    "pages": [
+      418,
+      427
+    ]
+  },
+  "34": {
+    "name": "سبإ",
+    "ename": "Saba",
+    "type": "مكية",
+    "ayahs": 54,
+    "order": 58,
+    "pages": [
+      428,
+      434
+    ]
+  },
+  "35": {
+    "name": "فاطر",
+    "ename": "Fatir",
+    "type": "مكية",
+    "ayahs": 45,
+    "order": 43,
+    "pages": [
+      434,
+      440
+    ]
+  },
+  "36": {
+    "name": "يس",
+    "ename": "Ya-Sin",
+    "type": "مكية",
+    "ayahs": 83,
+    "order": 41,
+    "pages": [
+      440,
+      445
+    ]
+  },
+  "37": {
+    "name": "الصافات",
+    "ename": "As-Saffat",
+    "type": "مكية",
+    "ayahs": 182,
+    "order": 56,
+    "pages": [
+      446,
+      452
+    ]
+  },
+  "38": {
+    "name": "ص",
+    "ename": "Sad",
+    "type": "مكية",
+    "ayahs": 88,
+    "order": 38,
+    "pages": [
+      453,
+      458
+    ]
+  },
+  "39": {
+    "name": "الزمر",
+    "ename": "Az-Zumar",
+    "type": "مكية",
+    "ayahs": 75,
+    "order": 59,
+    "pages": [
+      458,
+      467
+    ]
+  },
+  "40": {
+    "name": "غافر",
+    "ename": "Ghafir",
+    "type": "مكية",
+    "ayahs": 85,
+    "order": 60,
+    "pages": [
+      467,
+      476
+    ]
+  },
+  "41": {
+    "name": "فصلت",
+    "ename": "Fussilat",
+    "type": "مكية",
+    "ayahs": 54,
+    "order": 61,
+    "pages": [
+      477,
+      482
+    ]
+  },
+  "42": {
+    "name": "الشورى",
+    "ename": "Ash-Shuraa",
+    "type": "مكية",
+    "ayahs": 53,
+    "order": 62,
+    "pages": [
+      483,
+      489
+    ]
+  },
+  "43": {
+    "name": "الزخرف",
+    "ename": "Az-Zukhruf",
+    "type": "مكية",
+    "ayahs": 89,
+    "order": 63,
+    "pages": [
+      489,
+      495
+    ]
+  },
+  "44": {
+    "name": "الدخان",
+    "ename": "Ad-Dukhan",
+    "type": "مكية",
+    "ayahs": 59,
+    "order": 64,
+    "pages": [
+      496,
+      498
+    ]
+  },
+  "45": {
+    "name": "الجاثية",
+    "ename": "Al-Jathiyah",
+    "type": "مكية",
+    "ayahs": 37,
+    "order": 65,
+    "pages": [
+      499,
+      502
+    ]
+  },
+  "46": {
+    "name": "الأحقاف",
+    "ename": "Al-Ahqaf",
+    "type": "مكية",
+    "ayahs": 35,
+    "order": 66,
+    "pages": [
+      502,
+      506
+    ]
+  },
+  "47": {
+    "name": "محمد",
+    "ename": "Muhammad",
+    "type": "مدنية",
+    "ayahs": 38,
+    "order": 95,
+    "pages": [
+      507,
+      510
+    ]
+  },
+  "48": {
+    "name": "الفتح",
+    "ename": "Al-Fath",
+    "type": "مدنية",
+    "ayahs": 29,
+    "order": 111,
+    "pages": [
+      511,
+      515
+    ]
+  },
+  "49": {
+    "name": "الحجرات",
+    "ename": "Al-Hujurat",
+    "type": "مدنية",
+    "ayahs": 18,
+    "order": 106,
+    "pages": [
+      515,
+      517
+    ]
+  },
+  "50": {
+    "name": "ق",
+    "ename": "Qaf",
+    "type": "مكية",
+    "ayahs": 45,
+    "order": 34,
+    "pages": [
+      518,
+      520
+    ]
+  },
+  "51": {
+    "name": "الذاريات",
+    "ename": "Adh-Dhariyat",
+    "type": "مكية",
+    "ayahs": 60,
+    "order": 67,
+    "pages": [
+      520,
+      523
+    ]
+  },
+  "52": {
+    "name": "الطور",
+    "ename": "At-Tur",
+    "type": "مكية",
+    "ayahs": 49,
+    "order": 76,
+    "pages": [
+      523,
+      525
+    ]
+  },
+  "53": {
+    "name": "النجم",
+    "ename": "An-Najm",
+    "type": "مكية",
+    "ayahs": 62,
+    "order": 23,
+    "pages": [
+      526,
+      528
+    ]
+  },
+  "54": {
+    "name": "القمر",
+    "ename": "Al-Qamar",
+    "type": "مكية",
+    "ayahs": 55,
+    "order": 37,
+    "pages": [
+      528,
+      531
+    ]
+  },
+  "55": {
+    "name": "الرحمن",
+    "ename": "Ar-Rahman",
+    "type": "مدنية",
+    "ayahs": 78,
+    "order": 97,
+    "pages": [
+      531,
+      534
+    ]
+  },
+  "56": {
+    "name": "الواقعة",
+    "ename": "Al-Waqi'ah",
+    "type": "مكية",
+    "ayahs": 96,
+    "order": 46,
+    "pages": [
+      534,
+      537
+    ]
+  },
+  "57": {
+    "name": "الحديد",
+    "ename": "Al-Hadid",
+    "type": "مدنية",
+    "ayahs": 29,
+    "order": 94,
+    "pages": [
+      537,
+      541
+    ]
+  },
+  "58": {
+    "name": "المجادلة",
+    "ename": "Al-Mujadila",
+    "type": "مدنية",
+    "ayahs": 22,
+    "order": 105,
+    "pages": [
+      542,
+      545
+    ]
+  },
+  "59": {
+    "name": "الحشر",
+    "ename": "Al-Hashr",
+    "type": "مدنية",
+    "ayahs": 24,
+    "order": 101,
+    "pages": [
+      545,
+      548
+    ]
+  },
+  "60": {
+    "name": "الممتحنة",
+    "ename": "Al-Mumtahanah",
+    "type": "مدنية",
+    "ayahs": 13,
+    "order": 91,
+    "pages": [
+      549,
+      551
+    ]
+  },
+  "61": {
+    "name": "الصف",
+    "ename": "As-Saf",
+    "type": "مدنية",
+    "ayahs": 14,
+    "order": 109,
+    "pages": [
+      551,
+      552
+    ]
+  },
+  "62": {
+    "name": "الجمعة",
+    "ename": "Al-Jumu'ah",
+    "type": "مدنية",
+    "ayahs": 11,
+    "order": 110,
+    "pages": [
+      553,
+      554
+    ]
+  },
+  "63": {
+    "name": "المنافقون",
+    "ename": "Al-Munafiqun",
+    "type": "مدنية",
+    "ayahs": 11,
+    "order": 104,
+    "pages": [
+      554,
+      555
+    ]
+  },
+  "64": {
+    "name": "التغابن",
+    "ename": "At-Taghabun",
+    "type": "مدنية",
+    "ayahs": 18,
+    "order": 108,
+    "pages": [
+      556,
+      557
+    ]
+  },
+  "65": {
+    "name": "الطلاق",
+    "ename": "At-Talaq",
+    "type": "مدنية",
+    "ayahs": 12,
+    "order": 99,
+    "pages": [
+      558,
+      559
+    ]
+  },
+  "66": {
+    "name": "التحريم",
+    "ename": "At-Tahrim",
+    "type": "مدنية",
+    "ayahs": 12,
+    "order": 107,
+    "pages": [
+      560,
+      561
+    ]
+  },
+  "67": {
+    "name": "الملك",
+    "ename": "Al-Mulk",
+    "type": "مكية",
+    "ayahs": 30,
+    "order": 77,
+    "pages": [
+      562,
+      564
+    ]
+  },
+  "68": {
+    "name": "القلم",
+    "ename": "Al-Qalam",
+    "type": "مكية",
+    "ayahs": 52,
+    "order": 2,
+    "pages": [
+      564,
+      566
+    ]
+  },
+  "69": {
+    "name": "الحاقة",
+    "ename": "Al-Haqqah",
+    "type": "مكية",
+    "ayahs": 52,
+    "order": 78,
+    "pages": [
+      566,
+      568
+    ]
+  },
+  "70": {
+    "name": "المعارج",
+    "ename": "Al-Ma'arij",
+    "type": "مكية",
+    "ayahs": 44,
+    "order": 79,
+    "pages": [
+      568,
+      570
+    ]
+  },
+  "71": {
+    "name": "نوح",
+    "ename": "Nuh",
+    "type": "مكية",
+    "ayahs": 28,
+    "order": 71,
+    "pages": [
+      570,
+      571
+    ]
+  },
+  "72": {
+    "name": "الجن",
+    "ename": "Al-Jinn",
+    "type": "مكية",
+    "ayahs": 28,
+    "order": 40,
+    "pages": [
+      572,
+      573
+    ]
+  },
+  "73": {
+    "name": "المزمل",
+    "ename": "Al-Muzzammil",
+    "type": "مكية",
+    "ayahs": 20,
+    "order": 3,
+    "pages": [
+      574,
+      575
+    ]
+  },
+  "74": {
+    "name": "المدثر",
+    "ename": "Al-Muddaththir",
+    "type": "مكية",
+    "ayahs": 56,
+    "order": 4,
+    "pages": [
+      575,
+      577
+    ]
+  },
+  "75": {
+    "name": "القيامة",
+    "ename": "Al-Qiyamah",
+    "type": "مكية",
+    "ayahs": 40,
+    "order": 31,
+    "pages": [
+      577,
+      578
+    ]
+  },
+  "76": {
+    "name": "الانسان",
+    "ename": "Al-Insan",
+    "type": "مدنية",
+    "ayahs": 31,
+    "order": 98,
+    "pages": [
+      578,
+      580
+    ]
+  },
+  "77": {
+    "name": "المرسلات",
+    "ename": "Al-Mursalat",
+    "type": "مكية",
+    "ayahs": 50,
+    "order": 33,
+    "pages": [
+      580,
+      581
+    ]
+  },
+  "78": {
+    "name": "النبإ",
+    "ename": "An-Naba",
+    "type": "مكية",
+    "ayahs": 40,
+    "order": 80,
+    "pages": [
+      582,
+      583
+    ]
+  },
+  "79": {
+    "name": "النازعات",
+    "ename": "An-Nazi'at",
+    "type": "مكية",
+    "ayahs": 46,
+    "order": 81,
+    "pages": [
+      583,
+      584
+    ]
+  },
+  "80": {
+    "name": "عبس",
+    "ename": "'Abasa",
+    "type": "مكية",
+    "ayahs": 42,
+    "order": 24,
+    "pages": [
+      585,
+      585
+    ]
+  },
+  "81": {
+    "name": "التكوير",
+    "ename": "At-Takwir",
+    "type": "مكية",
+    "ayahs": 29,
+    "order": 7,
+    "pages": [
+      586,
+      586
+    ]
+  },
+  "82": {
+    "name": "الإنفطار",
+    "ename": "Al-Infitar",
+    "type": "مكية",
+    "ayahs": 19,
+    "order": 82,
+    "pages": [
+      587,
+      587
+    ]
+  },
+  "83": {
+    "name": "المطففين",
+    "ename": "Al-Mutaffifin",
+    "type": "مكية",
+    "ayahs": 36,
+    "order": 86,
+    "pages": [
+      587,
+      589
+    ]
+  },
+  "84": {
+    "name": "الإنشقاق",
+    "ename": "Al-Inshiqaq",
+    "type": "مكية",
+    "ayahs": 25,
+    "order": 83,
+    "pages": [
+      589,
+      589
+    ]
+  },
+  "85": {
+    "name": "البروج",
+    "ename": "Al-Buruj",
+    "type": "مكية",
+    "ayahs": 22,
+    "order": 27,
+    "pages": [
+      590,
+      590
+    ]
+  },
+  "86": {
+    "name": "الطارق",
+    "ename": "At-Tariq",
+    "type": "مكية",
+    "ayahs": 17,
+    "order": 36,
+    "pages": [
+      591,
+      591
+    ]
+  },
+  "87": {
+    "name": "الأعلى",
+    "ename": "Al-A'la",
+    "type": "مكية",
+    "ayahs": 19,
+    "order": 8,
+    "pages": [
+      591,
+      592
+    ]
+  },
+  "88": {
+    "name": "الغاشية",
+    "ename": "Al-Ghashiyah",
+    "type": "مكية",
+    "ayahs": 26,
+    "order": 68,
+    "pages": [
+      592,
+      592
+    ]
+  },
+  "89": {
+    "name": "الفجر",
+    "ename": "Al-Fajr",
+    "type": "مكية",
+    "ayahs": 30,
+    "order": 10,
+    "pages": [
+      593,
+      594
+    ]
+  },
+  "90": {
+    "name": "البلد",
+    "ename": "Al-Balad",
+    "type": "مكية",
+    "ayahs": 20,
+    "order": 35,
+    "pages": [
+      594,
+      594
+    ]
+  },
+  "91": {
+    "name": "الشمس",
+    "ename": "Ash-Shams",
+    "type": "مكية",
+    "ayahs": 15,
+    "order": 26,
+    "pages": [
+      595,
+      595
+    ]
+  },
+  "92": {
+    "name": "الليل",
+    "ename": "Al-Layl",
+    "type": "مكية",
+    "ayahs": 21,
+    "order": 9,
+    "pages": [
+      595,
+      596
+    ]
+  },
+  "93": {
+    "name": "الضحى",
+    "ename": "Ad-Duhaa",
+    "type": "مكية",
+    "ayahs": 11,
+    "order": 11,
+    "pages": [
+      596,
+      596
+    ]
+  },
+  "94": {
+    "name": "الشرح",
+    "ename": "Ash-Sharh",
+    "type": "مكية",
+    "ayahs": 8,
+    "order": 12,
+    "pages": [
+      596,
+      596
+    ]
+  },
+  "95": {
+    "name": "التين",
+    "ename": "At-Tin",
+    "type": "مكية",
+    "ayahs": 8,
+    "order": 28,
+    "pages": [
+      597,
+      597
+    ]
+  },
+  "96": {
+    "name": "العلق",
+    "ename": "Al-'Alaq",
+    "type": "مكية",
+    "ayahs": 19,
+    "order": 1,
+    "pages": [
+      597,
+      597
+    ]
+  },
+  "97": {
+    "name": "القدر",
+    "ename": "Al-Qadr",
+    "type": "مكية",
+    "ayahs": 5,
+    "order": 25,
+    "pages": [
+      598,
+      598
+    ]
+  },
+  "98": {
+    "name": "البينة",
+    "ename": "Al-Bayyinah",
+    "type": "مدنية",
+    "ayahs": 8,
+    "order": 100,
+    "pages": [
+      598,
+      599
+    ]
+  },
+  "99": {
+    "name": "الزلزلة",
+    "ename": "Az-Zalzalah",
+    "type": "مدنية",
+    "ayahs": 8,
+    "order": 93,
+    "pages": [
+      599,
+      599
+    ]
+  },
+  "100": {
+    "name": "العاديات",
+    "ename": "Al-'Adiyat",
+    "type": "مكية",
+    "ayahs": 11,
+    "order": 14,
+    "pages": [
+      599,
+      600
+    ]
+  },
+  "101": {
+    "name": "القارعة",
+    "ename": "Al-Qari'ah",
+    "type": "مكية",
+    "ayahs": 11,
+    "order": 30,
+    "pages": [
+      600,
+      600
+    ]
+  },
+  "102": {
+    "name": "التكاثر",
+    "ename": "At-Takathur",
+    "type": "مكية",
+    "ayahs": 8,
+    "order": 16,
+    "pages": [
+      600,
+      600
+    ]
+  },
+  "103": {
+    "name": "العصر",
+    "ename": "Al-'Asr",
+    "type": "مكية",
+    "ayahs": 3,
+    "order": 13,
+    "pages": [
+      601,
+      601
+    ]
+  },
+  "104": {
+    "name": "الهمزة",
+    "ename": "Al-Humazah",
+    "type": "مكية",
+    "ayahs": 9,
+    "order": 32,
+    "pages": [
+      601,
+      601
+    ]
+  },
+  "105": {
+    "name": "الفيل",
+    "ename": "Al-Fil",
+    "type": "مكية",
+    "ayahs": 5,
+    "order": 19,
+    "pages": [
+      601,
+      601
+    ]
+  },
+  "106": {
+    "name": "قريش",
+    "ename": "Quraysh",
+    "type": "مكية",
+    "ayahs": 4,
+    "order": 29,
+    "pages": [
+      602,
+      602
+    ]
+  },
+  "107": {
+    "name": "الماعون",
+    "ename": "Al-Ma'un",
+    "type": "مكية",
+    "ayahs": 7,
+    "order": 17,
+    "pages": [
+      602,
+      602
+    ]
+  },
+  "108": {
+    "name": "الكوثر",
+    "ename": "Al-Kawthar",
+    "type": "مكية",
+    "ayahs": 3,
+    "order": 15,
+    "pages": [
+      602,
+      602
+    ]
+  },
+  "109": {
+    "name": "الكافرون",
+    "ename": "Al-Kafirun",
+    "type": "مكية",
+    "ayahs": 6,
+    "order": 18,
+    "pages": [
+      603,
+      603
+    ]
+  },
+  "110": {
+    "name": "النصر",
+    "ename": "An-Nasr",
+    "type": "مدنية",
+    "ayahs": 3,
+    "order": 114,
+    "pages": [
+      603,
+      603
+    ]
+  },
+  "111": {
+    "name": "المسد",
+    "ename": "Al-Masad",
+    "type": "مكية",
+    "ayahs": 5,
+    "order": 6,
+    "pages": [
+      603,
+      603
+    ]
+  },
+  "112": {
+    "name": "الإخلاص",
+    "ename": "Al-Ikhlas",
+    "type": "مكية",
+    "ayahs": 4,
+    "order": 22,
+    "pages": [
+      604,
+      604
+    ]
+  },
+  "113": {
+    "name": "الفلق",
+    "ename": "Al-Falaq",
+    "type": "مكية",
+    "ayahs": 5,
+    "order": 20,
+    "pages": [
+      604,
+      604
+    ]
+  },
+  "114": {
+    "name": "الناس",
+    "ename": "An-Nas",
+    "type": "مكية",
+    "ayahs": 6,
+    "order": 21,
+    "pages": [
+      604,
+      604
+    ]
+  }
+}

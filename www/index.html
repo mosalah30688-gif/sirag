@@ -70,6 +70,10 @@ tajweed.madda_normal, tajweed.madda_permissible, tajweed.madda_necessary, tajwee
 .svc span{font-size:11px;color:#7a6a3a}
 .svc .dot{width:8px;height:8px;border-radius:50%;background:#c2a15a;flex:0 0 8px}
 .svc.coming{opacity:.55}
+#surahInfo{position:fixed;inset:0;display:none;z-index:25}
+#surahInfo.open{display:block}
+.surah-bg{position:absolute;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(2px)}
+.surah-card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:360px;background:#fffef7;border:1px solid #e8e0c8;border-radius:14px;padding:16px;box-shadow:0 10px 28px rgba(0,0,0,.2)}
 img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 .top{flex-wrap:wrap}
 .page-head{flex-wrap:wrap}
@@ -103,7 +107,8 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 </div>
 
 <div class="page-wrap">
-  <div class="page" id="pageCard">
+  <div id="surahInfo" aria-hidden="true"><div class="surah-bg" id="surahInfoBg"></div><div class="surah-card" id="surahInfoCard"></div></div>
+<div class="page" id="pageCard">
     <div class="page-head" id="pageHead"><span>جاري التحميل...</span><span>—</span></div>
     <div id="pageBody"><div class="loader">يُحمّل صفحات المصحف (604 صفحات) ...</div></div>
     <div id="audioBox" style="display:flex;align-items:center;gap:8px;border-top:1px solid #efe6c8;background:#fff9e6;padding:10px 14px;flex-wrap:wrap">
@@ -209,7 +214,7 @@ function render(){
   data.forEach(v=>{
     const [s,a]=v.key.split(':').map(Number);
     if(a===1 && lastSura!==s){
-      html+=`<div class="sura-title">سورة ${suraNames[s]}</div>`;
+      html+=`<div class="sura-title">سورة ${suraNames[s]} <button class="suraInfoBtn" data-sura="${s}" style="margin-right:8px;border:1px solid #e9ddb8;background:#fff;color:#8c6f1f;border-radius:999px;width:26px;height:26px;cursor:pointer;font-size:12px" title="معلومات السورة">ℹ️</button></div>`;
       if(s!==1 && s!==9) html+=`<div class="basmala">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>`;
     }
     lastSura=s;
@@ -479,6 +484,41 @@ function initTajweedTip(){
   });
   document.addEventListener('scroll',()=> tip.style.display='none', {passive:true});
 }
+let surahInfoData=null;
+async function ensureSurahInfo(){
+  if(surahInfoData) return surahInfoData;
+  const r=await fetch('./data/surah_info.json?v=1');
+  surahInfoData=await r.json();
+  return surahInfoData;
+}
+async function showSurahInfo(s){
+  await ensureSurahInfo();
+  const info=surahInfoData[String(s)];
+  if(!info) return;
+  const card=document.getElementById('surahInfoCard');
+  card.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <b style="color:#143d2a;font-size:16px">سورة ${suraNames[s]}</b>
+      <button id="closeSurahInfo" style="border:1px solid #e8e0c8;background:#fff;border-radius:8px;padding:4px 8px;cursor:pointer">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+      <div style="background:#fff;border:1px solid #efe6c8;border-radius:10px;padding:8px"><span style="color:#7a6a3a">النزول</span><br><b>${info.type}</b></div>
+      <div style="background:#fff;border:1px solid #efe6c8;border-radius:10px;padding:8px"><span style="color:#7a6a3a">الآيات</span><br><b>${info.ayahs.toLocaleString('ar-EG')}</b></div>
+      <div style="background:#fff;border:1px solid #efe6c8;border-radius:10px;padding:8px"><span style="color:#7a6a3a">ترتيب النزول</span><br><b>${info.order?info.order.toLocaleString('ar-EG'):'—'}</b></div>
+      <div style="background:#fff;border:1px solid #efe6c8;border-radius:10px;padding:8px"><span style="color:#7a6a3a">الصفحات</span><br><b>${info.pages[0].toLocaleString('ar-EG')}–${info.pages[1].toLocaleString('ar-EG')}</b></div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:#7a6a3a;line-height:1.7">وحي: السورة ${info.type}، نزلت في الترتيب ${info.order||'—'} من الوحي. عدد آياتها ${info.ayahs} وتقع من صفحة ${info.pages[0]} إلى ${info.pages[1]} في مصحف المدينة.</div>
+  `;
+  document.getElementById('surahInfo').classList.add('open');
+  document.getElementById('surahInfo').setAttribute('aria-hidden','false');
+  document.getElementById('closeSurahInfo').addEventListener('click',closeSurahInfo);
+  document.getElementById('surahInfoBg').addEventListener('click',closeSurahInfo);
+}
+function closeSurahInfo(){ document.getElementById('surahInfo').classList.remove('open'); }
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.suraInfoBtn');
+  if(btn){ const s=parseInt(btn.dataset.sura); showSurahInfo(s); }
+});
 function initSearch(){
   const input=document.getElementById('searchInput');
   const results=document.getElementById('searchResults');
