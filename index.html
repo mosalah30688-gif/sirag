@@ -188,16 +188,8 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
       </div>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
       </div>
-      <!-- تتبع الختمة الذكي -->
-      <div id="khatmBox" style="margin-top:12px;background:linear-gradient(180deg,#fffdf4,#fff9e6);border:1px solid #efe6c8;border-radius:11px;padding:10px">
-        <b style="display:block;color:#143d2a;font-size:13px;margin-bottom:6px">📊 تتبع الختمة الذكي</b>
-        <div id="khatmStats" style="font-size:12px;color:#1a1a1a;line-height:1.7"></div>
-        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-          <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:#7a6a3a"><input type="checkbox" id="khatmNotify" style="accent-color:#143d2a"> تذكير يومي</label>
-          <input type="time" id="khatmTime" value="08:00" style="padding:4px 6px;border:1px solid #e8e0c8;border-radius:8px;font-size:11px">
-          <button id="khatmTestBtn" style="padding:4px 8px;border:1px solid #c2a15a;background:#fff;border-radius:8px;font-size:11px;cursor:pointer">جرّب الإشعار</button>
-        </div>
-        <div style="font-size:10px;color:#8c6f1f;margin-top:4px">“ورتل القرآن ترتيلا” — سيذكرك حسب عادتك ويعرض اتقرأ كام وفاضل كام</div>
+      <div style="margin-top:10px">
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">تتبع الختمة الذكي <input type="checkbox" id="khatmToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
       </div>
     </div>
 <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8"></div>
@@ -217,6 +209,17 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
     <div class="drawer-head"><h3>🔖 المفضلة</h3><button class="close" id="closeFav">إغلاق ✕</button></div>
     <div id="favList" style="display:flex;flex-direction:column;gap:8px"></div>
     <div id="favEmpty" style="display:none;text-align:center;color:#7a6a3a;font-size:13px;padding:20px 10px">لا توجد علامات — اضغط على أي آية بإصبعك لحفظ علامة مرجعية</div>
+    <!-- تتبع الختمة — يظهر هنا لما تفعل الخدمة -->
+    <div id="favKhatm" style="display:none;margin-top:14px;border-top:1px solid #efe6c8;padding-top:12px">
+      <b style="display:block;color:#143d2a;font-size:13px;margin-bottom:6px">📊 تتبع الختمة — تقريرك</b>
+      <div id="khatmStats" style="font-size:12px;color:#1a1a1a;line-height:1.7;background:#fff;border:1px solid #efe6c8;border-radius:10px;padding:10px"></div>
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:#7a6a3a"><input type="checkbox" id="khatmNotify" style="accent-color:#143d2a"> تذكير يومي</label>
+        <input type="time" id="khatmTime" value="08:00" style="padding:4px 6px;border:1px solid #e8e0c8;border-radius:8px;font-size:11px">
+        <button id="khatmTestBtn" style="padding:4px 8px;border:1px solid #c2a15a;background:#fff;border-radius:8px;font-size:11px;cursor:pointer">جرّب الإشعار</button>
+      </div>
+      <div style="font-size:10px;color:#8c6f1f;margin-top:4px">“ورتل القرآن ترتيلا”</div>
+    </div>
   </div>
 </div>
 <!-- Drawer خريطة القرآن يفسر بعضه — على المصحف كله -->
@@ -453,6 +456,7 @@ function updateProgress(){
 function renderKhatm(){
   const el=document.getElementById('khatmStats');
   if(!el) return;
+  if(localStorage.getItem('sirag_khatm_enabled')!=='1'){ el.innerHTML='فعّل تتبع الختمة من الإعدادات لعرض تقريرك'; return; }
   const read=visited.size, total=604, remain=total-read, pct=Math.round(read/total*100);
   const habit=JSON.parse(localStorage.getItem('sirag_habit')||'{}');
   const days=Object.keys(habit).sort().slice(-7);
@@ -462,6 +466,15 @@ function renderKhatm(){
   el.innerHTML=`اتقرأ: <b>${read} / ${total}</b> (${pct}%) • فاضل: <b>${remain} صفحة</b><br>معدلك: <b>${avg} صفحة/يوم</b> (آخر 7 أيام) • متوقع تخلص بعد <b>${est} يوم</b><br>سلسلة قراءة: <b>${streak} يوم</b> ${streak>=3?'🔥':''}`;
 }
 function khatmNotifyCheck(){
+  // تفعيل الخدمة من الإعدادات
+  const toggle=document.getElementById('khatmToggle');
+  const favBox=document.getElementById('favKhatm');
+  if(toggle){
+    toggle.checked=localStorage.getItem('sirag_khatm_enabled')==='1';
+    const upd=()=>{ if(favBox) favBox.style.display= toggle.checked? 'block':'none'; if(toggle.checked) renderKhatm(); };
+    upd();
+    toggle.addEventListener('change',()=>{ localStorage.setItem('sirag_khatm_enabled', toggle.checked?'1':'0'); upd(); });
+  }
   const chk=document.getElementById('khatmNotify'), timeEl=document.getElementById('khatmTime');
   if(!chk||!timeEl) return;
   const savedNotify=localStorage.getItem('sirag_khatm_notify')==='1';
@@ -919,7 +932,7 @@ document.getElementById('closeDrawer').addEventListener('click',()=>{ drawer.cla
 document.getElementById('drawerBg').addEventListener('click',()=>{ drawer.classList.remove('open'); });
 // Fav Drawer — علامة مرجعية مستقلة جنب الإعدادات
 const favDrawer=document.getElementById('favDrawer');
-document.getElementById('openFav').addEventListener('click',()=>{ renderFavList(); favDrawer.classList.add('open'); favDrawer.setAttribute('aria-hidden','false'); });
+document.getElementById('openFav').addEventListener('click',()=>{ renderFavList(); renderKhatm(); favDrawer.classList.add('open'); favDrawer.setAttribute('aria-hidden','false'); });
 document.getElementById('closeFav').addEventListener('click',()=>{ favDrawer.classList.remove('open'); favDrawer.setAttribute('aria-hidden','true'); });
 document.getElementById('favBg').addEventListener('click',()=>{ favDrawer.classList.remove('open'); });
 // Map Drawer — خريطة القرآن يفسر بعضه
