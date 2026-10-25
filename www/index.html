@@ -180,6 +180,14 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
       </div>
     </div>
+    <!-- فهرس الوحي المستقل — ترتيب النزول وخطتك -->
+    <div style="margin-top:12px;background:#fff;border:1px solid #efe6c8;border-radius:12px;overflow:hidden">
+      <button id="wahyToggle" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:none;background:linear-gradient(180deg,#fffdf4,#fff6d6);cursor:pointer;font-weight:700;color:#143d2a;font-size:13px">📖 فهرس الوحي — ترتيب النزول <span id="wahyArrow" style="font-size:11px">▼</span></button>
+      <div id="wahyPanel" style="display:none;padding:10px;max-height:320px;overflow:auto;border-top:1px solid #efe6c8">
+        <div style="font-size:11px;color:#7a6a3a;line-height:1.6;margin-bottom:8px">ترتيب القرآن حسب النزول (1 العلق → 114 النصر) — اضغط السورة للانتقال لصفحتها. خطتك المقترحة: اقرأ 1-5 يومياً حسب النزول لتفهم تدرج الوحي.</div>
+        <div id="wahyList" style="display:flex;flex-direction:column;gap:6px"></div>
+      </div>
+    </div>
 <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8"></div>
 <!-- Drawer المفضلة — علامات مرجعية -->
 <div class="drawer" id="favDrawer" aria-hidden="true">
@@ -785,7 +793,7 @@ async function load(){
     pages=await r.json();
     const saved=parseInt(localStorage.getItem('sirag_page')||'1');
     if(saved>=1 && saved<=604) current=saved;
-    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip();
+    fillSelect(); render(); initDrops(); initSettings(); initSearch(); initAudio(); initTajweedTip(); initWahy();
   }catch(e){ pageBody.innerHTML='<div class=loader>تعذّر تحميل الصفحات: '+e.message+'</div>'; console.error(e); }
 }
 document.getElementById('prev').addEventListener('click',()=>{ if(current>1){ current--; render(); }});
@@ -815,6 +823,28 @@ pageBody.addEventListener('click',e=>{
   // نبضة تأكيد
   ay.animate([{transform:'scale(1)'},{transform:'scale(1.03)'},{transform:'scale(1)'}],{duration:180});
 });
+// فهرس الوحي المستقل
+async function initWahy(){
+  const btn=document.getElementById('wahyToggle'), panel=document.getElementById('wahyPanel'), arrow=document.getElementById('wahyArrow'), list=document.getElementById('wahyList');
+  if(!btn||!panel) return;
+  btn.addEventListener('click',()=>{ const open=panel.style.display!=='none'; panel.style.display=open?'none':'block'; arrow.textContent=open?'▼':'▲'; if(!open && !list.dataset.loaded) loadWahyList(); });
+  async function loadWahyList(){
+    try{
+      const r=await fetch('./data/surah_info.json?v=1'); const data=await r.json();
+      const arr=Object.entries(data).map(([k,v])=> ({s:parseInt(k), ...v})).sort((a,b)=> (a.order||999)-(b.order||999));
+      list.innerHTML='';
+      arr.forEach(it=>{
+        const s=it.s;
+        const div=document.createElement('div');
+        div.style.cssText='display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #efe6c8;background:#fff;border-radius:10px;cursor:pointer';
+        div.innerHTML=`<span style="width:26px;height:26px;border-radius:999px;background:#143d2a;color:#ffef99;display:flex;align-items:center;justify-content:center;font-size:11px;flex:0 0 26px">${(it.order||'?').toLocaleString('ar-EG')}</span><div style="flex:1;min-width:0"><b style="color:#143d2a;font-size:12px">${s.toLocaleString('ar-EG')} - ${suraNames[s]}</b><span style="display:block;font-size:11px;color:#7a6a3a">${it.type} • ${it.ayahs} آية • ص ${it.pages[0]}-${it.pages[1]}</span></div><span style="font-size:11px;color:#8c6f1f">›</span>`;
+        div.addEventListener('click',()=>{ current=it.pages[0]; render(); drawer.classList.remove('open'); });
+        list.appendChild(div);
+      });
+      list.dataset.loaded='1';
+    }catch(e){ list.innerHTML='<div style="color:#7a6a3a;font-size:12px">تعذر تحميل فهرس الوحي</div>'; }
+  }
+}
 load();
 </script>
 </body>
