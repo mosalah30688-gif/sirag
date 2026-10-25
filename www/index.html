@@ -443,11 +443,23 @@ function updateProgress(){
   const box=document.getElementById('progressBox');
   if(box) box.innerHTML=`📊 تقدم الختمة: <b>${visited.size.toLocaleString('ar-EG')} / 604</b> صفحة — ${pct}% — آخر صفحة ${current.toLocaleString('ar-EG')} <button id="resetProgress" style="float:left;border:1px solid #e8e0c8;background:#fff;border-radius:8px;padding:2px 8px;cursor:pointer;font-size:11px">إعادة</button>`;
   const btn=document.getElementById('resetProgress'); if(btn) btn.onclick=()=>{ if(confirm('إعادة تقدم الختمة؟')){ visited.clear(); localStorage.removeItem('sirag_visited'); localStorage.removeItem('sirag_habit'); updateProgress(); renderKhatm(); } };
-  // عادة يومية
+  // عادة يومية — رصد دقيق: صفحات + سور/آيات
   const today=new Date().toISOString().slice(0,10);
   const habit=JSON.parse(localStorage.getItem('sirag_habit')||'{}');
-  habit[today]=(habit[today]||0)+1;
-  // احتفظ بآخر 30 يوم فقط
+  // تحويل القديم number إلى object
+  if(typeof habit[today]==='number') habit[today]={pages:habit[today], suras:[]};
+  if(!habit[today]) habit[today]={pages:0, suras:[]};
+  habit[today].pages=(habit[today].pages||0)+1;
+  const curData=pages[String(current)]||[];
+  if(curData[0]){
+    const sName=suraNames[parseInt(curData[0].key.split(':')[0])]||'';
+    if(sName && !habit[today].suras.includes(sName)){
+      habit[today].suras.push(sName);
+      if(habit[today].suras.length>5) habit[today].suras=habit[today].suras.slice(-5);
+    }
+    // لو آيات معينة: خزن أول آية
+    habit[today].lastAya=curData[0].key;
+  }
   const keys=Object.keys(habit).sort();
   if(keys.length>30){ delete habit[keys[0]]; }
   localStorage.setItem('sirag_habit', JSON.stringify(habit));
@@ -459,11 +471,39 @@ function renderKhatm(){
   if(localStorage.getItem('sirag_khatm_enabled')!=='1'){ el.innerHTML='فعّل تتبع الختمة من الإعدادات لعرض تقريرك'; return; }
   const read=visited.size, total=604, remain=total-read, pct=Math.round(read/total*100);
   const habit=JSON.parse(localStorage.getItem('sirag_habit')||'{}');
+  // حساب وردك اليومي حسب عادتك: متوسط + السور الأكثر قراءة
   const days=Object.keys(habit).sort().slice(-7);
-  const avg= days.length? (days.reduce((s,d)=>s+habit[d],0)/days.length).toFixed(1): '0';
-  const est= parseFloat(avg)>0 ? Math.ceil(remain/parseFloat(avg)) : '—';
-  const streak= (()=>{ let c=0, d=new Date(); for(let i=0;i<30;i++){ const k=d.toISOString().slice(0,10); if(habit[k]) c++; else break; d.setDate(d.getDate()-1); } return c; })();
-  el.innerHTML=`اتقرأ: <b>${read} / ${total}</b> (${pct}%) • فاضل: <b>${remain} صفحة</b><br>معدلك: <b>${avg} صفحة/يوم</b> (آخر 7 أيام) • متوقع تخلص بعد <b>${est} يوم</b><br>سلسلة قراءة: <b>${streak} يوم</b> ${streak>=3?'🔥':''}`;
+  let avgPages=0, favSura='';
+  if(days.length){
+    let tot=0, suraCount={};
+    days.forEach(d=>{
+      const h=habit[d];
+      if(typeof h==='number'){ tot+=h; }
+      else if(h && typeof h==='object'){ tot+=h.pages||0; if(h.suras) h.suras.forEach(s=> suraCount[s]=(suraCount[s]||0)+1); }
+    });
+    avgPages= (tot/days.length);
+    if(Object.keys(suraCount).length) favSura=Object.entries(suraCount).sort((a,b)=>b[1]-a[1])[0][0];
+  }
+  const avgStr= avgPages? `${avgPages.toFixed(1)} صفحة/يوم${favSura?` • سورة ${favSura} أكثر` : ''}` : '—';
+  // متبقي وتختم خلال يوم:شهر:سنة
+  let daysLeft= avgPages>0 ? Math.ceil(remain/avgPages) : 0;
+  const yrs=Math.floor(daysLeft/365), mons=Math.floor((daysLeft%365)/30), dys=daysLeft%30;
+  const estStr= daysLeft? `${dys} يوم : ${mons} شهر : ${yrs} سنة` : '—';
+  // تم قراءته ومتبقي مع أسماء سور لو ورده سور معينة
+  let readDetail=`${read} صفحة`, remainDetail=`${remain} صفحة`;
+  try{
+    const suraSet=new Set();
+    visited.forEach(p=>{ const data=pages[String(p)]||[]; data.forEach(v=> suraSet.add(v.key.split(':')[0])); });
+    if(suraSet.size && suraSet.size<=5) readDetail+=` (${[...suraSet].map(s=> suraNames[s]).join('، ')})`;
+    // متبقي: أول سور متبقية
+    if(remain>0 && favSura){
+      remainDetail+=` — القادم: سورة ${favSura}`;
+    } else if(remain>0){
+      // أول سورة غير مقروءة
+      for(let p=1;p<=604;p++){ if(!visited.has(p)){ const d=pages[String(p)]||[]; if(d[0]){ const s=d[0].key.split(':')[0]; remainDetail+=` — يبدأ من ${suraNames[s]}`; break; } } }
+    }
+  }catch(e){}
+  el.innerHTML=`وردك اليومي حسب عاداتك: <b>${avgStr}</b><br>تم قراءته: <b>${readDetail}</b> (${pct}%)<br>متبقي: <b>${remainDetail}</b><br>تختم خلال: <b>${estStr}</b>`;
 }
 function khatmNotifyCheck(){
   // تفعيل الخدمة من الإعدادات
