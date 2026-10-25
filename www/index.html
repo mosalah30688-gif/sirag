@@ -144,6 +144,18 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
       <h3>الفهرس</h3>
       <button class="close" id="closeDrawer">إغلاق ✕</button>
     </div>
+<div style="background:#fff;border:1px solid #efe6c8;border-radius:12px;padding:12px">
+      <b style="display:block;color:#143d2a;margin-bottom:8px;font-size:14px">⚙️ الإعدادات</b>
+      <div id="progressBox" style="background:#fffdf4;border:1px solid #efe6c8;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:12px;color:#6b5a2a"></div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">حجم الخط <span><button id="fontMinus" style="width:28px;height:28px;border:1px solid #c2a15a;background:#fff;border-radius:8px;cursor:pointer">-</button> <span id="fontVal" style="display:inline-block;min-width:36px;text-align:center">27</span> <button id="fontPlus" style="width:28px;height:28px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:8px;cursor:pointer">+</button></span></label>
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التجويد الملوّن <input type="checkbox" id="tajweedToggle2" style="accent-color:#143d2a;width:18px;height:18px" checked></label>
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التفسير الميسر <input type="checkbox" id="tafsirToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الترجمة الإنجليزية <input type="checkbox" id="transToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
+      </div>
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
+      </div>
+    </div>
     <!-- بحث لحظي -->
     <div style="margin-bottom:12px">
       <input id="searchInput" placeholder="ابحث في القرآن — بالحركات أو بدونها" style="width:100%;padding:10px;border:1.5px solid #c2a15a;background:#fff;color:#143d2a;border-radius:11px;font-size:13px">
@@ -157,18 +169,7 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
       <select id="dropAya" class="drp" style="width:100%;padding:10px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:11px;font-size:13px"></select>
     </div>
     <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8">
-    <div style="background:#fff;border:1px solid #efe6c8;border-radius:12px;padding:12px">
-      <b style="display:block;color:#143d2a;margin-bottom:8px;font-size:14px">⚙️ الإعدادات</b>
-      <div id="progressBox" style="background:#fffdf4;border:1px solid #efe6c8;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:12px;color:#6b5a2a"></div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">حجم الخط <span><button id="fontMinus" style="width:28px;height:28px;border:1px solid #c2a15a;background:#fff;border-radius:8px;cursor:pointer">-</button> <span id="fontVal" style="display:inline-block;min-width:36px;text-align:center">27</span> <button id="fontPlus" style="width:28px;height:28px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:8px;cursor:pointer">+</button></span></label>
-        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التجويد الملوّن <input type="checkbox" id="tajweedToggle2" style="accent-color:#143d2a;width:18px;height:18px" checked></label>
-        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التفسير الميسر <input type="checkbox" id="tafsirToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
-        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الترجمة الإنجليزية <input type="checkbox" id="transToggle" style="accent-color:#143d2a;width:18px;height:18px"></label>
-      </div>
-        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">الخط <select id="fontSelect" style="border:1px solid #e8e0c8;border-radius:8px;padding:6px 8px"><option value="amiri">Amiri Quran (عثماني)</option><option value="scheherazade">Scheherazade New</option></select></label>
-      </div>
-    </div>
+    
     <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>التفسير</b><span>قريباً — ابن كثير والجلالين</span></div></div>
     <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>التراجم</b><span>قريباً — إنجليزية وفرنسية</span></div></div>
     <div class="svc coming"><div class="dot" style="background:#aaa"></div><div><b>الصوتيات — 22 قارئ</b><span>قريباً — تحميل واستماع أوفلاين</span></div></div>
