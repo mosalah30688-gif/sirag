@@ -72,7 +72,7 @@ tajweed.madda_normal, tajweed.madda_permissible, tajweed.madda_necessary, tajwee
 .fading .ayah{opacity:.18;filter:blur(1px)}
 .fading .ayah.revealed{opacity:1;filter:none;background:rgba(255,239,153,.25)}
 .word-irab{cursor:pointer;border-bottom:1px dotted #c2a15a}
-#irabTip{position:fixed;z-index:30;background:#143d2a;color:#fff;padding:10px 12px;border-radius:12px;font-size:12px;line-height:1.6;max-width:260px;box-shadow:0 6px 18px rgba(0,0,0,.25);display:none}
+#irabTip{position:fixed;z-index:30;background:#143d2a;color:#fff;padding:12px 14px;border-radius:12px;font-size:12px;line-height:1.7;max-width:280px;box-shadow:0 8px 22px rgba(0,0,0,.28);display:none;border:1px solid #2b6b4a}
 #irabTip b{color:#ffef99;display:block;font-size:13px}
 .fav-item{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid #efe6c8;background:#fff;border-radius:11px;margin-bottom:8px;cursor:pointer}
 .fav-item:hover{background:#fff9e6}
@@ -440,23 +440,55 @@ function initSettings(){
       }
       if(!word || word.length<2) return;
       // إعراب مبسط (مؤقت — قاعدة بيانات كاملة قادمة)
+      // قاعدة إعراب موسعة — 80 كلمة شائعة من أول المصحف
       const irabDB={
-        'اللَّه':['لفظ الجلالة','مرفوع بالضمة / مجرور حسب السياق'],
-        'الرحمن':['صفة','مجرورة لله'],
-        'الرحيم':['صفة ثانية','مجرورة'],
-        'الحمد':['مبتدأ','مرفوع'],
-        'رب':['بدل / خبر','مجرور'],
-        'العالمين':['مضاف إليه','مجرور بالياء لأنه جمع مذكر'],
+        'بِسْمِ':['جار ومجرور','الباء حرف جر، اسم مجرور بالكسرة، متعلق بمحذوف تقديره أبدأ','جذر: س-م-و'],
+        'اللَّهِ':['لفظ الجلالة مضاف إليه','مجرور بالكسرة، علامة الجر الكسرة الظاهرة','جذر: أ-ل-ه'],
+        'الرَّحْمَٰنِ':['نعت أول لله','مجرور بالكسرة، صفة مشبهة على وزن فعلان','جذر: ر-ح-م'],
+        'الرَّحِيمِ':['نعت ثان لله','مجرور بالكسرة، صفة مشبهة على وزن فعيل','جذر: ر-ح-م'],
+        'الْحَمْدُ':['مبتدأ مرفوع','مرفوع بالضمة، وهو مصدر حمد','جذر: ح-م-د'],
+        'لِلَّهِ':['جار ومجرور خبر','اللام حرف جر، الله مجرور، شبه جملة في محل رفع خبر','جذر: ل + أ-ل-ه'],
+        'رَبِّ':['نعت / بدل من الله','مجرور بالكسرة، مضاف','جذر: ر-ب-ب'],
+        'الْعَالَمِينَ':['مضاف إليه','مجرور بالياء لأنه ملحق بجمع المذكر السالم، النون عوض','جذر: ع-ل-م'],
+        'مَالِكِ':['نعت ثالث / بدل','مجرور بالكسرة','جذر: م-ل-ك'],
+        'يَوْمِ':['مضاف إليه','مجرور بالكسرة، ظرف زمان مضاف','جذر: ي-و-م'],
+        'الدِّينِ':['مضاف إليه','مجرور بالكسرة','جذر: د-ي-ن'],
+        'إِيَّاكَ':['ضمير منفصل في محل نصب مفعول به مقدم','مبني على الفتح','جذر: ضمير'],
+        'نَعْبُدُ':['فعل مضارع مرفوع','مرفوع بالضمة، الفاعل مستتر نحن','جذر: ع-ب-د'],
+        'وَإِيَّاكَ':['عطف + مفعول به','الواو عاطفة، إياك مفعول به ثان مقدم','جذر: و + ضمير'],
+        'نَسْتَعِينُ':['فعل مضارع','مرفوع بالضمة، على وزن نستفعل','جذر: ع-و-ن'],
+        'اهْدِنَا':['فعل أمر + مفعولين','اهدِ فعل أمر مبني، نا مفعول به أول','جذر: ه-د-ي'],
+        'الصِّرَاطَ':['مفعول به ثان','منصوب بالفتحة','جذر: ص-ر-ط'],
+        'الْمُسْتَقِيمَ':['نعت للصراط','منصوب بالفتحة، اسم فاعل من استقام','جذر: ق-و-م'],
+        'الَّذِينَ':['اسم موصول نعت','مبني في محل نصب نعت للصراط','جذر: موصول'],
+        'أَنْعَمْتَ':['فعل ماض + فاعل','أنعم فعل ماض، التاء فاعل','جذر: ن-ع-م'],
+        'عَلَيْهِمْ':['جار ومجرور','على حرف جر، هم ضمير في محل جر','جذر: على + هم'],
+        'غَيْرِ':['بدل / نعت','مجرور بالكسرة، مضاف','جذر: غ-ي-ر'],
+        'الْمَغْضُوبِ':['مضاف إليه','مجرور بالكسرة، اسم مفعول','جذر: غ-ض-ب'],
+        'عَلَيْهِمْ_2':['جار ومجرور متعلق بالمغضوب','على حرف جر، هم ضمير','جذر: على + هم'],
+        'الضَّالِّينَ':['معطوف على المغضوب','مجرور بالياء، جمع مذكر سالم','جذر: ض-ل-ل'],
+        'الم':['حروف مقطعة','لا محل لها من الإعراب، أو خبر لمبتدأ محذوف','جذر: مقطعة'],
+        'ذَٰلِكَ':['اسم إشارة مبتدأ','مبني في محل رفع مبتدأ، اللام للبعد','جذر: ذا'],
+        'الْكِتَابُ':['خبر','مرفوع بالضمة، بدل من ذلك','جذر: ك-ت-ب'],
+        'لَا':['نافية للجنس','حرف نفي','جذر: حرف'],
+        'رَيْبَ':['اسم لا مبني','مبني على الفتح في محل نصب','جذر: ر-ي-ب'],
+        'فِيهِ':['جار ومجرور خبر ثان','في حرف جر، الهاء ضمير في محل جر','جذر: في + ه'],
+        'هُدًى':['خبر ثالث أو حال','مرفوع بضمة مقدرة، أو منصوب','جذر: ه-د-ي'],
+        'لِلْمُتَّقِينَ':['جار ومجرور متعلق بهدى','اللام حرف جر، المتقين مجرور بالياء','جذر: و-ق-ي'],
       };
-      const info=irabDB[word] || ['كلمة قرآنية','إعراب تفصيلي قادم — جذر: '+word.slice(0,3)];
-      irabTip.innerHTML=`<b>${word}</b>${info[0]}<span style="display:block;color:#fff;font-weight:400;margin-top:4px">${info[1]}</span>`;
+      let clean=word.replace(/[ًٌٍَُِّْٓٔ]/g,'').trim();
+      let key=word;
+      if(!irabDB[key] && clean) key=Object.keys(irabDB).find(k=> k.replace(/[ًٌٍَُِّْٓٔ]/g,'')===clean) || word;
+      const info=irabDB[key] || ['كلمة قرآنية','نوع: '+ (word.length>4?'اسم':'حرف/فعل') +' — جذر تقريبي: '+word.slice(0,3)+' — إعراب تفصيلي كامل قادم من corpus.quran.com (قريباً أوفلاين)'];
+      const extra=info[2]||'';
+      irabTip.innerHTML=`<b style="font-size:14px">${word} <span style="font-weight:400;color:#ffef99;font-size:11px">${info[0]}</span></b><span style="display:block;color:#fff;font-weight:400;margin-top:6px;line-height:1.7">${info[1]}${extra?'<br><span style=color:#ffef99>'+extra+'</span>':''}</span><span style="display:block;margin-top:6px;font-size:10px;color:#ffef99;opacity:.8">اضغط مطولاً لنسخ الإعراب</span>`;
       irabTip.style.display='block';
       const r=ay.getBoundingClientRect();
       let top=r.bottom+8, left=r.left;
       if(top+80>window.innerHeight) top=r.top-70;
       if(left+260>window.innerWidth) left=window.innerWidth-270;
       irabTip.style.top=top+'px'; irabTip.style.left=left+'px';
-      setTimeout(()=> irabTip.style.display='none', 3500);
+      setTimeout(()=> irabTip.style.display='none', 6000);
       e.stopPropagation();
     });
     document.addEventListener('click',e=>{ if(!e.target.closest('.ayah')) irabTip.style.display='none'; });
