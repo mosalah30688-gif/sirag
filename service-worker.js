@@ -1,5 +1,5 @@
 // سراج — Service Worker للتحديث التلقائي
-const CACHE_NAME = 'sirag-v1.2';
+const CACHE_NAME = 'sirag-v1.3';
 const CORE = [
   './',
   './index.html',
