@@ -147,6 +147,18 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
 <div style="background:#fff;border:1px solid #efe6c8;border-radius:12px;padding:12px">
       <b style="display:block;color:#143d2a;margin-bottom:8px;font-size:14px">⚙️ الإعدادات</b>
       <div id="progressBox" style="background:#fffdf4;border:1px solid #efe6c8;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:12px;color:#6b5a2a"></div>
+<!-- بحث لحظي -->
+    <div style="margin-bottom:12px">
+      <input id="searchInput" placeholder="ابحث في القرآن — بالحركات أو بدونها" style="width:100%;padding:10px;border:1.5px solid #c2a15a;background:#fff;color:#143d2a;border-radius:11px;font-size:13px">
+      <div id="searchInfo" style="font-size:11px;color:#7a6a3a;margin-top:4px">اكتب كلمة — النتائج تظهر فوراً (6236 آية)</div>
+      <div id="searchResults" style="max-height:220px;overflow:auto;margin-top:8px;display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+    <!-- قوائم منسدلة سور - أجزاء - آيات جنب بعض صغار -->
+    <div style="display:flex;gap:6px;margin-bottom:12px">
+      <select id="dropSura" class="drp" style="flex:1;padding:8px 6px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;font-size:12px;font-weight:600"></select>
+      <select id="dropJuz" class="drp" style="flex:1;padding:8px 6px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:10px;font-size:12px"></select>
+      <select id="dropAya" class="drp" style="flex:1;padding:8px 6px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:10px;font-size:12px"></select>
+    </div>
       <div style="display:flex;flex-direction:column;gap:10px">
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">حجم الخط <span><button id="fontMinus" style="width:28px;height:28px;border:1px solid #c2a15a;background:#fff;border-radius:8px;cursor:pointer">-</button> <span id="fontVal" style="display:inline-block;min-width:36px;text-align:center">27</span> <button id="fontPlus" style="width:28px;height:28px;border:1px solid #143d2a;background:#143d2a;color:#fff;border-radius:8px;cursor:pointer">+</button></span></label>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">التجويد الملوّن <input type="checkbox" id="tajweedToggle2" style="accent-color:#143d2a;width:18px;height:18px" checked></label>
@@ -160,19 +172,7 @@ img,svg,video,canvas{max-width:100%}html,body{overflow-x:hidden}
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;opacity:.6">المشاركة <input type="checkbox" checked disabled></label>
       </div>
     </div>
-    <!-- بحث لحظي -->
-    <div style="margin-bottom:12px">
-      <input id="searchInput" placeholder="ابحث في القرآن — بالحركات أو بدونها" style="width:100%;padding:10px;border:1.5px solid #c2a15a;background:#fff;color:#143d2a;border-radius:11px;font-size:13px">
-      <div id="searchInfo" style="font-size:11px;color:#7a6a3a;margin-top:4px">اكتب كلمة — النتائج تظهر فوراً (6236 آية)</div>
-      <div id="searchResults" style="max-height:220px;overflow:auto;margin-top:8px;display:flex;flex-direction:column;gap:6px"></div>
-    </div>
-    <!-- قوائم منسدلة سور - أجزاء - آيات جنب بعض صغار -->
-    <div style="display:flex;gap:6px;margin-bottom:12px">
-      <select id="dropSura" class="drp" style="flex:1;padding:8px 6px;border:1px solid #c2a15a;background:#fff;color:#143d2a;border-radius:10px;font-size:12px;font-weight:600"></select>
-      <select id="dropJuz" class="drp" style="flex:1;padding:8px 6px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:10px;font-size:12px"></select>
-      <select id="dropAya" class="drp" style="flex:1;padding:8px 6px;border:1px solid #e8e0c8;background:#fff;color:#143d2a;border-radius:10px;font-size:12px"></select>
-    </div>
-    <hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8"></div>
+<hr style="margin:14px 0;border:none;border-top:1px solid #efe6c8"></div>
 
 <script>
 const suraNames=["","الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
